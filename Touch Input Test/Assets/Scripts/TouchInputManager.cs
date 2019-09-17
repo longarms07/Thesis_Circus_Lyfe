@@ -28,35 +28,53 @@ public class TouchInputManager : MonoBehaviour
     void Update()
     {
         string text = "Size of Input.touches " + Input.touchCount;
-        for(int i=0; i<Math.Min(Input.touchCount, touchCursors.Length); i++)
+        for (int i=0; i< Math.Min(Input.touchCount, touchCursors.Length); i++)
         {
             Touch touch = Input.touches[i];
             if(touch.phase == TouchPhase.Began)
             {
                 touchCursors[i] = Instantiate(touchCursorPrefab).GetComponent<TouchCursor>();
+                touchCursors[i].changePosition(Camera.main.ScreenToWorldPoint(touch.position));
                 Debug.Log("Touch Event " + i + " Began");
             }
             if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
             {
+                
                 if (touchCursors[i] != null && touch.phase == TouchPhase.Moved)
                 {
-                    touchCursors[i].changePosition(touch.position);
+                    touchCursors[i].changePosition(Camera.main.ScreenToWorldPoint(touch.position));
                 }
-                text += "\n Touch " + i + " at Position " + touch.position;
+                text += "\n Touch " + i + " at Position " + touch.position+"at deltaPosition "+touch.deltaPosition;
             }
             else
             {
                 if (touchCursors[i] != null) { 
                     touchCursors[i].endTouch();
                     touchCursors[i] = null;
+                    int j = 0;
+                    while (touchCursors[i] == null && i + j < touchCursors.Length)
+                    {
+                        touchCursors[i] = touchCursors[i + j];
+                        j++;
+                    }
                     Debug.Log("Touch Event "+ i+" Ended");
                 }
             text += "\n Touch " + i + " Ended.";
             }
         }
         if (display != null) { display.text = text; }
-
+        if(Input.touchCount == 0)
+        {
+            foreach(TouchCursor cursor in touchCursors)
+            {
+                if (cursor != null) {
+                    cursor.endTouch();
+                }
+            }
+        }
     }
+    
+    
 
     public static TouchInputManager getInstance()
     {
