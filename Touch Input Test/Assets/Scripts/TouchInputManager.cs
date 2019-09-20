@@ -12,16 +12,22 @@ public class TouchInputManager : MonoBehaviour
     public int fingersSupported;
 
     private TouchCursor[] touchCursors;
+    private List<TouchMovable>[] touchMovables;
     private TextMeshProUGUI display;
     static TouchInputManager instance;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (instance == null) { instance = this; }
         else { Destroy(this); }
         display = displayText.GetComponent<TextMeshProUGUI>();
         touchCursors = new TouchCursor[fingersSupported];
+        touchMovables = new List<TouchMovable>[fingersSupported];
+        for(int i = 0; i < touchMovables.Length; i++)
+        {
+            touchMovables[i] = new List<TouchMovable>();
+        }
     }
 
     // Update is called once per frame
@@ -43,6 +49,10 @@ public class TouchInputManager : MonoBehaviour
                 if (touchCursors[i] != null && touch.phase == TouchPhase.Moved)
                 {
                     touchCursors[i].changePosition(Camera.main.ScreenToWorldPoint(touch.position));
+                }
+                foreach(TouchMovable touchMovable in touchMovables[i])
+                {
+                    touchMovable.move(touch.deltaPosition, touch.deltaTime);
                 }
                 text += "\n Touch " + i + " at Position " + touch.position+"at deltaPosition "+touch.deltaPosition;
             }
@@ -80,4 +90,30 @@ public class TouchInputManager : MonoBehaviour
     {
         return instance;
     }
+
+    //<summary> Allows a TouchMovable to add itself as the observer for a certain touch number </summary>
+    //<param name = "touchMovable" > The TouchMovable that wishes to be an observer </ param >
+    //<param name = "touchToMonitor" > What index touch to monitor (the first, second, etc.) </ param >
+    public bool subscribeTouchMovement(TouchMovable touchMovable, int touchToMonitor)
+    {
+        if (touchToMonitor < 0 || touchToMonitor > fingersSupported - 1)
+        {
+            return false;
+        }
+        touchMovables[touchToMonitor].Add(touchMovable);
+        return true;
+    }
+
+    //<summary> Allows a TouchMovable to remove itself as the observer for a certain touch number </summary>
+    //<param name = "touchMovable" > The TouchMovable that wishes to stop being an observer </ param >
+    //<param name = "touchToMonitor" > What index touch to unsubscribe from (the first, second, etc.) </ param >
+    public bool unsubscribeTouchMovement(TouchMovable touchMovable, int touchToMonitor)
+    {
+        if (touchToMonitor < 0 || touchToMonitor > fingersSupported - 1)
+        {
+            return false;
+        }
+        return touchMovables[touchToMonitor].Remove(touchMovable);
+    }
+
 }
