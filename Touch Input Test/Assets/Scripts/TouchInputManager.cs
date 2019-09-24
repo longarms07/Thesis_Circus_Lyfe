@@ -6,13 +6,29 @@ using System;
 
 public class TouchInputManager : MonoBehaviour
 {
-
-    public GameObject displayText;
+    [Tooltip("The prefab to use for creating touch cursors. Must have script 'TouchCursor'")]
     public GameObject touchCursorPrefab;
+
+    [Tooltip("The number of fingers/touches the manager will track.")]
     public int fingersSupported;
 
+    [Tooltip("The maximum length of a tap")]
+    public float maxTapTime;
+
+    [Tooltip("Whether or not Debug mode is active. Off by default.")]
+    public bool debugMode;
+    [Tooltip ("Display GUI to be used for devugging")]
+    public GameObject displayText;
+
+
     private TouchCursor[] touchCursors;
-    private List<TouchMovable>[] touchMovables;
+    private List<ITapListener>[] tapListeners;
+    private List<ISwipeListener>[] swipeListeners;
+    private List<Vector2>[] touchDeltaPoisitons;
+    private Vector3[][] touchStartEndPoints;
+    private Vector2[] touchTimes;
+    private bool[] swipes;
+
     private TextMeshProUGUI display;
     static TouchInputManager instance;
 
@@ -23,97 +39,195 @@ public class TouchInputManager : MonoBehaviour
         else { Destroy(this); }
         display = displayText.GetComponent<TextMeshProUGUI>();
         touchCursors = new TouchCursor[fingersSupported];
-        touchMovables = new List<TouchMovable>[fingersSupported];
-        for(int i = 0; i < touchMovables.Length; i++)
+        tapListeners = new List<ITapListener>[fingersSupported];
+        swipeListeners = new List<ISwipeListener>[fingersSupported];
+        touchDeltaPoisitons = new List<Vector2>[fingersSupported];
+        touchStartEndPoints = new Vector3[fingersSupported][];
+        touchTimes = new Vector2[fingersSupported];
+        swipes = new bool[fingersSupported];
+        for(int i = 0; i < fingersSupported; i++)
         {
-            touchMovables[i] = new List<TouchMovable>();
+            touchStartEndPoints[i] = new Vector3[2];
+            tapListeners[i] = new List<ITapListener>();
+            swipeListeners[i] = new List<ISwipeListener>();
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        string text = "Size of Input.touches " + Input.touchCount;
+        string text = "";
+        if (debugMode) { text = "Size of Input.touches " + Input.touchCount; }
         for (int i=0; i< Math.Min(Input.touchCount, touchCursors.Length); i++)
         {
             Touch touch = Input.touches[i];
-            if(touch.phase == TouchPhase.Began)
+            Vector3 worldPosition = ScreenPointToWorldPoint(touch.position);
+            if (touch.phase == TouchPhase.Began)
             {
                 touchCursors[i] = Instantiate(touchCursorPrefab).GetComponent<TouchCursor>();
-                touchCursors[i].changePosition(Camera.main.ScreenToWorldPoint(touch.position));
-                Debug.Log("Touch Event " + i + " Began");
+                touchCursors[i].changePosition(worldPosition);
+                touchTimes[i] = new Vector2(Time.time, Time.time);
+                swipes[i] = false;
+                touchStartEndPoints[i][0] = worldPosition;
+                if(debugMode) { Debug.Log("Touch Event " + i + " Began"); }
             }
             if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
             {
                 
-                if (touchCursors[i] != null && touch.phase == TouchPhase.Moved)
+                if (touch.phase == TouchPhase.Moved)
                 {
-                    touchCursors[i].changePosition(Camera.main.ScreenToWorldPoint(touch.position));
+                    touchCursors[i].changePosition(worldPosition);
+                    touchDeltaPoisitons[i].Add(touch.deltaPosition);
+                    if (!swipes[i]) { swipes[i] = true; }
                 }
-                foreach(TouchMovable touchMovable in touchMovables[i])
+                touchStartEndPoints[i][1] = worldPosition;
+                touchTimes[i].y = Time.time;
+                if (!swipes[i]) { swipes[i] = Overtime(touchTimes[i]); }
+                
+                if (debugMode)
                 {
-                    touchMovable.move(touch.deltaPosition, touch.deltaTime);
+                    text += "\n Touch " + i + "ended at Position " + touch.position + "at deltaPosition " + touch.deltaPosition;
+                    if (swipes[i]) { text += " , Type = Swipe"; }
+                    else { text += " , Type = Tap"; }
                 }
-                text += "\n Touch " + i + " at Position " + touch.position+"at deltaPosition "+touch.deltaPosition;
             }
             else
             {
+                //Notify listeners
+                if (swipes[i])
+                {
+                    foreach (ISwipeListener listener in swipeListeners[i])
+                    {
+                        listener.SwipeDetected(touchStartEndPoints[i], touchDeltaPoisitons[i]);
+                    }
+                }
+                else
+                {
+                    foreach (ITapListener listener in tapListeners[i])
+                    {
+                        listener.TapDetected(touchStartEndPoints[i][0]);
+                    }
+                }
+
                 if (touchCursors[i] != null) { 
                     touchCursors[i].endTouch();
                     touchCursors[i] = null;
-                    int j = 0;
-                    while (touchCursors[i] == null && i + j < touchCursors.Length)
-                    {
-                        touchCursors[i] = touchCursors[i + j];
-                        j++;
-                    }
-                    Debug.Log("Touch Event "+ i+" Ended");
+                    if (debugMode) { Debug.Log("Touch Event " + i + " Ended"); }
                 }
-            text += "\n Touch " + i + " Ended.";
+                if (debugMode)
+                { text += "\n Touch " + i + " Ended."; }
             }
         }
-        if (display != null) { display.text = text; }
-        if(Input.touchCount == 0)
+        if (display != null && debugMode) { display.text = text; }
+   
+    }
+
+    public void FixedUpdate()
+    {
+        //Iterate thorugh and shift everything
+        for (int i = 0; i < fingersSupported; i++)
         {
-            foreach(TouchCursor cursor in touchCursors)
+            if (touchCursors[i] == null)
             {
-                if (cursor != null) {
+                int j = i + 1;
+                bool stop = false;
+                while (j < fingersSupported && !stop)
+                {
+                    if (touchCursors[j] != null)
+                    {
+                        touchCursors[i] = touchCursors[j];
+                        touchCursors[j] = null;
+                    }
+                    j++;
+                }
+                i = j;
+            }
+        }
+
+
+        //Garbage collect touch cursors.
+        if (Input.touchCount == 0)
+        {
+            foreach (TouchCursor cursor in touchCursors)
+            {
+                if (cursor != null)
+                {
                     cursor.endTouch();
                 }
             }
         }
     }
-    
-    
+
+
 
     public static TouchInputManager getInstance()
     {
         return instance;
     }
 
-    //<summary> Allows a TouchMovable to add itself as the observer for a certain touch number </summary>
-    //<param name = "touchMovable" > The TouchMovable that wishes to be an observer </ param >
-    //<param name = "touchToMonitor" > What index touch to monitor (the first, second, etc.) </ param >
-    public bool subscribeTouchMovement(TouchMovable touchMovable, int touchToMonitor)
+    
+    public bool SubscribeTapListener(ITapListener tap, int touchToMonitor)
     {
-        if (touchToMonitor < 0 || touchToMonitor > fingersSupported - 1)
+        if (!ListenerIndexValid(touchToMonitor))
         {
             return false;
         }
-        touchMovables[touchToMonitor].Add(touchMovable);
+        tapListeners[touchToMonitor].Add(tap);
         return true;
     }
 
-    //<summary> Allows a TouchMovable to remove itself as the observer for a certain touch number </summary>
-    //<param name = "touchMovable" > The TouchMovable that wishes to stop being an observer </ param >
-    //<param name = "touchToMonitor" > What index touch to unsubscribe from (the first, second, etc.) </ param >
-    public bool unsubscribeTouchMovement(TouchMovable touchMovable, int touchToMonitor)
+    public bool SubscribeSwipeListener(ISwipeListener swipe, int touchToMonitor)
     {
-        if (touchToMonitor < 0 || touchToMonitor > fingersSupported - 1)
+        if (!ListenerIndexValid(touchToMonitor))
         {
             return false;
         }
-        return touchMovables[touchToMonitor].Remove(touchMovable);
+        swipeListeners[touchToMonitor].Add(swipe);
+        return true;
     }
+
+
+    public bool UnsubscribeTapListener(ITapListener tap, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        return tapListeners[touchToMonitor].Remove(tap);
+    }
+
+    public bool UnsubscribeSwipeListener(ISwipeListener swipe, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        return swipeListeners[touchToMonitor].Remove(swipe);
+    }
+
+    private bool ListenerIndexValid(int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private Vector3 ScreenPointToWorldPoint(Vector3 touch)
+    {
+        Vector3 screenPoint = Camera.main.ScreenToWorldPoint(touch);
+        return new Vector3(screenPoint.x, screenPoint.y, 0);
+    }
+
+    private bool Overtime(Vector2 times)
+    {
+        if ((times.y - times.x) > maxTapTime)
+        {
+            return true;
+        }
+        return false;
+    }
+
 
 }

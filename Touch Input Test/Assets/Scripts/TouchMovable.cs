@@ -9,7 +9,7 @@ public class TouchMovable : MonoBehaviour
     public float moveSpeed;
 
     TouchInputManager touchInputManager;
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D rigidBody;
 
     // Start is called before the first frame update
     void Start()
@@ -22,8 +22,8 @@ public class TouchMovable : MonoBehaviour
         }
         else
         {
-            rigidbody = this.gameObject.GetComponent<Rigidbody2D>();
-            touchInputManager.subscribeTouchMovement(this, touchToFollow);
+            rigidBody = this.gameObject.GetComponent<Rigidbody2D>();
+            //touchInputManager.subscribeTouchMovement(this, touchToFollow);
         }
     }
 
@@ -41,7 +41,7 @@ public class TouchMovable : MonoBehaviour
         Vector3 currentPosition = this.gameObject.transform.localPosition;
         Vector3 transformVector = new Vector3(currentPosition.x+deltaPosition.x, currentPosition.y+deltaPosition.y, 0);
         Vector3 moveTowards = Vector3.MoveTowards(currentPosition, transformVector, deltaTime*moveSpeed);
-        rigidbody.MovePosition(moveTowards);
+        rigidBody.MovePosition(moveTowards);
         //Debug.Log("TouchMovable: Moving " + transformVector.x + " x, " + transformVector.y + " y.");
     }
 }

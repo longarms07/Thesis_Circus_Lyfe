@@ -48,11 +48,12 @@ public class TouchInputManager : MonoBehaviour
                 
                 if (touchCursors[i] != null && touch.phase == TouchPhase.Moved)
                 {
-                    touchCursors[i].changePosition(Camera.main.ScreenToWorldPoint(touch.position));
+                    touchCursors[i].changePosition(screenPointToWorldPoint(touch.position));
                 }
                 foreach(TouchMovable touchMovable in touchMovables[i])
                 {
                     touchMovable.move(touch.deltaPosition, touch.deltaTime);
+                    //touchMovable.moveTowards(screenPointToWorldPoint(touch.position));
                 }
                 //text += "\n Touch " + i + " at Position " + touch.position+"at deltaPosition "+touch.deltaPosition;
             }
@@ -117,6 +118,12 @@ public class TouchInputManager : MonoBehaviour
             return false;
         }
         return touchMovables[touchToMonitor].Remove(touchMovable);
+    }
+
+    private Vector3 screenPointToWorldPoint(Vector3 touch)
+    {
+        Vector3 screenPoint = Camera.main.ScreenToWorldPoint(touch);
+        return new Vector3(screenPoint.x, screenPoint.y, 0);
     }
 
 }

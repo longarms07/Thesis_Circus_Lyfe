@@ -39,8 +39,16 @@ public class TouchMovable : MonoBehaviour
         //this.gameObject.transform.Translate(transformVector, Space.World);
         Vector3 currentPosition = this.gameObject.transform.localPosition;
         Vector3 transformVector = new Vector3(currentPosition.x+deltaPosition.x, currentPosition.y+deltaPosition.y, 0);
-        Vector3 moveTowards = Vector3.MoveTowards(currentPosition, transformVector, Time.fixedDeltaTime*moveSpeed);
+        Vector3 moveTowards = Vector3.MoveTowards(currentPosition, transformVector, Time.fixedDeltaTime);
         rigidbody.MovePosition(moveTowards);
         //Debug.Log("TouchMovable: Moving " + transformVector.x + " x, " + transformVector.y + " y.");
     }
+
+    public void moveTowards(Vector3 moveTo)
+    {
+
+        Vector3 moveTowards = Vector3.MoveTowards(this.gameObject.transform.localPosition, moveTo, Time.fixedDeltaTime * moveSpeed);
+        rigidbody.MovePosition(moveTowards);
+    }
+
 }

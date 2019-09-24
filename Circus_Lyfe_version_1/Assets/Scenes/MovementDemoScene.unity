@@ -1352,7 +1352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchToFollow: 0
-  moveSpeed: 5
+  moveSpeed: 8
 --- !u!50 &1925518070
 Rigidbody2D:
   serializedVersion: 4

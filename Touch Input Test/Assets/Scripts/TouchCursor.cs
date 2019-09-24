@@ -19,7 +19,6 @@ public class TouchCursor : MonoBehaviour
     // Changes the cursor position, and creates a new one if needed
     public void changePosition(Vector3 touchPosition)
     {
-        touchPosition = new Vector3(touchPosition.x, touchPosition.y, 0);
         this.gameObject.transform.position = touchPosition;
     }
 
