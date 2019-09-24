@@ -21,7 +21,7 @@ public class TouchInputManager : MonoBehaviour
     public GameObject displayText;
 
 
-    private TouchCursor[] touchCursors;
+    public TouchCursor[] touchCursors;
     private List<ITapListener>[] tapListeners;
     private List<ISwipeListener>[] swipeListeners;
     private List<Vector2>[] touchDeltaPoisitons;
@@ -47,6 +47,7 @@ public class TouchInputManager : MonoBehaviour
         swipes = new bool[fingersSupported];
         for(int i = 0; i < fingersSupported; i++)
         {
+            touchDeltaPoisitons[i] = new List<Vector2>();
             touchStartEndPoints[i] = new Vector3[2];
             tapListeners[i] = new List<ITapListener>();
             swipeListeners[i] = new List<ISwipeListener>();
@@ -61,70 +62,80 @@ public class TouchInputManager : MonoBehaviour
         for (int i=0; i< Math.Min(Input.touchCount, touchCursors.Length); i++)
         {
             Touch touch = Input.touches[i];
-            Vector3 worldPosition = ScreenPointToWorldPoint(touch.position);
-            if (touch.phase == TouchPhase.Began)
+            int touchIndex = touch.fingerId;
+            if (touchIndex < fingersSupported)
             {
-                touchCursors[i] = Instantiate(touchCursorPrefab).GetComponent<TouchCursor>();
-                touchCursors[i].changePosition(worldPosition);
-                touchTimes[i] = new Vector2(Time.time, Time.time);
-                swipes[i] = false;
-                touchStartEndPoints[i][0] = worldPosition;
-                if(debugMode) { Debug.Log("Touch Event " + i + " Began"); }
-            }
-            if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
-            {
-                
-                if (touch.phase == TouchPhase.Moved)
+                if (debugMode) { Debug.Log("i = " + i + " , touchID = " + touch.fingerId); }
+                Vector3 worldPosition = ScreenPointToWorldPoint(touch.position);
+                if (touch.phase == TouchPhase.Began)
                 {
-                    touchCursors[i].changePosition(worldPosition);
-                    touchDeltaPoisitons[i].Add(touch.deltaPosition);
-                    if (!swipes[i]) { swipes[i] = true; }
-                }
-                touchStartEndPoints[i][1] = worldPosition;
-                touchTimes[i].y = Time.time;
-                if (!swipes[i]) { swipes[i] = Overtime(touchTimes[i]); }
-                
-                if (debugMode)
-                {
-                    text += "\n Touch " + i + "ended at Position " + touch.position + "at deltaPosition " + touch.deltaPosition;
-                    if (swipes[i]) { text += " , Type = Swipe"; }
-                    else { text += " , Type = Tap"; }
-                }
-            }
-            else
-            {
-                //Notify listeners
-                if (swipes[i])
-                {
-                    foreach (ISwipeListener listener in swipeListeners[i])
+                    if (touchCursors[touchIndex] == null)
                     {
-                        listener.SwipeDetected(touchStartEndPoints[i], touchDeltaPoisitons[i]);
+                        touchCursors[touchIndex] = Instantiate(touchCursorPrefab).GetComponent<TouchCursor>();
+                        touchCursors[touchIndex].changePosition(worldPosition);
+                        touchDeltaPoisitons[touchIndex] = new List<Vector2>();
+                        touchTimes[touchIndex] = new Vector2(Time.time, Time.time);
+                        swipes[touchIndex] = false;
+                        touchStartEndPoints[touchIndex][0] = worldPosition;
+                    }
+                    else if (debugMode) { Debug.Log("For some reason touchCursor " + touchIndex + " was unequal to null."); }
+                    if (debugMode) { Debug.Log("Touch Event " + i + " Began"); }
+                }
+                else if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
+                {
+
+                    if (touch.phase == TouchPhase.Moved)
+                    {
+                        if (touchCursors[touchIndex] != null)
+                        {
+                            touchCursors[touchIndex].changePosition(worldPosition);
+                            touchDeltaPoisitons[touchIndex].Add(touch.deltaPosition);
+                            if (!swipes[touchIndex]) { swipes[touchIndex] = true; }
+                        }
+                        else if (debugMode) { Debug.Log("Touch is null @ " + i); }
+                    }
+                    touchStartEndPoints[touchIndex][1] = worldPosition;
+                    touchTimes[touchIndex].y = Time.time;
+                    if (!swipes[touchIndex]) { swipes[touchIndex] = Overtime(touchTimes[touchIndex]); }
+
+                    if (debugMode)
+                    {
+                        text += "\n Touch " + touchIndex + "ended at Position " + touch.position + "at deltaPosition " + touch.deltaPosition;
+                        if (swipes[touchIndex]) { text += " , Type = Swipe"; }
+                        else { text += " , Type = Tap"; }
                     }
                 }
                 else
                 {
-                    foreach (ITapListener listener in tapListeners[i])
+                    //Notify listeners
+                    if (swipes[touchIndex])
                     {
-                        listener.TapDetected(touchStartEndPoints[i][0]);
+                        foreach (ISwipeListener listener in swipeListeners[touchIndex])
+                        {
+                            listener.SwipeDetected(touchStartEndPoints[touchIndex], touchDeltaPoisitons[touchIndex]);
+                        }
                     }
-                }
+                    else
+                    {
+                        foreach (ITapListener listener in tapListeners[touchIndex])
+                        {
+                            listener.TapDetected(touchStartEndPoints[touchIndex][0]);
+                        }
+                    }
 
-                if (touchCursors[i] != null) { 
-                    touchCursors[i].endTouch();
-                    touchCursors[i] = null;
-                    if (debugMode) { Debug.Log("Touch Event " + i + " Ended"); }
+                    if (touchCursors[touchIndex] != null)
+                    {
+                        touchCursors[touchIndex].endTouch();
+                        touchCursors[touchIndex] = null;
+                        if (debugMode) { Debug.Log("Touch Event " + touchIndex + " Ended"); }
+                    }
+                    if (debugMode)
+                    { text += "\n Touch " + touchIndex + " Ended."; }
                 }
-                if (debugMode)
-                { text += "\n Touch " + i + " Ended."; }
             }
         }
-        if (display != null && debugMode) { display.text = text; }
-   
-    }
-
-    public void FixedUpdate()
-    {
-        //Iterate thorugh and shift everything
+        if (debugMode && display != null) { display.text = text; }
+        /*//Iterate thorugh and shift everything
         for (int i = 0; i < fingersSupported; i++)
         {
             if (touchCursors[i] == null)
@@ -137,11 +148,13 @@ public class TouchInputManager : MonoBehaviour
                     {
                         touchCursors[i] = touchCursors[j];
                         touchCursors[j] = null;
+
+                        stop = true;
                     }
                     j++;
                 }
-                i = j;
             }
+            Debug.Log("Update is done");
         }
 
 
@@ -155,8 +168,9 @@ public class TouchInputManager : MonoBehaviour
                     cursor.endTouch();
                 }
             }
-        }
+        }*/
     }
+    
 
 
 

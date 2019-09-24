@@ -36,7 +36,6 @@ public class TouchCursor : MonoBehaviour
       
             Debug.Log("Destroying this...");
             Destroy(this.gameObject);
-    
     }
 
 }
