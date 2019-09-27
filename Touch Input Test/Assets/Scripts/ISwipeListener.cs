@@ -8,7 +8,7 @@ public abstract class ISwipeListener : MonoBehaviour
     public float xThreshold;
     public float yThreshold;
 
-    public abstract void SwipeDetected(Vector3[] swipePositions, List<Vector2> deltaPositions);
+    public abstract void SwipeDetected(Vector3[] swipePositions);
 
     public SwipeDirection FindDirection(Vector3[] swipePositions)
     {

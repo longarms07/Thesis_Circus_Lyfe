@@ -14,6 +14,8 @@ public class TouchInputManager : MonoBehaviour
 
     [Tooltip("The maximum length of a tap")]
     public float maxTapTime;
+    [Tooltip("The maximum length of a swipe")]
+    public float maxSwipeTime;
 
     [Tooltip("Whether or not Debug mode is active. Off by default.")]
     public bool debugMode;
@@ -24,10 +26,11 @@ public class TouchInputManager : MonoBehaviour
     public TouchCursor[] touchCursors;
     private List<ITapListener>[] tapListeners;
     private List<ISwipeListener>[] swipeListeners;
+    private List<IDragListener>[] dragListeners;
     private List<Vector2>[] touchDeltaPoisitons;
     private Vector3[][] touchStartEndPoints;
     private Vector2[] touchTimes;
-    private bool[] swipes;
+    private TouchInputType[] inputTypes;
 
     private TextMeshProUGUI display;
     static TouchInputManager instance;
@@ -41,16 +44,19 @@ public class TouchInputManager : MonoBehaviour
         touchCursors = new TouchCursor[fingersSupported];
         tapListeners = new List<ITapListener>[fingersSupported];
         swipeListeners = new List<ISwipeListener>[fingersSupported];
+        dragListeners = new List<IDragListener>[fingersSupported];
         touchDeltaPoisitons = new List<Vector2>[fingersSupported];
         touchStartEndPoints = new Vector3[fingersSupported][];
         touchTimes = new Vector2[fingersSupported];
-        swipes = new bool[fingersSupported];
+        inputTypes = new TouchInputType[fingersSupported];
         for(int i = 0; i < fingersSupported; i++)
         {
             touchDeltaPoisitons[i] = new List<Vector2>();
             touchStartEndPoints[i] = new Vector3[2];
             tapListeners[i] = new List<ITapListener>();
             swipeListeners[i] = new List<ISwipeListener>();
+            dragListeners[i] = new List<IDragListener>();
+            inputTypes[i] = TouchInputType.TAP;
         }
     }
 
@@ -75,7 +81,7 @@ public class TouchInputManager : MonoBehaviour
                         touchCursors[touchIndex].changePosition(worldPosition);
                         touchDeltaPoisitons[touchIndex] = new List<Vector2>();
                         touchTimes[touchIndex] = new Vector2(Time.time, Time.time);
-                        swipes[touchIndex] = false;
+                        inputTypes[touchIndex] = TouchInputType.TAP;
                         touchStartEndPoints[touchIndex][0] = worldPosition;
                     }
                     else if (debugMode) { Debug.Log("For some reason touchCursor " + touchIndex + " was unequal to null."); }
@@ -90,36 +96,61 @@ public class TouchInputManager : MonoBehaviour
                         {
                             touchCursors[touchIndex].changePosition(worldPosition);
                             touchDeltaPoisitons[touchIndex].Add(touch.deltaPosition);
-                            if (!swipes[touchIndex]) { swipes[touchIndex] = true; }
+                            if (inputTypes[touchIndex] == TouchInputType.TAP) { inputTypes[touchIndex] = TouchInputType.SWIPE; }
+                            if (inputTypes[touchIndex] == TouchInputType.DRAG)
+                            {
+                                foreach (IDragListener listener in dragListeners[touchIndex])
+                                {
+                                    listener.DragPoisitonChanged(touchStartEndPoints[touchIndex]);
+                                }
+                            }
                         }
                         else if (debugMode) { Debug.Log("Touch is null @ " + i); }
                     }
                     touchStartEndPoints[touchIndex][1] = worldPosition;
                     touchTimes[touchIndex].y = Time.time;
-                    if (!swipes[touchIndex]) { swipes[touchIndex] = Overtime(touchTimes[touchIndex]); }
-
-                    if (debugMode)
+                    if (inputTypes[touchIndex]!=TouchInputType.DRAG)
+                    {
+                        inputTypes[touchIndex] = Overtime(touchTimes[touchIndex], inputTypes[touchIndex]);
+                        if (inputTypes[touchIndex] == TouchInputType.DRAG)
+                        {
+                            foreach (IDragListener listener in dragListeners[touchIndex])
+                            {
+                                listener.DragStarted(touchStartEndPoints[touchIndex]);
+                            }
+                        }
+                    }
+                    
+                        if (debugMode)
                     {
                         text += "\n Touch " + touchIndex + "ended at Position " + touch.position + "at deltaPosition " + touch.deltaPosition;
-                        if (swipes[touchIndex]) { text += " , Type = Swipe"; }
-                        else { text += " , Type = Tap"; }
+                        if (inputTypes[touchIndex] == TouchInputType.SWIPE) { text += " , Type = Swipe"; }
+                        else if (inputTypes[touchIndex] == TouchInputType.TAP) { text += " , Type = Tap"; }
+                        else { text += " , Type = Drag"; }
                     }
                 }
                 else
                 {
                     //Notify listeners
-                    if (swipes[touchIndex])
+                    if (inputTypes[touchIndex] == TouchInputType.SWIPE)
                     {
                         foreach (ISwipeListener listener in swipeListeners[touchIndex])
                         {
-                            listener.SwipeDetected(touchStartEndPoints[touchIndex], touchDeltaPoisitons[touchIndex]);
+                            listener.SwipeDetected(touchStartEndPoints[touchIndex]);
                         }
                     }
-                    else
+                    else if(inputTypes[touchIndex] == TouchInputType.TAP)
                     {
                         foreach (ITapListener listener in tapListeners[touchIndex])
                         {
                             listener.TapDetected(touchStartEndPoints[touchIndex][0]);
+                        }
+                    }
+                    else
+                    {
+                        foreach (IDragListener listener in dragListeners[touchIndex])
+                        {
+                            listener.DragEnded(touchStartEndPoints[touchIndex], touchDeltaPoisitons[touchIndex]);
                         }
                     }
 
@@ -200,6 +231,17 @@ public class TouchInputManager : MonoBehaviour
         return true;
     }
 
+    public bool SubscribeDragListener(IDragListener drag, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        dragListeners[touchToMonitor].Add(drag);
+        return true;
+    }
+
+
 
     public bool UnsubscribeTapListener(ITapListener tap, int touchToMonitor)
     {
@@ -219,9 +261,18 @@ public class TouchInputManager : MonoBehaviour
         return swipeListeners[touchToMonitor].Remove(swipe);
     }
 
-    private bool ListenerIndexValid(int touchToMonitor)
+    public bool UnsubscribeDragListener(IDragListener drag, int touchToMonitor)
     {
         if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        return dragListeners[touchToMonitor].Remove(drag);
+    }
+
+    private bool ListenerIndexValid(int touchToMonitor)
+    {
+        if (touchToMonitor<0 || touchToMonitor>=fingersSupported)
         {
             return false;
         }
@@ -234,14 +285,25 @@ public class TouchInputManager : MonoBehaviour
         return new Vector3(screenPoint.x, screenPoint.y, 0);
     }
 
-    private bool Overtime(Vector2 times)
+    private TouchInputType Overtime(Vector2 times, TouchInputType type)
     {
-        if ((times.y - times.x) > maxTapTime)
+        if (type == TouchInputType.TAP && (times.y - times.x) > maxTapTime)
         {
-            return true;
+            return TouchInputType.DRAG;
         }
-        return false;
+        else if (type == TouchInputType.SWIPE && (times.y - times.x) > maxSwipeTime)
+        {
+            return TouchInputType.DRAG;
+        }
+        return type;
     }
 
 
+}
+
+public enum TouchInputType
+{
+    TAP,
+    SWIPE,
+    DRAG
 }

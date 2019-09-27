@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ITapListener
+public interface ITapListener
 {
-    public abstract void TapDetected(Vector3 position);
+    void TapDetected(Vector3 position);
 }
