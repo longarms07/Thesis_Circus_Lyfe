@@ -14,8 +14,9 @@ public abstract class ISwipeListener : MonoBehaviour
     {
         if (swipePositions.Length != 2 || swipePositions[0] == null || swipePositions[1] == null) { return SwipeDirection.NONE; }
         SwipeDirection swipeDirection = SwipeDirection.NONE;
-        float changeInX = swipePositions[1].x - swipePositions[0].x;
-        float changeInY = swipePositions[1].y - swipePositions[0].y;
+        float changeInY = swipePositions[1].x - swipePositions[0].x;
+        float changeInX = swipePositions[1].y - swipePositions[0].y;
+        Debug.Log("Change in x = " + changeInX + " , Change in y = " + changeInY);
         if(changeInX > xThreshold)
         {
             //North Family
@@ -23,7 +24,7 @@ public abstract class ISwipeListener : MonoBehaviour
             {
                 swipeDirection = SwipeDirection.NorthEast;
             }
-            if (changeInY < -yThreshold)
+            else if (changeInY < -yThreshold)
             {
                 swipeDirection = SwipeDirection.NorthWest;
             }
@@ -38,7 +39,7 @@ public abstract class ISwipeListener : MonoBehaviour
             {
                 swipeDirection = SwipeDirection.SouthEast;
             }
-            if (changeInY < -yThreshold)
+            else if (changeInY < -yThreshold)
             {
                 swipeDirection = SwipeDirection.SouthWest;
             }

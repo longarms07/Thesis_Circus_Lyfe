@@ -739,8 +739,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b345c66b4eb9ab469fb7b24caad79dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xThreshold: 10
-  yThreshold: 10
+  xThreshold: 1
+  yThreshold: 1
 --- !u!222 &1927687484
 CanvasRenderer:
   m_ObjectHideFlags: 0
