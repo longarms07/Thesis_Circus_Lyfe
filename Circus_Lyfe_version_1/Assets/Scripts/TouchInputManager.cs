@@ -89,12 +89,14 @@ public class TouchInputManager : MonoBehaviour
                 }
                 else if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
                 {
-
+                    if (touchCursors[touchIndex] != null)
+                    {
+                        touchCursors[touchIndex].changePosition(worldPosition);
+                    }
                     if (touch.phase == TouchPhase.Moved)
                     {
                         if (touchCursors[touchIndex] != null)
                         {
-                            touchCursors[touchIndex].changePosition(worldPosition);
                             touchDeltaPoisitons[touchIndex].Add(touch.deltaPosition);
                             if (inputTypes[touchIndex] == TouchInputType.TAP) { inputTypes[touchIndex] = TouchInputType.SWIPE; }
                             if (inputTypes[touchIndex] == TouchInputType.DRAG)
