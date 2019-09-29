@@ -1,15 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchMovable : MonoBehaviour
+public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
 {
-
+    [Tooltip("The touch ID this object should follow")]
     public int touchToFollow;
-    public float moveSpeed;
+    [Tooltip("The speed at which this object moves while walking.")]
+    public float walkSpeed;
+    [Tooltip("The speed at which this object moves while running.")]
+    public float runSpeed;
+    [Tooltip("The threshold to determine whether this object is walking (<) or running (>=).")]
+    public float runThreshold;
 
-    TouchInputManager touchInputManager;
-    private Rigidbody2D rigidbody;
+    private TouchInputManager touchInputManager;
+    private Rigidbody2D da_Rigidbody;
+    private bool drag = false;
+    private Vector3 targetPosition;
     
     void Start()
     {
@@ -21,34 +29,60 @@ public class TouchMovable : MonoBehaviour
         }
         else
         {
-            rigidbody = this.gameObject.GetComponent<Rigidbody2D>();
-            touchInputManager.subscribeTouchMovement(this, touchToFollow);
+            da_Rigidbody = this.gameObject.GetComponent<Rigidbody2D>();
+            touchInputManager.SubscribeTapListener(this, touchToFollow);
+            touchInputManager.SubscribeDragListener(this, touchToFollow);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (drag) MoveTowards(targetPosition);
     }
 
-    //Update movement of the TouchMoveable
-    public void move(Vector2 deltaPosition, float deltaTime)
+
+    public void DragStarted(Vector3[] dragPositions)
     {
-        //Vector3 transformVector = new Vector3(deltaPosition.x * deltaTime, deltaPosition.y * deltaTime, 0);
-        //this.gameObject.transform.Translate(transformVector, Space.World);
-        Vector3 currentPosition = this.gameObject.transform.localPosition;
-        Vector3 transformVector = new Vector3(currentPosition.x+deltaPosition.x, currentPosition.y+deltaPosition.y, 0);
-        Vector3 moveTowards = Vector3.MoveTowards(currentPosition, transformVector, Time.fixedDeltaTime);
-        rigidbody.MovePosition(moveTowards);
-        //Debug.Log("TouchMovable: Moving " + transformVector.x + " x, " + transformVector.y + " y.");
+        drag = true;
+        targetPosition = dragPositions[1];
+        MoveTowards(targetPosition);
     }
 
-    public void moveTowards(Vector3 moveTo)
+    public void DragPoisitonChanged(Vector3[] dragPositions)
     {
+        targetPosition = dragPositions[1];
+        MoveTowards(targetPosition);
+    }
 
-        Vector3 moveTowards = Vector3.MoveTowards(this.gameObject.transform.localPosition, moveTo, Time.fixedDeltaTime * moveSpeed);
-        rigidbody.MovePosition(moveTowards);
+    public void DragEnded(Vector3[] dragPositions, List<Vector2> deltaPositions)
+    {
+        drag = false;
+        TapDetected(dragPositions[1]);
+    }
+
+    public void TapDetected(Vector3 position)
+    {
+        //Stubbed
+    }
+
+    public void MoveTowards(Vector3 moveTo)
+    {
+        Vector3 moveTowards;
+        //Check if we should walk (in loop) or run (out of loop)
+        Debug.Log("X difference = " + (moveTo.x - this.gameObject.transform.localPosition.x)
+            + " , Y difference - " + (moveTo.y - this.gameObject.transform.localPosition.y));
+        if (Math.Abs(moveTo.x - this.gameObject.transform.localPosition.x) < runThreshold
+            && Math.Abs(moveTo.y - this.gameObject.transform.localPosition.y) < runThreshold)
+        {
+            moveTowards = Vector3.MoveTowards(this.gameObject.transform.localPosition, moveTo, Time.fixedDeltaTime * walkSpeed);
+        }
+        else
+        {
+            moveTowards = Vector3.MoveTowards(this.gameObject.transform.localPosition, moveTo, Time.fixedDeltaTime * runSpeed);
+        }
+
+        da_Rigidbody.MovePosition(moveTowards);
     }
 
 }

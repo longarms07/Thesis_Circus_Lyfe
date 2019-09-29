@@ -6,124 +6,304 @@ using System;
 
 public class TouchInputManager : MonoBehaviour
 {
-
-    //public GameObject displayText;
+    [Tooltip("The prefab to use for creating touch cursors. Must have script 'TouchCursor'")]
     public GameObject touchCursorPrefab;
+
+    [Tooltip("The number of fingers/touches the manager will track.")]
     public int fingersSupported;
 
-    private TouchCursor[] touchCursors;
-    private List<TouchMovable>[] touchMovables;
-    //private TextMeshProUGUI display;
+    [Tooltip("The maximum length of a tap")]
+    public float maxTapTime;
+    [Tooltip("The maximum length of a swipe")]
+    public float maxSwipeTime;
+
+    [Tooltip("Whether or not Debug mode is active. Off by default.")]
+    public bool debugMode;
+    [Tooltip ("Display GUI to be used for devugging")]
+    public GameObject displayText;
+
+
+    public TouchCursor[] touchCursors;
+    private List<ITapListener>[] tapListeners;
+    private List<ISwipeListener>[] swipeListeners;
+    private List<IDragListener>[] dragListeners;
+    private List<Vector2>[] touchDeltaPoisitons;
+    private Vector3[][] touchStartEndPoints;
+    private Vector2[] touchTimes;
+    private TouchInputType[] inputTypes;
+
+    private TextMeshProUGUI display;
     static TouchInputManager instance;
 
-    
+    // Start is called before the first frame update
     void Awake()
     {
         if (instance == null) { instance = this; }
         else { Destroy(this); }
-        //display = displayText.GetComponent<TextMeshProUGUI>();
+        display = displayText.GetComponent<TextMeshProUGUI>();
         touchCursors = new TouchCursor[fingersSupported];
-        touchMovables = new List<TouchMovable>[fingersSupported];
-        for(int i = 0; i < touchMovables.Length; i++)
+        tapListeners = new List<ITapListener>[fingersSupported];
+        swipeListeners = new List<ISwipeListener>[fingersSupported];
+        dragListeners = new List<IDragListener>[fingersSupported];
+        touchDeltaPoisitons = new List<Vector2>[fingersSupported];
+        touchStartEndPoints = new Vector3[fingersSupported][];
+        touchTimes = new Vector2[fingersSupported];
+        inputTypes = new TouchInputType[fingersSupported];
+        for(int i = 0; i < fingersSupported; i++)
         {
-            touchMovables[i] = new List<TouchMovable>();
+            touchDeltaPoisitons[i] = new List<Vector2>();
+            touchStartEndPoints[i] = new Vector3[2];
+            tapListeners[i] = new List<ITapListener>();
+            swipeListeners[i] = new List<ISwipeListener>();
+            dragListeners[i] = new List<IDragListener>();
+            inputTypes[i] = TouchInputType.TAP;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        //string text = "Size of Input.touches " + Input.touchCount;
+        string text = "";
+        if (debugMode) { text = "Size of Input.touches " + Input.touchCount; }
         for (int i=0; i< Math.Min(Input.touchCount, touchCursors.Length); i++)
         {
             Touch touch = Input.touches[i];
-            if(touch.phase == TouchPhase.Began)
+            int touchIndex = touch.fingerId;
+            if (touchIndex < fingersSupported)
             {
-                touchCursors[i] = Instantiate(touchCursorPrefab).GetComponent<TouchCursor>();
-                touchCursors[i].changePosition(Camera.main.ScreenToWorldPoint(touch.position));
-                //Debug.Log("Touch Event " + i + " Began");
-            }
-            if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
-            {
-                
-                if (touchCursors[i] != null && touch.phase == TouchPhase.Moved)
+                if (debugMode) { Debug.Log("i = " + i + " , touchID = " + touch.fingerId); }
+                Vector3 worldPosition = ScreenPointToWorldPoint(touch.position);
+                if (touch.phase == TouchPhase.Began)
                 {
-                    touchCursors[i].changePosition(screenPointToWorldPoint(touch.position));
-                }
-                foreach(TouchMovable touchMovable in touchMovables[i])
-                {
-                    touchMovable.move(touch.deltaPosition, touch.deltaTime);
-                    //touchMovable.moveTowards(screenPointToWorldPoint(touch.position));
-                }
-                //text += "\n Touch " + i + " at Position " + touch.position+"at deltaPosition "+touch.deltaPosition;
-            }
-            else
-            {
-                if (touchCursors[i] != null) { 
-                    touchCursors[i].endTouch();
-                    touchCursors[i] = null;
-                    int j = 0;
-                    while (touchCursors[i] == null && i + j < touchCursors.Length)
+                    if (touchCursors[touchIndex] == null)
                     {
-                        touchCursors[i] = touchCursors[i + j];
-                        j++;
+                        touchCursors[touchIndex] = Instantiate(touchCursorPrefab).GetComponent<TouchCursor>();
+                        touchCursors[touchIndex].changePosition(worldPosition);
+                        touchDeltaPoisitons[touchIndex] = new List<Vector2>();
+                        touchTimes[touchIndex] = new Vector2(Time.time, Time.time);
+                        inputTypes[touchIndex] = TouchInputType.TAP;
+                        touchStartEndPoints[touchIndex][0] = worldPosition;
                     }
-                    //Debug.Log("Touch Event "+ i+" Ended");
+                    else if (debugMode) { Debug.Log("For some reason touchCursor " + touchIndex + " was unequal to null."); }
+                    if (debugMode) { Debug.Log("Touch Event " + i + " Began"); }
                 }
-            //text += "\n Touch " + i + " Ended.";
+                else if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
+                {
+
+                    if (touch.phase == TouchPhase.Moved)
+                    {
+                        if (touchCursors[touchIndex] != null)
+                        {
+                            touchCursors[touchIndex].changePosition(worldPosition);
+                            touchDeltaPoisitons[touchIndex].Add(touch.deltaPosition);
+                            if (inputTypes[touchIndex] == TouchInputType.TAP) { inputTypes[touchIndex] = TouchInputType.SWIPE; }
+                            if (inputTypes[touchIndex] == TouchInputType.DRAG)
+                            {
+                                foreach (IDragListener listener in dragListeners[touchIndex])
+                                {
+                                    listener.DragPoisitonChanged(touchStartEndPoints[touchIndex]);
+                                }
+                            }
+                        }
+                        else if (debugMode) { Debug.Log("Touch is null @ " + i); }
+                    }
+                    touchStartEndPoints[touchIndex][1] = worldPosition;
+                    touchTimes[touchIndex].y = Time.time;
+                    if (inputTypes[touchIndex]!=TouchInputType.DRAG)
+                    {
+                        inputTypes[touchIndex] = Overtime(touchTimes[touchIndex], inputTypes[touchIndex]);
+                        if (inputTypes[touchIndex] == TouchInputType.DRAG)
+                        {
+                            foreach (IDragListener listener in dragListeners[touchIndex])
+                            {
+                                listener.DragStarted(touchStartEndPoints[touchIndex]);
+                            }
+                        }
+                    }
+                    
+                        if (debugMode)
+                    {
+                        text += "\n Touch " + touchIndex + "ended at Position " + touch.position + "at deltaPosition " + touch.deltaPosition;
+                        if (inputTypes[touchIndex] == TouchInputType.SWIPE) { text += " , Type = Swipe"; }
+                        else if (inputTypes[touchIndex] == TouchInputType.TAP) { text += " , Type = Tap"; }
+                        else { text += " , Type = Drag"; }
+                    }
+                }
+                else
+                {
+                    //Notify listeners
+                    if (inputTypes[touchIndex] == TouchInputType.SWIPE)
+                    {
+                        foreach (ISwipeListener listener in swipeListeners[touchIndex])
+                        {
+                            listener.SwipeDetected(touchStartEndPoints[touchIndex]);
+                        }
+                    }
+                    else if(inputTypes[touchIndex] == TouchInputType.TAP)
+                    {
+                        foreach (ITapListener listener in tapListeners[touchIndex])
+                        {
+                            listener.TapDetected(touchStartEndPoints[touchIndex][0]);
+                        }
+                    }
+                    else
+                    {
+                        foreach (IDragListener listener in dragListeners[touchIndex])
+                        {
+                            listener.DragEnded(touchStartEndPoints[touchIndex], touchDeltaPoisitons[touchIndex]);
+                        }
+                    }
+
+                    if (touchCursors[touchIndex] != null)
+                    {
+                        touchCursors[touchIndex].endTouch();
+                        touchCursors[touchIndex] = null;
+                        if (debugMode) { Debug.Log("Touch Event " + touchIndex + " Ended"); }
+                    }
+                    if (debugMode)
+                    { text += "\n Touch " + touchIndex + " Ended."; }
+                }
             }
         }
-        //if (display != null) { display.text = text; }
-        if(Input.touchCount == 0)
+        if (debugMode && display != null) { display.text = text; }
+        /*//Iterate thorugh and shift everything
+        for (int i = 0; i < fingersSupported; i++)
         {
-            foreach(TouchCursor cursor in touchCursors)
+            if (touchCursors[i] == null)
             {
-                if (cursor != null) {
+                int j = i + 1;
+                bool stop = false;
+                while (j < fingersSupported && !stop)
+                {
+                    if (touchCursors[j] != null)
+                    {
+                        touchCursors[i] = touchCursors[j];
+                        touchCursors[j] = null;
+
+                        stop = true;
+                    }
+                    j++;
+                }
+            }
+            Debug.Log("Update is done");
+        }
+
+
+        //Garbage collect touch cursors.
+        if (Input.touchCount == 0)
+        {
+            foreach (TouchCursor cursor in touchCursors)
+            {
+                if (cursor != null)
+                {
                     cursor.endTouch();
                 }
             }
-        }
+        }*/
     }
     
-    
+
+
 
     public static TouchInputManager getInstance()
     {
         return instance;
     }
 
-    //<summary> Allows a TouchMovable to add itself as the observer for a certain touch number </summary>
-    //<param name = "touchMovable" > The TouchMovable that wishes to be an observer </ param >
-    //<param name = "touchToMonitor" > What index touch to monitor (the first, second, etc.) </ param >
-    public bool subscribeTouchMovement(TouchMovable touchMovable, int touchToMonitor)
+    
+    public bool SubscribeTapListener(ITapListener tap, int touchToMonitor)
     {
-        if (touchToMonitor < 0 || touchToMonitor > fingersSupported - 1)
+        if (!ListenerIndexValid(touchToMonitor))
         {
             return false;
         }
-        if (touchMovable != null)
+        tapListeners[touchToMonitor].Add(tap);
+        return true;
+    }
+
+    public bool SubscribeSwipeListener(ISwipeListener swipe, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
         {
-            touchMovables[touchToMonitor].Add(touchMovable);
+            return false;
+        }
+        swipeListeners[touchToMonitor].Add(swipe);
+        return true;
+    }
+
+    public bool SubscribeDragListener(IDragListener drag, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        dragListeners[touchToMonitor].Add(drag);
+        return true;
+    }
+
+
+
+    public bool UnsubscribeTapListener(ITapListener tap, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        return tapListeners[touchToMonitor].Remove(tap);
+    }
+
+    public bool UnsubscribeSwipeListener(ISwipeListener swipe, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        return swipeListeners[touchToMonitor].Remove(swipe);
+    }
+
+    public bool UnsubscribeDragListener(IDragListener drag, int touchToMonitor)
+    {
+        if (!ListenerIndexValid(touchToMonitor))
+        {
+            return false;
+        }
+        return dragListeners[touchToMonitor].Remove(drag);
+    }
+
+    private bool ListenerIndexValid(int touchToMonitor)
+    {
+        if (touchToMonitor<0 || touchToMonitor>=fingersSupported)
+        {
+            return false;
         }
         return true;
     }
 
-    //<summary> Allows a TouchMovable to remove itself as the observer for a certain touch number </summary>
-    //<param name = "touchMovable" > The TouchMovable that wishes to stop being an observer </ param >
-    //<param name = "touchToMonitor" > What index touch to unsubscribe from (the first, second, etc.) </ param >
-    public bool unsubscribeTouchMovement(TouchMovable touchMovable, int touchToMonitor)
-    {
-        if (touchToMonitor < 0 || touchToMonitor > fingersSupported - 1)
-        {
-            return false;
-        }
-        return touchMovables[touchToMonitor].Remove(touchMovable);
-    }
-
-    private Vector3 screenPointToWorldPoint(Vector3 touch)
+    private Vector3 ScreenPointToWorldPoint(Vector3 touch)
     {
         Vector3 screenPoint = Camera.main.ScreenToWorldPoint(touch);
         return new Vector3(screenPoint.x, screenPoint.y, 0);
     }
 
+    private TouchInputType Overtime(Vector2 times, TouchInputType type)
+    {
+        if (type == TouchInputType.TAP && (times.y - times.x) > maxTapTime)
+        {
+            return TouchInputType.DRAG;
+        }
+        else if (type == TouchInputType.SWIPE && (times.y - times.x) > maxSwipeTime)
+        {
+            return TouchInputType.DRAG;
+        }
+        return type;
+    }
+
+
+}
+
+public enum TouchInputType
+{
+    TAP,
+    SWIPE,
+    DRAG
 }
