@@ -14,10 +14,14 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     [Tooltip("The threshold to determine whether this object is walking (<) or running (>=).")]
     public float runThreshold;
 
+    
     private TouchInputManager touchInputManager;
     private Rigidbody2D da_Rigidbody;
     private bool drag = false;
+    private bool tap = true;
     private Vector3 targetPosition;
+    private TouchCursor touchCursor;
+    
     
     void Start()
     {
@@ -39,11 +43,17 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     void Update()
     {
         if (drag) MoveTowards(targetPosition);
+        if (tap)
+        {
+            MoveTowards(targetPosition);
+            if (this.gameObject.transform.localPosition == targetPosition) TapEnded();
+        }
     }
 
 
     public void DragStarted(Vector3[] dragPositions)
     {
+        if (tap) TapEnded();
         drag = true;
         targetPosition = dragPositions[1];
         MoveTowards(targetPosition);
@@ -63,15 +73,28 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
 
     public void TapDetected(Vector3 position)
     {
-        //Stubbed
+        if (tap) TapEnded();
+        targetPosition = position;
+        tap = true;
+        MoveTowards(targetPosition);
+        touchCursor = Instantiate(touchInputManager.touchCursorPrefab).GetComponent<TouchCursor>();
+        touchCursor.changePosition(targetPosition);
+        //Needs pathfinding
+    }
+
+    public void TapEnded()
+    {
+        tap = false;
+        if(touchCursor!=null) touchCursor.endTouch();
+
     }
 
     public void MoveTowards(Vector3 moveTo)
     {
         Vector3 moveTowards;
         //Check if we should walk (in loop) or run (out of loop)
-        Debug.Log("X difference = " + (moveTo.x - this.gameObject.transform.localPosition.x)
-            + " , Y difference - " + (moveTo.y - this.gameObject.transform.localPosition.y));
+        /*Debug.Log("X difference = " + (moveTo.x - this.gameObject.transform.localPosition.x)
+            + " , Y difference - " + (moveTo.y - this.gameObject.transform.localPosition.y));*/
         if (Math.Abs(moveTo.x - this.gameObject.transform.localPosition.x) < runThreshold
             && Math.Abs(moveTo.y - this.gameObject.transform.localPosition.y) < runThreshold)
         {
