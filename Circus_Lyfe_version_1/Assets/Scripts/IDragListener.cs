@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IDragListener
 {
+    void TouchStarted(Vector3 startPosition);
+
     void DragStarted(Vector3[] dragPositions);
 
     void DragPoisitonChanged(Vector3[] dragPositions);

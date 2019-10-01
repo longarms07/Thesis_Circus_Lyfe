@@ -13,7 +13,8 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     public float runSpeed;
     [Tooltip("The threshold to determine whether this object is walking (<) or running (>=).")]
     public float runThreshold;
-
+    [Tooltip("The gameobject with the collision box to use for detecting valid tap locations.")]
+    public GameObject tapCollider;
     
     private TouchInputManager touchInputManager;
     private Rigidbody2D da_Rigidbody;
@@ -21,6 +22,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     private bool tap = true;
     private Vector3 targetPosition;
     private TouchCursor touchCursor;
+    private BoxCollider2D tapColliderRB;
     
     
     void Start()
@@ -29,6 +31,10 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
         if (touchInputManager == null)
         {
             Debug.LogError("Touch Movable Error: There is no TouchInputManager!");
+            Destroy(this.gameObject);
+        }
+        else if(tapCollider == null || (tapColliderRB = tapCollider.GetComponent<BoxCollider2D>()) == null){
+            Debug.LogError("Touch Movable Error: There is no Tap Box Collider!");
             Destroy(this.gameObject);
         }
         else
@@ -71,14 +77,22 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
         TapDetected(dragPositions[1]);
     }
 
+    public void TouchStarted(Vector3 startPosition)
+    {
+        if (tap) TapEnded();
+    }
+
     public void TapDetected(Vector3 position)
     {
         if (tap) TapEnded();
-        targetPosition = position;
-        tap = true;
-        MoveTowards(targetPosition);
-        touchCursor = Instantiate(touchInputManager.touchCursorPrefab).GetComponent<TouchCursor>();
-        touchCursor.changePosition(targetPosition);
+        if (CheckValid(position))
+        {
+            targetPosition = position;
+            tap = true;
+            MoveTowards(targetPosition);
+            touchCursor = Instantiate(touchInputManager.touchCursorPrefab).GetComponent<TouchCursor>();
+            touchCursor.changePosition(targetPosition);
+        }
         //Needs pathfinding
     }
 
@@ -106,6 +120,17 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
         }
 
         da_Rigidbody.MovePosition(moveTowards);
+    }
+
+    private Boolean CheckValid(Vector3 position)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down);
+        if(hit.collider!=null && hit.collider == tapColliderRB)
+        {
+            return true;
+        }
+
+        return false;
     }
 
 }

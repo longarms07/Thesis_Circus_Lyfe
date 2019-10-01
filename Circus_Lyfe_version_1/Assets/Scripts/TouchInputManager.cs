@@ -85,6 +85,10 @@ public class TouchInputManager : MonoBehaviour
                         touchStartEndPoints[touchIndex][0] = worldPosition;
                     }
                     else if (debugMode) { Debug.Log("For some reason touchCursor " + touchIndex + " was unequal to null."); }
+                    foreach (IDragListener drag in dragListeners[touchIndex])
+                    {
+                        drag.TouchStarted(worldPosition);
+                    }
                     if (debugMode) { Debug.Log("Touch Event " + i + " Began"); }
                 }
                 else if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
