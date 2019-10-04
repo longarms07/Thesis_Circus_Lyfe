@@ -23,6 +23,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     private Rigidbody2D da_Rigidbody;
     private bool drag = false;
     private bool tap = true;
+    private bool targetingInteractable = false;
     private Vector3 targetPosition;
     private TouchCursor touchCursor;
     private BoxCollider2D tapColliderRB;
@@ -101,13 +102,23 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
             if (tap) TapEnded();
             if (CheckValid(position))
             {
-                targetPosition = position;
-                tap = true;
-                MoveTowards(targetPosition);
-                touchCursor = Instantiate(touchInputManager.touchCursorPrefab).GetComponent<TouchCursor>();
-                touchCursor.changePosition(targetPosition);
-                //Needs pathfinding
+                OnTap(position);
             }
+        }
+    }
+
+    //Tap detected without validity checking, added interactable targeting
+    public void OnTap(Vector3 position)
+    {
+        if (canMove)
+        {
+            if (tap) TapEnded();
+            targetPosition = position;
+            tap = true;
+            MoveTowards(targetPosition);
+            touchCursor = Instantiate(touchInputManager.touchCursorPrefab).GetComponent<TouchCursor>();
+            touchCursor.changePosition(targetPosition);
+            //Needs pathfinding
         }
     }
 
@@ -158,13 +169,13 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
         if (toggle)
         {
             canMove = true;
-            touchInputManager.SubscribeTapListener(this, touchToFollow);
+            //touchInputManager.SubscribeTapListener(this, touchToFollow);
             touchInputManager.SubscribeDragListener(this, touchToFollow);
         }
         else
         {
             canMove = false;
-            touchInputManager.UnsubscribeTapListener(this, touchToFollow);
+            //touchInputManager.UnsubscribeTapListener(this, touchToFollow);
             touchInputManager.UnsubscribeDragListener(this, touchToFollow);
             if (tap) TapEnded();
             if (drag) DragEnded(null, null);

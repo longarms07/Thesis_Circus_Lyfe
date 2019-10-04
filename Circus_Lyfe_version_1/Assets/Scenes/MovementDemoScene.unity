@@ -1410,7 +1410,7 @@ GameObject:
   - component: {fileID: 1137204066}
   - component: {fileID: 1137204065}
   - component: {fileID: 1137204068}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: NPCTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1761,6 +1761,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAvatar: {fileID: 1925518068}
+  interactableLayerName: Interactable
+  floorLayerName: Floor
 --- !u!4 &1767598616
 Transform:
   m_ObjectHideFlags: 0
