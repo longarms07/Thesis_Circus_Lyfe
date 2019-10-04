@@ -6,29 +6,27 @@ public class GameManager : MonoBehaviour, ITapListener
 {
     [Tooltip("The avatar for the player character. Requires TouchMovable.")]
     public GameObject playerAvatar;
-    [Tooltip("The name for the layer interactables are found on.")]
-    public string interactableLayerName;
-    [Tooltip("The name for the layer the floor is found on.")]
-    public string floorLayerName;
+    [Tooltip("The layer interactables are found on.")]
+    public int interactableLayer;
+    [Tooltip("The layer the floor is found on.")]
+    public int floorLayer;
 
 
+
+    public Dictionary<Transform, IInteractable> interactableDict;
     private TouchMovable playerTouchMovable;
-
     private RaycastHit2D lastTap;
-    private int floorLayer;
-    private int interactableLayer;
+    
+  
 
-    public static GameManager instance;
+    private static GameManager instance;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            floorLayer = LayerMask.NameToLayer(floorLayerName);
-            Debug.Log("floor layer = " + floorLayer);
-            interactableLayer = LayerMask.NameToLayer(interactableLayerName);
-            Debug.Log("interactable layer = " + interactableLayer);
+            interactableDict = new Dictionary<Transform, IInteractable>();
         }
         else
         {
@@ -75,6 +73,10 @@ public class GameManager : MonoBehaviour, ITapListener
             if(lastTap.transform.gameObject.layer == floorLayer) {
                 playerTouchMovable.OnTap(position);
             }
+            else if(lastTap.transform.gameObject.layer == interactableLayer)
+            {
+                GetInteractable(lastTap.transform).OnInteraction();
+            }
         }
     
 
@@ -89,6 +91,24 @@ public class GameManager : MonoBehaviour, ITapListener
             }
         return hit;
 
+    }
+
+    public static GameManager getInstance()
+    {
+        return instance;
+    }
+
+    public void RegisterInteractable(Transform transform, IInteractable interactable)
+    {
+        interactableDict.Add(transform, interactable);
+    }
+
+    public IInteractable GetInteractable(Transform transform)
+    {
+        Debug.Log("Key = " + transform);
+        if(interactableDict.ContainsKey(transform))
+            return interactableDict[transform];
+        return null;
     }
 
 

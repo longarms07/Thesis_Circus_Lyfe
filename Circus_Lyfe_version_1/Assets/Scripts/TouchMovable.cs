@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
 {
@@ -15,7 +16,8 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     public float runThreshold;
     [Tooltip("The gameobject with the collision box to use for detecting valid tap locations.")]
     public GameObject tapCollider;
-
+    [Tooltip("The float used to determine the radius by which this object will search for nearby objects")]
+    public float overlapRadius;
 
 
     private bool canMove;
@@ -27,6 +29,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     private Vector3 targetPosition;
     private TouchCursor touchCursor;
     private BoxCollider2D tapColliderRB;
+    private Collider2D[] nearbyInteractables;
     
     
     
@@ -61,6 +64,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
                 if (this.gameObject.transform.localPosition == targetPosition) TapEnded();
             }
         }
+        NotfiyInteractablesMovedAway(CheckNearbyInteractables());
     }
 
 
@@ -161,8 +165,36 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
             }
         }
         return false;
-    
     }
+
+    public Collider2D[] CheckNearbyInteractables()
+    {
+        Collider2D[] nearbyHits = Physics2D.OverlapCircleAll(this.gameObject.transform.localPosition, overlapRadius,
+                                                             LayerMask.GetMask("Interactable"));
+        foreach (Collider2D hit in nearbyHits)
+        {
+            IInteractable tempInteractable = GameManager.getInstance().GetInteractable(hit.transform);
+            if(tempInteractable!=null) tempInteractable.InRange(true);
+        }
+        return nearbyHits;
+    }
+
+    public void NotfiyInteractablesMovedAway(Collider2D[] tempInteractables)
+    {
+        if (nearbyInteractables != null)
+        {
+            foreach (Collider2D collider in nearbyInteractables)
+            {
+                if (!tempInteractables.Contains(collider))
+                {
+                    IInteractable movedFrom = GameManager.getInstance().GetInteractable(collider.transform);
+                    if (movedFrom != null) movedFrom.InRange(false);
+                }
+            }
+        }
+        nearbyInteractables = tempInteractables;
+    }
+
 
     public void ToggleMovement(bool toggle)
     {
