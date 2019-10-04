@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour, ITapListener
             }
             else if(lastTap.transform.gameObject.layer == interactableLayer)
             {
-                GetInteractable(lastTap.transform).OnInteraction();
+                playerTouchMovable.TargetInteractable(lastTap.collider, GetInteractable(lastTap.transform));
             }
         }
     

@@ -26,6 +26,8 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     private bool drag = false;
     private bool tap = true;
     private bool targetingInteractable = false;
+    private IInteractable targetInteractable;
+    private Collider2D targetCollider;
     private Vector3 targetPosition;
     private TouchCursor touchCursor;
     private BoxCollider2D tapColliderRB;
@@ -63,6 +65,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
                 MoveTowards(targetPosition);
                 if (this.gameObject.transform.localPosition == targetPosition) TapEnded();
             }
+            CheckTarget();
         }
         NotfiyInteractablesMovedAway(CheckNearbyInteractables());
     }
@@ -129,8 +132,14 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     public void TapEnded()
     {
         tap = false;
-        if(touchCursor!=null) touchCursor.endTouch();
-
+        targetInteractable = null;
+        targetingInteractable = false;
+        targetCollider = null;
+        if (touchCursor != null)
+        {
+            touchCursor.endTouch();
+            touchCursor = null;
+        }
     }
 
     public void MoveTowards(Vector3 moveTo)
@@ -213,6 +222,35 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
             if (drag) DragEnded(null, null);
         }
 
+    }
+
+    public Collider2D[] GetNearbyInteractables()
+    {
+        return nearbyInteractables;
+    }
+
+    public void TargetInteractable(Collider2D collider, IInteractable interactable)
+    {
+        if (canMove)
+        {
+            if (nearbyInteractables.Contains(collider)) interactable.OnInteraction();
+            else
+            {
+                targetInteractable = interactable;
+                targetingInteractable = true;
+                targetCollider = collider;
+                OnTap(targetCollider.transform.localPosition);
+            }
+        }
+    }
+
+    private void CheckTarget()
+    {
+        if (targetingInteractable && nearbyInteractables.Contains(targetCollider))
+        {
+            targetInteractable.OnInteraction();
+            TapEnded();
+        }
     }
 
 }
