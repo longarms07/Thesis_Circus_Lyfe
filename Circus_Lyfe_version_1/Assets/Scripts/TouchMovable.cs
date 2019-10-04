@@ -183,7 +183,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
         foreach (Collider2D hit in nearbyHits)
         {
             IInteractable tempInteractable = GameManager.getInstance().GetInteractable(hit.transform);
-            if(tempInteractable!=null) tempInteractable.InRange(true);
+            if(tempInteractable!=null && !nearbyInteractables.Contains(hit)) tempInteractable.InRange(true);
         }
         return nearbyHits;
     }
