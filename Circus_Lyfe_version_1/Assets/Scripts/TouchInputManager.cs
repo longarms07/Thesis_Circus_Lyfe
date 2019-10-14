@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System;
 
 public class TouchInputManager : MonoBehaviour
@@ -19,8 +18,6 @@ public class TouchInputManager : MonoBehaviour
 
     [Tooltip("Whether or not Debug mode is active. Off by default.")]
     public bool debugMode;
-    [Tooltip ("Display GUI to be used for devugging")]
-    public GameObject displayText;
 
 
     public TouchCursor[] touchCursors;
@@ -31,16 +28,14 @@ public class TouchInputManager : MonoBehaviour
     private Vector3[][] touchStartEndPoints;
     private Vector2[] touchTimes;
     private TouchInputType[] inputTypes;
-
-    private TextMeshProUGUI display;
+    
     static TouchInputManager instance;
 
     // Start is called before the first frame update
     void Awake()
     {
         if (instance == null) { instance = this; }
-        else { Destroy(this); }
-        display = displayText.GetComponent<TextMeshProUGUI>();
+        else Destroy(this);
         touchCursors = new TouchCursor[fingersSupported];
         tapListeners = new List<ITapListener>[fingersSupported];
         swipeListeners = new List<ISwipeListener>[fingersSupported];
@@ -171,41 +166,7 @@ public class TouchInputManager : MonoBehaviour
                 }
             }
         }
-        if (debugMode && display != null) { display.text = text; }
-        /*//Iterate thorugh and shift everything
-        for (int i = 0; i < fingersSupported; i++)
-        {
-            if (touchCursors[i] == null)
-            {
-                int j = i + 1;
-                bool stop = false;
-                while (j < fingersSupported && !stop)
-                {
-                    if (touchCursors[j] != null)
-                    {
-                        touchCursors[i] = touchCursors[j];
-                        touchCursors[j] = null;
-
-                        stop = true;
-                    }
-                    j++;
-                }
-            }
-            Debug.Log("Update is done");
-        }
-
-
-        //Garbage collect touch cursors.
-        if (Input.touchCount == 0)
-        {
-            foreach (TouchCursor cursor in touchCursors)
-            {
-                if (cursor != null)
-                {
-                    cursor.endTouch();
-                }
-            }
-        }*/
+       
     }
     
 

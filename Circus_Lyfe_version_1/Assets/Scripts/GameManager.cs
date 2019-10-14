@@ -70,13 +70,16 @@ public class GameManager : MonoBehaviour, ITapListener
         CheckTappedPosition(position);
         if (lastTap.transform != null) {
             Debug.Log("Hit layer = " + lastTap.transform.gameObject.layer);
-            if(lastTap.transform.gameObject.layer == floorLayer) {
+            if (lastTap.transform.gameObject.layer == floorLayer)
+            {
                 playerTouchMovable.OnTap(position);
             }
-            else if(lastTap.transform.gameObject.layer == interactableLayer)
+            else if (lastTap.transform.gameObject.layer == interactableLayer)
             {
                 playerTouchMovable.TargetInteractable(lastTap.collider, GetInteractable(lastTap.transform));
             }
+            else if (lastTap.transform.gameObject == TextboxManager.GetInstance().textBackground)
+                TextboxManager.GetInstance().OnTap();
         }
     
 
