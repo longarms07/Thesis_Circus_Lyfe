@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour, ITapListener
     public int interactableLayer;
     [Tooltip("The layer the floor is found on.")]
     public int floorLayer;
+    [Tooltip("The layer NPCS are found on")]
+    public int npcLayer;
 
 
 
@@ -74,7 +76,7 @@ public class GameManager : MonoBehaviour, ITapListener
             {
                 playerTouchMovable.OnTap(position);
             }
-            else if (lastTap.transform.gameObject.layer == interactableLayer)
+            else if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == npcLayer)
             {
                 playerTouchMovable.TargetInteractable(lastTap.collider, GetInteractable(lastTap.transform));
             }

@@ -1487,6 +1487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1137204067}
   - component: {fileID: 1137204066}
+  - component: {fileID: 1137204069}
   - component: {fileID: 1137204065}
   - component: {fileID: 1137204068}
   m_Layer: 9
@@ -1550,7 +1551,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b5c3f5d3cd1fe624a86e95e121a2046d, type: 3}
+  m_Sprite: {fileID: 2923565159116723331, guid: 92a31a17841e48e4983af25d41f8efe7,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1586,8 +1588,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 1.129882
+  m_UseAutoMass: 0
+  m_Mass: 1000
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -1596,6 +1598,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &1137204069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137204064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5ddd3d7abec0647ac23e26da06df0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: 2923565159116723331, guid: 92a31a17841e48e4983af25d41f8efe7,
+    type: 3}
+  inRangeSprite: {fileID: 1129998183115349062, guid: 92a31a17841e48e4983af25d41f8efe7,
+    type: 3}
 --- !u!1 &1217623605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1975,6 +1993,7 @@ MonoBehaviour:
   playerAvatar: {fileID: 1925518068}
   interactableLayer: 9
   floorLayer: 8
+  npcLayer: 10
 --- !u!4 &1767598616
 Transform:
   m_ObjectHideFlags: 0
@@ -2185,42 +2204,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, Unity.ugui,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a justo
-    nunc. Praesent ligula dolor, cursus commodo augue quis, semper congue purus.
-    In hac habitasse platea dictumst. Sed finibus, mi at finibus viverra, urna elit
-    rhoncus tortor, vel accumsan nisl purus ac tellus. Mauris nec cursus leo, scelerisque
-    interdum felis. Cras posuere gravida leo at aliquet. Suspendisse nec tellus facilisis,
-    dignissim odio sed, rhoncus lectus. Nam suscipit vel ipsum vel posuere. Suspendisse
-    in dolor vitae risus mattis tempor sit amet eu lacus. Duis sodales maximus sem
-    ac scelerisque. In dui lorem, tincidunt sed gravida consequat, venenatis ac nulla.
-    Mauris accumsan ipsum non ex dapibus, et elementum dui consequat. Donec a purus
-    nibh. Morbi eleifend dui condimentum lectus lobortis rutrum. Vestibulum suscipit
-    ex vel erat finibus vestibulum.
-
-
-
-    Lorem ipsum dolor sit amet, consectetur
-    adipiscing elit. Sed faucibus elit et gravida volutpat. Vestibulum ante ipsum
-    primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam nec tristique
-    ipsum, vel congue elit. Nam vel commodo nunc. Donec vulputate mauris feugiat
-    ante finibus pellentesque. Nulla a hendrerit sapien. Vestibulum ante ipsum primis
-    in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent sollicitudin
-    accumsan sagittis. Praesent ut elementum augue. Aliquam ornare vehicula urna
-    et luctus. Aliquam purus mi, congue eu justo at, ultrices vehicula ante. Donec
-    vitae augue mauris. Etiam maximus ut arcu sit amet tempus.
-
-
-
-    Ut sodales
-    egestas suscipit. Morbi pellentesque egestas lectus vitae pretium. Donec interdum
-    placerat magna, et tincidunt purus egestas eu. Vivamus at ante nibh. Nulla nec
-    leo lobortis odio dictum fermentum. Cras et justo at risus ornare pharetra laoreet
-    non orci. Vivamus at turpis eu orci eleifend fringilla ut id tellus. Mauris sed
-    nulla et augue lobortis consectetur ac eu libero. Nunc in accumsan velit. Integer
-    rutrum lacinia dolor, a tincidunt sapien fermentum ac. Nulla in rhoncus dui,
-    at semper orci. Etiam lacinia et arcu in convallis. Praesent viverra lobortis
-    risus, non imperdiet turpis elementum sed. Aenean porta magna a ante dapibus
-    pretium. '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

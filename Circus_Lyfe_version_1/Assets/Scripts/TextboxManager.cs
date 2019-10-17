@@ -23,8 +23,7 @@ public class TextboxManager : MonoBehaviour
     private RectTransform canvasRect;
     private RectTransform textRect;
     private BoxCollider2D textCollider;
-
-    bool doThis = true;
+    
 
     private void Awake()
     {
@@ -59,15 +58,13 @@ public class TextboxManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!textBox.IsActive() && doThis == true)
-            TextBoxActive(true);
-        doThis = false;
     }
 
     public static TextboxManager GetInstance() { return instance; }
 
     public void TextBoxActive(bool activate)
     {
+        textBox.pageToDisplay = 1;
         textMeshPro.SetActive(activate);
         textBackground.SetActive(activate);
         GameManager.getInstance().TogglePlayerMovement(!activate);
@@ -82,6 +79,12 @@ public class TextboxManager : MonoBehaviour
             Debug.Log("Page to display is now " + textBox.pageToDisplay);
         }
         else TextBoxActive(false);
+    }
+
+    public void SetText(string text)
+    {
+        textBox.text = text;
+        textBox.pageToDisplay = 1;
     }
 
     
