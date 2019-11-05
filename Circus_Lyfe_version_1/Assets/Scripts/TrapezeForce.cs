@@ -19,19 +19,30 @@ public class TrapezeForce : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
+        timer = 0;
+        rb.AddForce(forceToAdd * Vector3.left);
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer++;
-        if (timer >= rotateInterval)
+        if (inversed) timer--;
+        else timer++;
+        if (timer >= rotateInterval || timer <=(-rotateInterval))
         {
             inversed = !inversed;
+            rb.angularVelocity = 0;
+            rb.velocity = Vector3.zero;
             if (inversed)
+            {
+                timer = rotateInterval-1;
                 rb.AddForce(forceToAdd * Vector3.right);
+            }
             else
+            {
+                timer = -rotateInterval+1;
                 rb.AddForce(forceToAdd * Vector3.left);
+            }
         }
     }
 }
