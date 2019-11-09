@@ -5,7 +5,9 @@ using UnityEngine;
 public abstract class ISwipeListener : MonoBehaviour
 {
 
+    [Tooltip("The amount of distance between cardinal directions for swipe detection on the x axis")]
     public float xThreshold;
+    [Tooltip("The amount of distance between cardinal directions for swipe detection on the y axis")]
     public float yThreshold;
 
     public abstract void SwipeDetected(Vector3[] swipePositions);

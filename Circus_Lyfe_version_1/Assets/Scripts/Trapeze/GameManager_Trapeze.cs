@@ -6,7 +6,9 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
 {
 
     [Tooltip("The player object. Needs script 'PlayerManager_Trapeze'")]
-    public GameObject player_avatar;
+    public GameObject playerAvatar;
+    [Tooltip("Whether or not the game is paused")]
+    public bool paused;
 
     private static GameManager_Trapeze instance;
 
@@ -31,12 +33,12 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
         if (t == null) Destroy(this);
         t.SubscribeTapListener(this, 0);
         t.SubscribeSwipeListener(this, 0);
-        if(player_avatar == null)
+        if(playerAvatar == null)
         {
             Debug.Log("Player Avatar is null");
             Destroy(this);
         }
-        pm = player_avatar.GetComponent<PlayerManager_Trapeze>();
+        pm = playerAvatar.GetComponent<PlayerManager_Trapeze>();
         if(pm == null)
         {
             Debug.Log("Player Avatar is missing PlayerManager_Trapeze script");
