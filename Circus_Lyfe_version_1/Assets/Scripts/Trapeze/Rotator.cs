@@ -45,4 +45,15 @@ public class Rotator : MonoBehaviour
         }
         
     }
+
+    public Vector3 GetMomentum(Rigidbody2D momentumRB)
+    {
+        float xMomentum = 0;
+        float yMomentum = 0;
+
+
+        return new Vector3(xMomentum, yMomentum, 0);
+    }
+
+
 }

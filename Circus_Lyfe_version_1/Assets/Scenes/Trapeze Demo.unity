@@ -261,7 +261,6 @@ GameObject:
   - component: {fileID: 748973572}
   - component: {fileID: 748973574}
   - component: {fileID: 748973571}
-  - component: {fileID: 748973573}
   - component: {fileID: 748973570}
   m_Layer: 0
   m_Name: Player
@@ -285,7 +284,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -355,19 +354,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &748973573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748973569}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61bb2c9643f2a70499c91feab12a55db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  active: 1
 --- !u!114 &748973574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +366,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42ff1bde7242ae4fb5b7e359a9ad2b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fallDis: 180
+  jumpForce: {x: 5, y: 5, z: 0}
+  attachedTo: {fileID: 659712302862683757}
+  state: 3
 --- !u!1 &1108888354
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +510,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659712302862683757}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80b8efb97ce0cf04a896b31fd3fa591f, type: 3}
   m_Name: 
@@ -535,7 +525,7 @@ HingeJoint2D:
   m_Enabled: 1
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 748973570}
+  m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0

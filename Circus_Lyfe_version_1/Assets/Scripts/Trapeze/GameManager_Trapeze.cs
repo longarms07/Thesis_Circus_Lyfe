@@ -61,6 +61,8 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
     public void TapDetected(Vector3 position)
     {
         //Stubbed
+        if (pm.state == EnumPTrapezeState.OnTrapeze) pm.Jump();
+        else if (pm.state == EnumPTrapezeState.InAir) pm.AttachToInitial();
     }
 
     public static GameManager_Trapeze GetInstance()
