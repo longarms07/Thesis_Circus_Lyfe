@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager_Trapeze : MonoBehaviour
+public class PlayerManager_Trapeze : BodyManager
 {
 
     [Tooltip("The distance the player can fall before respawning at the initial trapeze")]
@@ -14,11 +14,11 @@ public class PlayerManager_Trapeze : MonoBehaviour
     public GameObject attachedTo;
 
 
-    private HingeJoint2D joint;
+    private DistanceJoint2D joint;
     public EnumPTrapezeState state = EnumPTrapezeState.NONE;
     private List<IPTrapezeStateListener> listeners;
     private Rigidbody2D rb;
-    private HingeJoint2D initJoint;
+    private DistanceJoint2D initJoint;
     private Quaternion initRot;
 
     void Awake()
@@ -33,7 +33,8 @@ public class PlayerManager_Trapeze : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AttachTo(attachedTo.GetComponent<HingeJoint2D>());
+        InitRBs();
+        AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
     }
 
     // Update is called once per frame
@@ -75,13 +76,16 @@ public class PlayerManager_Trapeze : MonoBehaviour
         return false;
     }
 
-    public bool AttachTo(HingeJoint2D joint2D)
+    public bool AttachTo(DistanceJoint2D joint2D)
     {
         if (joint2D == null || joint2D.connectedBody != null) return false;
-        ClearForce();
+        //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         hasFallen = 0;
         joint = joint2D;
-        joint.connectedBody = rb;
+        joint.connectedBody = armsRB;
+        //joint.connectedBody = rb;
+        //ClearForce();
+        //rb.constraints = RigidbodyConstraints2D.None;
         SetState(EnumPTrapezeState.OnTrapeze);
         if (initJoint == null) initJoint = joint;
         return true;
@@ -104,15 +108,17 @@ public class PlayerManager_Trapeze : MonoBehaviour
     public bool Jump()
     {
         if (!Deattach()) return false;
-        rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        transform.rotation = initRot;
+        //rb.AddForce(jumpForce, ForceMode2D.Impulse);
         return true;
     }
 
     public void ClearForce()
     {
-        rb.velocity = new Vector2(0,0);
+        /*rb.velocity = Vector3.zero;
         rb.angularVelocity = 0;
         transform.rotation = initRot;
+        rb.rotation = 0;*/
     }
 
 }
