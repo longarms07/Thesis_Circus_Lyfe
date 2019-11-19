@@ -22,6 +22,7 @@ public class TrapezeLineRenderer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ln.SetPosition(0, this.transform.position);
         ln.SetPosition(1, target.transform.position);
     }
 }

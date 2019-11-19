@@ -35,12 +35,18 @@ public class PlayerManager_Trapeze : BodyManager
     {
         InitRBs();
         AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
+        lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(state == EnumPTrapezeState.InAir)
+        if (centerOfGravity != null)
+        {
+            //Debug.Log(GetCenterOfMass());
+            centerOfGravity.transform.position = GetCenterOfMass();
+        }
+        if (state == EnumPTrapezeState.InAir)
         {
             hasFallen++;
             if (hasFallen >= fallDis) AttachToInitial();
