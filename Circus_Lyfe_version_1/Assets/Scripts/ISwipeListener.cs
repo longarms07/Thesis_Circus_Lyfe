@@ -18,7 +18,7 @@ public abstract class ISwipeListener : MonoBehaviour
         SwipeDirection swipeDirection = SwipeDirection.NONE;
         float changeInY = swipePositions[1].x - swipePositions[0].x;
         float changeInX = swipePositions[1].y - swipePositions[0].y;
-        Debug.Log("Change in x = " + changeInX + " , Change in y = " + changeInY);
+        //Debug.Log("Change in x = " + changeInX + " , Change in y = " + changeInY);
         if(changeInX > xThreshold)
         {
             //North Family

@@ -8,6 +8,7 @@ public class BodyManager : MonoBehaviour
     public GameObject head;
     public GameObject torso;
     public GameObject arms;
+    public GameObject upperArms;
     public GameObject upperLegs;
     public GameObject lowerLegs;
     public GameObject centerOfGravity;
@@ -15,6 +16,7 @@ public class BodyManager : MonoBehaviour
     protected Rigidbody2D headRB;
     protected Rigidbody2D torsoRB;
     protected Rigidbody2D armsRB;
+    protected Rigidbody2D upperArmsRB;
     protected Rigidbody2D upperLegsRB;
     protected Rigidbody2D lowerLegsRB;
 
@@ -37,6 +39,7 @@ public class BodyManager : MonoBehaviour
         armsRB = arms.GetComponent<Rigidbody2D>();
         upperLegsRB = upperLegs.GetComponent<Rigidbody2D>();
         lowerLegsRB = lowerLegs.GetComponent<Rigidbody2D>();
+        upperArmsRB = upperArms.GetComponent<Rigidbody2D>();
     }
 
     public Vector2 GetCenterOfMass()
@@ -45,6 +48,8 @@ public class BodyManager : MonoBehaviour
         float mass = 0;
         centerOfMass += (armsRB.mass * armsRB.worldCenterOfMass);
         mass += armsRB.mass;
+        centerOfMass += (upperArmsRB.mass * upperArmsRB.worldCenterOfMass);
+        mass += upperArmsRB.mass;
         centerOfMass += (headRB.mass * headRB.worldCenterOfMass);
         mass += headRB.mass;
         centerOfMass += (torsoRB.mass * torsoRB.worldCenterOfMass);
@@ -57,9 +62,10 @@ public class BodyManager : MonoBehaviour
         return centerOfMass/mass;
     }
 
-
-
     
+
+
+
 
 
 }

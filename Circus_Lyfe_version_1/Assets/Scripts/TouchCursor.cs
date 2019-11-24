@@ -27,14 +27,14 @@ public class TouchCursor : MonoBehaviour
 
     public void endTouch()
     {
-        Debug.Log("Touch has ended");
+        //Debug.Log("Touch has ended");
         destroyThis();
     }
     
     private void destroyThis()
     {
       
-            Debug.Log("Destroying this...");
+            //Debug.Log("Destroying this...");
             Destroy(this.gameObject);
     }
 

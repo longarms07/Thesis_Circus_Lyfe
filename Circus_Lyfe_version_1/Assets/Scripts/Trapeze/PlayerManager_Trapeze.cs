@@ -7,6 +7,7 @@ public class PlayerManager_Trapeze : BodyManager
 
     [Tooltip("The distance the player can fall before respawning at the initial trapeze")]
     public int fallDis;
+    public float moveTowardsDist;
     private int hasFallen = 0;
 
     public Vector3 jumpForce;
@@ -20,6 +21,8 @@ public class PlayerManager_Trapeze : BodyManager
     private Rigidbody2D rb;
     private DistanceJoint2D initJoint;
     private Quaternion initRot;
+    private bool doLong;
+    private bool facingRight = true;
 
     void Awake()
     {
@@ -88,7 +91,7 @@ public class PlayerManager_Trapeze : BodyManager
         //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         hasFallen = 0;
         joint = joint2D;
-        joint.connectedBody = armsRB;
+        joint.connectedBody = upperArmsRB;
         //joint.connectedBody = rb;
         //ClearForce();
         //rb.constraints = RigidbodyConstraints2D.None;
@@ -118,6 +121,33 @@ public class PlayerManager_Trapeze : BodyManager
         //rb.AddForce(jumpForce, ForceMode2D.Impulse);
         return true;
     }
+
+    public void Short()
+    {
+        Debug.Log("Short");
+        Vector2 hor;
+        if (facingRight) hor = Vector2.right;
+        else hor = Vector2.left;
+
+        Vector2 armsMoveTo = Vector2.MoveTowards(armsRB.position, 100*(hor+Vector2.down), moveTowardsDist * Time.deltaTime);
+        armsRB.MovePosition(armsMoveTo);
+        Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, 100 * (Vector2.up+hor), moveTowardsDist * Time.deltaTime);
+        lowerLegsRB.MovePosition(legsMoveTo);
+            
+    }
+
+
+    public void Long()
+    {
+        Debug.Log("Long");
+        Vector2 hor;
+        if (!facingRight) hor = Vector2.right;
+        else hor = Vector2.left;
+    
+        Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, 100 * (Vector2.down + hor), moveTowardsDist * Time.deltaTime);
+        lowerLegsRB.MovePosition(legsMoveTo);
+    }
+
 
     public void ClearForce()
     {

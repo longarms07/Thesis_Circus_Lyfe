@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
     public GameObject playerAvatar;
     [Tooltip("Whether or not the game is paused")]
     public bool paused;
+    [Tooltip("How long a short swipe is, distance wise")]
+    public float swipeShortDis;
 
     private static GameManager_Trapeze instance;
 
@@ -56,6 +59,17 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
     public void SwipeDetected(Vector3[] swipePositions)
     {
         //Stubbed
+        SwipeDirection dir = FindDirection(swipePositions);
+        if(pm.state == EnumPTrapezeState.OnTrapeze)
+        {
+            /*if ((dir != SwipeDirection.North && dir!=SwipeDirection.South) &&
+                (Math.Abs(swipePositions[1].x - swipePositions[0].x) <= swipeShortDis))
+                pm.Short();
+            else
+                pm.Long();*/
+            if (dir == SwipeDirection.East) pm.Short();
+            else if (dir == SwipeDirection.West) pm.Long();
+        }
     }
 
     public void TapDetected(Vector3 position)
