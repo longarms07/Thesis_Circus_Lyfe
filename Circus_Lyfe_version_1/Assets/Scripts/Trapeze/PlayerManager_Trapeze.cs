@@ -88,13 +88,12 @@ public class PlayerManager_Trapeze : BodyManager
     public bool AttachTo(DistanceJoint2D joint2D)
     {
         if (joint2D == null || joint2D.connectedBody != null) return false;
-        //rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        if(hasFallen>=fallDis) MassTeleport(joint2D.gameObject.transform.position);
         hasFallen = 0;
+        ClearForce();
         joint = joint2D;
+        joint.enabled = true;
         joint.connectedBody = upperArmsRB;
-        //joint.connectedBody = rb;
-        //ClearForce();
-        //rb.constraints = RigidbodyConstraints2D.None;
         SetState(EnumPTrapezeState.OnTrapeze);
         if (initJoint == null) initJoint = joint;
         return true;
@@ -109,6 +108,7 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (joint == null) return false;
         joint.connectedBody = null;
+        joint.enabled = false;
         joint = null;
         SetState(EnumPTrapezeState.InAir);
         return true;
@@ -117,7 +117,6 @@ public class PlayerManager_Trapeze : BodyManager
     public bool Jump()
     {
         if (!Deattach()) return false;
-        transform.rotation = initRot;
         //rb.AddForce(jumpForce, ForceMode2D.Impulse);
         return true;
     }
@@ -151,10 +150,20 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void ClearForce()
     {
-        /*rb.velocity = Vector3.zero;
+        ClearForce(armsRB);
+        ClearForce(upperArmsRB);
+        ClearForce(headRB);
+        ClearForce(torsoRB);
+        ClearForce(lowerLegsRB);
+        ClearForce(upperLegsRB);
+
+    }
+
+    public void ClearForce(Rigidbody2D rb)
+    {
+        rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
-        transform.rotation = initRot;
-        rb.rotation = 0;*/
+        rb.rotation = 0;
     }
 
 }

@@ -62,7 +62,25 @@ public class BodyManager : MonoBehaviour
         return centerOfMass/mass;
     }
 
-    
+    public void SetGravityScale(float scale)
+    {
+        armsRB.gravityScale = scale;
+        upperArmsRB.gravityScale = scale;
+        lowerLegsRB.gravityScale = scale;
+        upperLegsRB.gravityScale = scale;
+        headRB.gravityScale = scale;
+        torsoRB.gravityScale = scale;
+    }
+
+    public void MassTeleport(Vector3 position)
+    {
+        armsRB.position = position;
+        upperArmsRB.position = position;
+        lowerLegsRB.position = position;
+        upperLegsRB.position = position;
+        headRB.position = position;
+        torsoRB.position = position;
+    }
 
 
 
