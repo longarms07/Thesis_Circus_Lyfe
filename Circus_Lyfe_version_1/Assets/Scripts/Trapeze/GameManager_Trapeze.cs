@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager_Trapeze : ISwipeListener, ITapListener
+public class GameManager_Trapeze : GameManager, ITapListener
 {
-
-    [Tooltip("The player object. Needs script 'PlayerManager_Trapeze'")]
-    public GameObject playerAvatar;
+    
     [Tooltip("Whether or not the game is paused")]
     public bool paused;
     [Tooltip("How long a short swipe is, distance wise")]
@@ -15,9 +13,10 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
 
     private static GameManager_Trapeze instance;
 
+
+
     private PlayerManager_Trapeze pm;
 
-    
     void Awake()
     {
         if (instance == null)
@@ -28,6 +27,7 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
         {
             Destroy(this.gameObject);
         }
+        interactableDict = new Dictionary<Transform, IInteractable>();
     }
 
     void Start()
@@ -72,15 +72,31 @@ public class GameManager_Trapeze : ISwipeListener, ITapListener
         }
     }
 
-    public void TapDetected(Vector3 position)
+    new public void TapDetected(Vector3 position)
     {
         //Stubbed
+        CheckTappedPosition(position);
         if (pm.state == EnumPTrapezeState.OnTrapeze) pm.Jump();
-        else if (pm.state == EnumPTrapezeState.InAir) pm.AttachToInitial();
+        else if (pm.state == EnumPTrapezeState.InAir)
+        {
+            if (lastTap.transform != null)
+            {
+                if (lastTap.transform.gameObject.layer == interactableLayer)
+                {
+                    GetInteractable(lastTap.transform).OnInteraction();
+                }
+            }
+        }
     }
 
     public static GameManager_Trapeze GetInstance()
     {
         return instance;
     }
+
+    public PlayerManager_Trapeze GetPlayerManager()
+    {
+        return pm;
+    }
+
 }

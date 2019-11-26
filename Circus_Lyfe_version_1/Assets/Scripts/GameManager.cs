@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour, ITapListener
+public class GameManager :  ISwipeListener, ITapListener
 {
     [Tooltip("The avatar for the player character. Requires TouchMovable.")]
     public GameObject playerAvatar;
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour, ITapListener
 
     public Dictionary<Transform, IInteractable> interactableDict;
     private TouchMovable playerTouchMovable;
-    private RaycastHit2D lastTap;
+    protected RaycastHit2D lastTap;
     
   
 
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour, ITapListener
 
     }
 
-    private RaycastHit2D CheckTappedPosition(Vector3 position)
+    protected RaycastHit2D CheckTappedPosition(Vector3 position)
     {
             RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down);
             if (hit.collider != null)
@@ -116,5 +116,10 @@ public class GameManager : MonoBehaviour, ITapListener
         return null;
     }
 
+    override
+    public void SwipeDetected(Vector3[] swipePositions)
+    { }
 
-}
+
+
+    }

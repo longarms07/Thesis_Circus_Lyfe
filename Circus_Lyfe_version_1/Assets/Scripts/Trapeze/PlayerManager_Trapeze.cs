@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerManager_Trapeze : BodyManager
 {
@@ -14,6 +15,13 @@ public class PlayerManager_Trapeze : BodyManager
 
     public GameObject attachedTo;
 
+    public Vector2 boxcastSize;
+    public float boxcastDistance;
+    public float boxcastAngle;
+    public Vector2 boxcastDir;
+    public Vector2 boxcastOffset;
+    
+
 
     private DistanceJoint2D joint;
     public EnumPTrapezeState state = EnumPTrapezeState.NONE;
@@ -23,6 +31,7 @@ public class PlayerManager_Trapeze : BodyManager
     private Quaternion initRot;
     private bool doLong;
     private bool facingRight = true;
+    private Collider2D[] nearbyInteractables;
 
     void Awake()
     {
@@ -30,6 +39,7 @@ public class PlayerManager_Trapeze : BodyManager
         rb = GetComponent<Rigidbody2D>();
         if (jumpForce == null) jumpForce = new Vector3(0, 0, 0);
         initRot = transform.rotation;
+        nearbyInteractables = new Collider2D[0];
 
     }
 
@@ -54,6 +64,8 @@ public class PlayerManager_Trapeze : BodyManager
             hasFallen++;
             if (hasFallen >= fallDis) AttachToInitial();
         }
+
+        NotfiyInteractablesMovedAway(CheckNearbyInteractables());
     }
 
     public void SetState(EnumPTrapezeState s)
@@ -117,7 +129,7 @@ public class PlayerManager_Trapeze : BodyManager
     public bool Jump()
     {
         if (!Deattach()) return false;
-        //rb.AddForce(jumpForce, ForceMode2D.Impulse);
+        torsoRB.AddForce(jumpForce, ForceMode2D.Impulse);
         return true;
     }
 
@@ -164,6 +176,44 @@ public class PlayerManager_Trapeze : BodyManager
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
         rb.rotation = 0;
+    }
+
+    public Collider2D[] CheckNearbyInteractables()
+    {
+        Vector2 dir = Vector2.down;
+        if (facingRight) dir = Vector2.down + Vector2.right;
+        else dir = Vector2.down + Vector2.left;
+        RaycastHit2D[] nearbyHits = Physics2D.BoxCastAll(headRB.position+boxcastOffset, boxcastSize, boxcastAngle,
+            boxcastDir, boxcastDistance, LayerMask.GetMask("Interactable"));
+        Collider2D[] nh = new Collider2D[nearbyHits.Length];
+        int i = 0;
+        foreach (RaycastHit2D hit in nearbyHits)
+        {
+            IInteractable tempInteractable = GameManager_Trapeze.GetInstance().GetInteractable(hit.transform);
+            nh[i] = hit.collider;
+            if (nh[i]!=null && tempInteractable != null && !nearbyInteractables.Contains(hit.collider))
+            {
+                tempInteractable.InRange(true);
+            }
+            i++;
+        }
+        return nh;
+    }
+
+    public void NotfiyInteractablesMovedAway(Collider2D[] tempInteractables)
+    {
+        if (nearbyInteractables != null)
+        {
+            foreach (Collider2D collider in nearbyInteractables)
+            {
+                if (collider!=null && collider.transform!=null && !tempInteractables.Contains(collider))
+                {
+                    IInteractable movedFrom = GameManager_Trapeze.GetInstance().GetInteractable(collider.transform);
+                    if (movedFrom != null) movedFrom.InRange(false);
+                }
+            }
+        }
+        nearbyInteractables = tempInteractables;
     }
 
 }
