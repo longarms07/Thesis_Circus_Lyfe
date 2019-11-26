@@ -110,7 +110,7 @@ public class GameManager :  ISwipeListener, ITapListener
 
     public IInteractable GetInteractable(Transform transform)
     {
-        Debug.Log("Key = " + transform);
+        //Debug.Log("Key = " + transform);
         if(interactableDict.ContainsKey(transform))
             return interactableDict[transform];
         return null;

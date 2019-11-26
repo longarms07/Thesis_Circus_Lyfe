@@ -651,7 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae7051aef150d74a96d2089602c5990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1924037875}
+  target: {fileID: 1742216238}
 --- !u!233 &644848405
 HingeJoint2D:
   m_ObjectHideFlags: 0
@@ -662,12 +662,12 @@ HingeJoint2D:
   m_Enabled: 1
   serializedVersion: 4
   m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 1924037879}
+  m_ConnectedRigidBody: {fileID: 1742216241}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 6.9849877, y: 5.4592915}
+  m_ConnectedAnchor: {x: 14.744988, y: 9.339291}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -928,6 +928,7 @@ MonoBehaviour:
   boxcastDistance: 0
   boxcastAngle: 0
   boxcastDir: {x: 0, y: 0}
+  boxcastOffset: {x: 0, y: 0}
   state: 3
 --- !u!1 &753185286
 GameObject:
@@ -1251,7 +1252,7 @@ MonoBehaviour:
     type: 3}
   fingersSupported: 1
   maxTapTime: 0.3
-  maxSwipeTime: 0.3
+  maxSwipeTime: 0.5
   debugMode: 0
   touchCursors: []
 --- !u!4 &1108888356
@@ -1586,6 +1587,7 @@ MonoBehaviour:
   boxcastDistance: 10
   boxcastAngle: 0
   boxcastDir: {x: 0, y: -1}
+  boxcastOffset: {x: 0, y: 0}
   state: 3
 --- !u!4 &1756145790
 Transform:
@@ -1754,7 +1756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1924037876
 Transform:
   m_ObjectHideFlags: 0
