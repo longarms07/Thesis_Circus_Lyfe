@@ -81,7 +81,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
         {
             if (lastTap.transform != null)
             {
-                if (lastTap.transform.gameObject.layer == interactableLayer)
+                if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == interactableLayer2)
                 {
                     GetInteractable(lastTap.transform).OnInteraction();
                 }

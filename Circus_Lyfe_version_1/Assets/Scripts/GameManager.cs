@@ -8,6 +8,8 @@ public class GameManager :  ISwipeListener, ITapListener
     public GameObject playerAvatar;
     [Tooltip("The layer interactables are found on.")]
     public int interactableLayer;
+    [Tooltip("The layer intangible interactables are found on.")]
+    public int interactableLayer2;
     [Tooltip("The layer the floor is found on.")]
     public int floorLayer;
     [Tooltip("The layer NPCS are found on")]

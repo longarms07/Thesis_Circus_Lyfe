@@ -8,6 +8,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     private Sprite inactiveSprite;
     public Vector3 activeSize;
     private Vector3 inactiveSize;
+    private PlayerManager_Trapeze pm;
 
     private bool inRange;
     private DistanceJoint2D joint;
@@ -22,13 +23,34 @@ public class GrabTarget : MonoBehaviour, IInteractable
         inactiveSize = gameObject.transform.localScale;
         spriteRenderer = GetComponent<SpriteRenderer>();
         inactiveSprite = spriteRenderer.sprite;
+        pm = GameManager_Trapeze.GetInstance().playerAvatar.GetComponent<PlayerManager_Trapeze>();
         //InRange(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(pm.state == EnumPTrapezeState.InAir)
+        {
+            
+            if (pm.head.transform.position.y > this.transform.position.y &&
+                    (pm.FacingRight() && pm.head.gameObject.transform.position.x < this.transform.position.x 
+                    && this.transform.position.x < pm.head.gameObject.transform.position.x+pm.grabTargetXRange)
+                    || (!pm.FacingRight() && pm.head.gameObject.transform.position.x > this.transform.position.x
+                    && this.transform.position.x > pm.head.gameObject.transform.position.x - pm.grabTargetXRange))
+            {
+               InRange(true);
+            }
+            else
+            {
+               InRange(false);
+            }
+            
+        }
+        else
+        {
+            InRange(false);
+        }
     }
 
     public void OnInteraction()

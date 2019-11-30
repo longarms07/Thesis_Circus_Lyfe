@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 407141796}
   - component: {fileID: 407141795}
   - component: {fileID: 407141794}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: GrabTargetTest (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -485,9 +485,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.006524444}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 0.3023121
 --- !u!232 &407141795
 DistanceJoint2D:
   m_ObjectHideFlags: 0
@@ -779,6 +779,7 @@ MonoBehaviour:
   yThreshold: 1
   playerAvatar: {fileID: 1756145788}
   interactableLayer: 9
+  interactableLayer2: 11
   floorLayer: 8
   npcLayer: 10
   paused: 0
@@ -924,6 +925,7 @@ MonoBehaviour:
   moveTowardsDist: 0
   jumpForce: {x: 5, y: 5, z: 0}
   attachedTo: {fileID: 0}
+  grabTargetXRange: 0
   boxcastSize: {x: 0, y: 0}
   boxcastDistance: 0
   boxcastAngle: 0
@@ -977,7 +979,7 @@ GameObject:
   - component: {fileID: 903624483}
   - component: {fileID: 903624484}
   - component: {fileID: 903624485}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: GrabTargetTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1114,9 +1116,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.006524444}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 0.3023121
 --- !u!1 &1057589067
 GameObject:
   m_ObjectHideFlags: 0
@@ -1583,6 +1585,7 @@ MonoBehaviour:
   moveTowardsDist: 20
   jumpForce: {x: 50, y: 50, z: 0}
   attachedTo: {fileID: 1742216238}
+  grabTargetXRange: 5
   boxcastSize: {x: 0.5, y: 1}
   boxcastDistance: 10
   boxcastAngle: 0
@@ -1622,6 +1625,7 @@ GameObject:
   - component: {fileID: 1891566285}
   - component: {fileID: 1891566284}
   - component: {fileID: 1891566283}
+  - component: {fileID: 1891566286}
   m_Layer: 0
   m_Name: Upper Arms
   m_TagString: Untagged
@@ -1637,7 +1641,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891566281}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.979, y: 0.446, z: 0}
+  m_LocalPosition: {x: 1.933, y: 0.428, z: 0}
   m_LocalScale: {x: 0.35, y: 0.099999994, z: 1}
   m_Children: []
   m_Father: {fileID: 1756145790}
@@ -1658,7 +1662,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: -0.49999964, y: -0.00000011920929}
-  m_ConnectedAnchor: {x: 0.525715, y: 0.049999952}
+  m_ConnectedAnchor: {x: 0.39428657, y: -0.12999988}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -1737,6 +1741,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!232 &1891566286
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891566281}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 2026013420}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: -0.4999996, y: -0.0000001192093}
+  m_ConnectedAnchor: {x: 0.3942866, y: -0.1299999}
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
+  m_MaxDistanceOnly: 0
 --- !u!1 &1924037875
 GameObject:
   m_ObjectHideFlags: 0
@@ -2099,7 +2122,7 @@ GameObject:
   - component: {fileID: 2147134221}
   - component: {fileID: 2147134220}
   - component: {fileID: 2147134219}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: GrabTargetTest (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2119,9 +2142,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.006524444}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 0.3023121
 --- !u!232 &2147134220
 DistanceJoint2D:
   m_ObjectHideFlags: 0
