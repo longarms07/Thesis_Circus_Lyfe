@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager :  ISwipeListener, ITapListener
 {
@@ -82,8 +83,15 @@ public class GameManager :  ISwipeListener, ITapListener
             {
                 playerTouchMovable.TargetInteractable(lastTap.collider, GetInteractable(lastTap.transform));
             }
-            else if (lastTap.transform.gameObject == TextboxManager.GetInstance().textBackground)
-                TextboxManager.GetInstance().OnTap();
+            else if (lastTap.transform.gameObject.layer == 5)
+            {
+                if (lastTap.transform.gameObject == TextboxManager.GetInstance().textBackground)
+                    TextboxManager.GetInstance().OnTap();
+                else
+                {
+                    //It is a button
+                }
+            }
         }
     
 
@@ -122,6 +130,12 @@ public class GameManager :  ISwipeListener, ITapListener
     public void SwipeDetected(Vector3[] swipePositions)
     { }
 
-
+    public void ChangeSceneTrapeze()
+    {
+        if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
+        {
+            SceneManager.LoadScene("Trapeze Demo");
+        }
+    }
 
     }

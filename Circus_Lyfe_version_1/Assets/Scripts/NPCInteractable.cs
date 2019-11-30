@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCInteractable : MonoBehaviour, IInteractable
+public abstract class NPCInteractable : MonoBehaviour, IInteractable
 {
     private SpriteRenderer spriteRenderer;
     public Sprite defaultSprite;
@@ -21,11 +21,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     }
 
-    public void OnInteraction()
-    {
-        TextboxManager.GetInstance().SetText("Hi, my name is Donna!<page>Welcome to Circus Lyfe Version 1.<page>Tap on the squares to change their color.");
-        TextboxManager.GetInstance().TextBoxActive(true);
-    }
+    public abstract void OnInteraction();
     public void InRange(bool inRange)
     {
         if (inRange)
@@ -37,4 +33,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
             spriteRenderer.sprite = defaultSprite;
         }
     }
+
+
+    public abstract void OnTextEnded();
 }
