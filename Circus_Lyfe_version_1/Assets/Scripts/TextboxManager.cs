@@ -18,6 +18,8 @@ public class TextboxManager : MonoBehaviour
     public float textOffset;
     [Tooltip("Prefab to use for text button generation")]
     public GameObject textButtonPrefab;
+    [Tooltip("The legal positions textbuttons can be in.")]
+    public Vector3[] textButtonPositions;
     
 
     private static TextboxManager instance;
@@ -99,18 +101,18 @@ public class TextboxManager : MonoBehaviour
 
     public void GenerateTextButtons(IButtonListener target, string[] buttonText, int[] buttonCodes)
     {
+
+        GameManager.getInstance().TogglePlayerMovement(false);
         if (buttonText.Length == buttonCodes.Length)
         {
             textButtons = new TextButton[buttonText.Length];
-            for (int i = 0; i < buttonText.Length; i++)
+            for (int i = 0; i < Mathf.Min(buttonText.Length, textButtonPositions.Length); i++)
             {
                 GameObject btn = Instantiate(textButtonPrefab);
                 btn.name = "TextButton#" + buttonCodes[i];
                 TextButton txt = btn.GetComponent<TextButton>();
-                btn.transform.position = new Vector3(btn.transform.position.x,
-                    //-canvasRect.sizeDelta.y + (i * btn.GetComponent<RectTransform>().sizeDelta.y),
-                    -(canvasRect.sizeDelta.y / heightPercent),
-                    btn.transform.position.z);
+                btn.transform.SetParent(textCanvas.transform);
+                btn.transform.localPosition = textButtonPositions[i];
                 txt.SetListener(target);
                 txt.SetText(buttonText[i]);
                 txt.SetButtonCode(buttonCodes[i]);
@@ -125,8 +127,8 @@ public class TextboxManager : MonoBehaviour
         {
             Destroy(btn.gameObject);
         }
+        GameManager.getInstance().TogglePlayerMovement(true);
     }
-
 
 
 

@@ -1776,6 +1776,11 @@ MonoBehaviour:
   textOffset: 10
   textButtonPrefab: {fileID: 8783101200751261595, guid: fa9457bda3d13774bb32631b74623cc1,
     type: 3}
+  textButtonPositions:
+  - {x: -200, y: 100, z: 0}
+  - {x: 200, y: 100, z: 0}
+  - {x: -200, y: 0, z: 0}
+  - {x: 200, y: 0, z: 0}
 --- !u!1 &1592310473
 GameObject:
   m_ObjectHideFlags: 0

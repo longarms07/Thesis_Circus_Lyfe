@@ -16,9 +16,10 @@ public class GameManager :  ISwipeListener, ITapListener
     [Tooltip("The layer NPCS are found on")]
     public int npcLayer;
 
-
+    
 
     public Dictionary<Transform, IInteractable> interactableDict;
+    protected Dictionary<Transform, Button> buttonDict;
     private TouchMovable playerTouchMovable;
     protected RaycastHit2D lastTap;
     
@@ -32,6 +33,7 @@ public class GameManager :  ISwipeListener, ITapListener
         {
             instance = this;
             interactableDict = new Dictionary<Transform, IInteractable>();
+            buttonDict = new Dictionary<Transform, Button>();
         }
         else
         {
@@ -87,9 +89,10 @@ public class GameManager :  ISwipeListener, ITapListener
             {
                 if (lastTap.transform.gameObject == TextboxManager.GetInstance().textBackground)
                     TextboxManager.GetInstance().OnTap();
-                else
+                else 
                 {
-                    //It is a button
+                    Button btn = GetButton(lastTap.transform);
+                    if (btn != null) btn.OnTap();
                 }
             }
         }
@@ -124,6 +127,26 @@ public class GameManager :  ISwipeListener, ITapListener
         if(interactableDict.ContainsKey(transform))
             return interactableDict[transform];
         return null;
+    }
+
+    public void RegisterButton(Transform transform, Button button)
+    {
+            buttonDict.Add(transform, button);
+            //Debug.Log("Registered button");
+    }
+
+    public Button GetButton(Transform transform)
+    {
+       // Debug.Log("Key = " + transform);
+        if (transform!=null && buttonDict.ContainsKey(transform))
+            return buttonDict[transform];
+        return null;
+    }
+
+    public void DeregisterButton(Transform transform)
+    {
+        if (buttonDict.ContainsKey(transform))
+            buttonDict.Remove(transform);
     }
 
     override

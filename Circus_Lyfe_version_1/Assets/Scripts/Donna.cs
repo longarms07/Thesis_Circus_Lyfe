@@ -14,7 +14,7 @@ public class Donna : NPCInteractable, IButtonListener
 
     public void OnButtonPressed(int buttonCode)
     {
-        //TextboxManager.GetInstance().DespawnTextButtons();
+        TextboxManager.GetInstance().DespawnTextButtons();
         if(buttonCode == 0)
         {
             GameManager.getInstance().ChangeSceneTrapeze();
@@ -30,7 +30,7 @@ public class Donna : NPCInteractable, IButtonListener
         int[] codes = new int[2];
         codes[0] = 0;
         codes[1] = 1;
-        //TextboxManager.GetInstance().GenerateTextButtons(this, text, codes);
-        OnButtonPressed(0);
+        TextboxManager.GetInstance().GenerateTextButtons(this, text, codes);
+        //OnButtonPressed(0);
     }
 }

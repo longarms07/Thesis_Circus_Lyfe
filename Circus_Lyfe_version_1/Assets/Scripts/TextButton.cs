@@ -12,8 +12,10 @@ public class TextButton : Button
     // Start is called before the first frame update
     void Start()
     {
+        initVariables();
         textMesh = GetComponent<TextMeshProUGUI>();
         rect = GetComponent<RectTransform>();
+        rect.localScale = new Vector3(1, 1, 1);
     }
 
     // Update is called once per frame
