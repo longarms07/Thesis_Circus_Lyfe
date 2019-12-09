@@ -44,7 +44,7 @@ public class BodyManager : MonoBehaviour
 
     public Vector2 GetCenterOfMass()
     {
-        Vector2 centerOfMass = Vector3.zero;
+        Vector2 centerOfMass = new Vector3(0,0,-1);
         float mass = 0;
         centerOfMass += (armsRB.mass * armsRB.worldCenterOfMass);
         mass += armsRB.mass;

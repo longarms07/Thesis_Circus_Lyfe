@@ -16,7 +16,8 @@ public class PlayerManager_Trapeze : BodyManager
     public GameObject attachedTo;
 
     public float grabTargetXRange;
-    
+
+    public bool goingRight = false;
     
 
 
@@ -49,6 +50,7 @@ public class PlayerManager_Trapeze : BodyManager
     // Update is called once per frame
     void Update()
     {
+        goingRight = GoingRight();
         if (centerOfGravity != null)
         {
             //Debug.Log(GetCenterOfMass());
@@ -135,10 +137,21 @@ public class PlayerManager_Trapeze : BodyManager
         if (facingRight) hor = Vector2.right;
         else hor = Vector2.left;
 
-        Vector2 armsMoveTo = Vector2.MoveTowards(armsRB.position, 100*(hor+Vector2.down), moveTowardsDist * Time.deltaTime);
-        armsRB.MovePosition(armsMoveTo);
-        Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, 100 * (Vector2.up+hor), moveTowardsDist * Time.deltaTime);
-        lowerLegsRB.MovePosition(legsMoveTo);
+        if (GoingRight()) {
+            Vector2 armsMoveTo = Vector2.MoveTowards(armsRB.position, 100 * (-hor + Vector2.down), moveTowardsDist * Time.deltaTime);
+            armsRB.MovePosition(armsMoveTo);
+            Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, 100 * (Vector2.up + hor), moveTowardsDist * Time.deltaTime);
+            lowerLegsRB.MovePosition(legsMoveTo);
+        }
+        else
+        {
+            Vector2 armsMoveTo = Vector2.MoveTowards(armsRB.position, 100 * (-1*hor + Vector2.down), moveTowardsDist * Time.deltaTime);
+            armsRB.MovePosition(armsMoveTo);
+            Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, 100 * (Vector2.up + hor), moveTowardsDist * Time.deltaTime);
+            lowerLegsRB.MovePosition(legsMoveTo);
+            Vector2 headMoveTo = Vector2.MoveTowards(armsRB.position, Vector2.left*150, moveTowardsDist * Time.deltaTime);
+            torsoRB.MovePosition(headMoveTo);
+        }
             
     }
 
@@ -157,6 +170,14 @@ public class PlayerManager_Trapeze : BodyManager
     public bool FacingRight()
     {
         return facingRight;
+    }
+
+    public bool GoingRight()
+    {
+        float totalVelocity = headRB.velocity.x + torsoRB.velocity.x + upperArmsRB.velocity.x
+            + armsRB.velocity.x + lowerLegsRB.velocity.x + upperLegsRB.velocity.x;
+        if (headRB.velocity.x > 0) return true;
+        return false;
     }
 
     public void ClearForce()
