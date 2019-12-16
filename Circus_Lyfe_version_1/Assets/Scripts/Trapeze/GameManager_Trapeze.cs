@@ -11,6 +11,8 @@ public class GameManager_Trapeze : GameManager, ITapListener
     [Tooltip("How long a short swipe is, distance wise")]
     public float swipeShortDis;
 
+    public TrickGUI trickGUI;
+
     private static GameManager_Trapeze instance;
 
 
@@ -34,6 +36,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
     {
         TouchInputManager t = TouchInputManager.getInstance();
         if (t == null) Destroy(this);
+        trickGUI = TrickGUI.GetInstance();
         t.SubscribeTapListener(this, 0);
         t.SubscribeSwipeListener(this, 0);
         if(playerAvatar == null)
@@ -67,8 +70,17 @@ public class GameManager_Trapeze : GameManager, ITapListener
                 pm.Short();
             else
                 pm.Long();*/
-            if (dir == SwipeDirection.East) pm.Short();
-            else if (dir == SwipeDirection.West) pm.Long();
+            if (dir == SwipeDirection.East)
+            {
+                pm.Short();
+                trickGUI.DidTrick("Short", 0);
+            }
+            else if (dir == SwipeDirection.West)
+            {
+
+                trickGUI.DidTrick("Long", 0);
+                pm.Long();
+            }
         }
     }
 
