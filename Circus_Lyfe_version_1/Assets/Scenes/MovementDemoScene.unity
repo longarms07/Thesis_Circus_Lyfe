@@ -1772,7 +1772,7 @@ MonoBehaviour:
   textMeshPro: {fileID: 2073985027}
   textBackground: {fileID: 1592310473}
   textCanvas: {fileID: 1060844438}
-  heightPercent: 3
+  heightPercent: 5
   textOffset: 10
   textButtonPrefab: {fileID: 8783101200751261595, guid: fa9457bda3d13774bb32631b74623cc1,
     type: 3}
@@ -2245,7 +2245,7 @@ MonoBehaviour:
   m_fontSize: 60
   m_fontSizeBase: 60
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 25
   m_fontSizeMax: 72
   m_fontStyle: 0

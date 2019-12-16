@@ -53,11 +53,11 @@ public class TextboxManager : MonoBehaviour
         float height = canvasRect.sizeDelta.y / heightPercent;
         textRect.sizeDelta = new Vector2(canvasRect.sizeDelta.x-textOffset, height-(2*textOffset));
         textRect.localPosition = new Vector3(textRect.localPosition.x+textOffset,
-                                             -(canvasRect.sizeDelta.y / heightPercent),
+                                             -(canvasRect.sizeDelta.y/2)+height/2,
                                              textRect.localPosition.z);
         textBackground.transform.localScale = new Vector3(canvasRect.sizeDelta.x, height, 1);
-        textBackground.transform.localPosition = new Vector3(textBackground.transform.localPosition.x, 
-                                                                -(canvasRect.sizeDelta.y/heightPercent), 
+        textBackground.transform.localPosition = new Vector3(textBackground.transform.localPosition.x,
+                                                             -(canvasRect.sizeDelta.y / 2) + height/2,
                                                                 textBackground.transform.localPosition.z);
     }
 
