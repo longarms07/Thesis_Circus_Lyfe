@@ -157,7 +157,15 @@ public class GameManager :  ISwipeListener, ITapListener
     {
         if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
         {
-            SceneManager.LoadScene("Trapeze Demo");
+            SceneManager.LoadScene("TrapezeDemoScene");
+        }
+    }
+
+    public void ChangeSceneLifeSim()
+    {
+        if(SceneManager.GetActiveScene().name == "TrapezeDemoScene")
+        {
+            SceneManager.LoadScene("MovementDemoScene");
         }
     }
 

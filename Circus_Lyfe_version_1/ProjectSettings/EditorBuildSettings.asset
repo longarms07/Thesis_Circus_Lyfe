@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MovementDemoScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Trapeze Demo.unity
+    path: Assets/Scenes/TrapezeDemoScene.unity
     guid: a844b7c3004349342b3358d1e7feb304
   m_configObjects: {}
