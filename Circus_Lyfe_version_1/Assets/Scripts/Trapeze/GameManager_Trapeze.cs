@@ -12,6 +12,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
     public float swipeShortDis;
 
     public TrickGUI trickGUI;
+    public TrickManager trickManager;
 
     private static GameManager_Trapeze instance;
 
@@ -81,6 +82,10 @@ public class GameManager_Trapeze : GameManager, ITapListener
                 trickGUI.DidTrick("Long", 0);
                 pm.Long();
             }
+        }
+        else if(pm.state == EnumPTrapezeState.InAir)
+        {
+            trickManager.AddSwipe(dir);
         }
     }
 
