@@ -33,10 +33,16 @@ public class TrickManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentSwipe.Count != 0)
+        if (pm == null) pm = gm.GetPlayerManager();
+        if (pm.state == EnumPTrapezeState.InAir && currentSwipe.Count != 0)
         {
             timer++;
             if (timer >= execTime) ExecuteTrick();
+        }
+        else
+        {
+            if (timer != 0) timer = 0;
+            if (currentSwipe.Count != 0) currentSwipe.Clear();
         }
     }
 
@@ -54,7 +60,7 @@ public class TrickManager : MonoBehaviour
         {
             Trick t = tricktionary[currentSwipe];
             gm.trickGUI.DidTrick(t.name, t.score);
-            //stubbed
+            //stubbed, need to handle animation.
               
         }
         currentSwipe.Clear();
