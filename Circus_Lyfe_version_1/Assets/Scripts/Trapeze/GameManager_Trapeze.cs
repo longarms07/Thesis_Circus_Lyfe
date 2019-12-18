@@ -98,6 +98,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
         {
             if (lastTap.transform != null)
             {
+                Debug.Log(lastTap.transform.name);
                 if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == interactableLayer2)
                 {
                     GetInteractable(lastTap.transform).OnInteraction();

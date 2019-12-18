@@ -5,9 +5,11 @@ using UnityEngine;
 public class GrabTarget : MonoBehaviour, IInteractable
 {
     public Sprite activeSprite;
-    private Sprite inactiveSprite;
-    public Vector3 activeSize;
-    private Vector3 inactiveSize;
+    public GameObject inactiveObject;
+    //private Sprite inactiveSprite;
+    //public Vector3 activeSize;
+    //private Vector3 inactiveSize;
+    private SpriteRenderer inactiveSpriteRenderer;
     private PlayerManager_Trapeze pm;
 
     private bool inRange;
@@ -18,13 +20,15 @@ public class GrabTarget : MonoBehaviour, IInteractable
     void Start()
     {
         inRange = false;
-        joint = this.gameObject.GetComponent<DistanceJoint2D>();
+        //joint = this.gameObject.GetComponent<DistanceJoint2D>();
+        joint = inactiveObject.GetComponent<DistanceJoint2D>();
         GameManager_Trapeze.GetInstance().RegisterInteractable(gameObject.transform, this);
-        inactiveSize = gameObject.transform.localScale;
+        //inactiveSize = gameObject.transform.localScale;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        inactiveSprite = spriteRenderer.sprite;
+        //inactiveSprite = spriteRenderer.sprite;
+        inactiveSpriteRenderer = inactiveObject.GetComponent<SpriteRenderer>();
         pm = GameManager_Trapeze.GetInstance().playerAvatar.GetComponent<PlayerManager_Trapeze>();
-        //InRange(true);
+        InRange(false);
     }
 
     // Update is called once per frame
@@ -32,7 +36,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     {
         if(pm.state == EnumPTrapezeState.InAir)
         {
-            
+
             if (pm.head.transform.position.y > this.transform.position.y &&
                     (pm.FacingRight() && pm.head.gameObject.transform.position.x < this.transform.position.x 
                     && this.transform.position.x < pm.head.gameObject.transform.position.x+pm.grabTargetXRange)
@@ -45,7 +49,8 @@ public class GrabTarget : MonoBehaviour, IInteractable
             {
                InRange(false);
             }
-            
+            //InRange(true);
+
         }
         else
         {
@@ -66,14 +71,18 @@ public class GrabTarget : MonoBehaviour, IInteractable
         this.inRange = inRange;
         if (inRange)
         {
-            spriteRenderer.sprite = activeSprite;
-            gameObject.transform.localScale = activeSize;
+            //spriteRenderer.sprite = activeSprite;
+            //gameObject.transform.localScale = activeSize;
+            spriteRenderer.enabled = true;
+            inactiveSpriteRenderer.enabled = false;
 
         }
         else
         {
-            spriteRenderer.sprite = inactiveSprite;
-            gameObject.transform.localScale = inactiveSize;
+            //spriteRenderer.sprite = inactiveSprite;
+            //gameObject.transform.localScale = inactiveSize;
+            spriteRenderer.enabled = false;
+            inactiveSpriteRenderer.enabled = true;
         }
     }
 
