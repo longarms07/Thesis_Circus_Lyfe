@@ -19,6 +19,14 @@ public class BodyManager : MonoBehaviour
     protected Rigidbody2D upperArmsRB;
     protected Rigidbody2D upperLegsRB;
     protected Rigidbody2D lowerLegsRB;
+    
+
+    protected HingeJoint2D torso2upperLegs;
+    protected HingeJoint2D arms2torso;
+    protected HingeJoint2D upperArms2arms;
+    protected HingeJoint2D upperLegs2lowerLegs;
+    protected bool facingRight = true;
+
 
     // Start is called before the first frame update
     protected void Start()
@@ -40,6 +48,11 @@ public class BodyManager : MonoBehaviour
         upperLegsRB = upperLegs.GetComponent<Rigidbody2D>();
         lowerLegsRB = lowerLegs.GetComponent<Rigidbody2D>();
         upperArmsRB = upperArms.GetComponent<Rigidbody2D>();
+        torso2upperLegs = torso.GetComponent<HingeJoint2D>();
+        arms2torso = arms.GetComponent<HingeJoint2D>();
+        upperArms2arms = upperArms.GetComponent<HingeJoint2D>();
+        upperLegs2lowerLegs = upperLegs.GetComponent<HingeJoint2D>();
+
     }
 
     public Vector2 GetCenterOfMass()
@@ -82,7 +95,37 @@ public class BodyManager : MonoBehaviour
         torsoRB.position = position;
     }
 
+    public void TurnAround()
+    {
+        int f = 1;
+        if (facingRight) f = -1;
+        facingRight = !facingRight;
+        //arms.transform.Rotate(0, 180, 0); 
+        //upperArms.transform.Rotate(0, 180, 0);
+        //lowerLegs.transform.Rotate(0, 180, 0);
+        head.transform.Rotate(0, 180, 0);
+        torso.transform.Rotate(0, 180, 0);
+        //upperLegs.transform.Rotate(0, 180, 0);
+        JointAngleLimits2D lim = new JointAngleLimits2D();
+        lim.min = torso2upperLegs.limits.min + f*60;
+        lim.max = torso2upperLegs.limits.max + f*60;
+        torso2upperLegs.limits = lim;
+        lim.min = arms2torso.limits.min + f * 180;
+        lim.max = arms2torso.limits.max + f * 180;
+        arms2torso.limits = lim;
+        Debug.Log("Anchor x before: "+ arms2torso.connectedAnchor.x);
+        arms2torso.connectedAnchor = new Vector2(arms2torso.connectedAnchor.x*-1, arms2torso.connectedAnchor.y);
+        Debug.Log("Anchor x after: " + arms2torso.connectedAnchor.x);
+        lim.min = upperArms2arms.limits.min + f * 180;
+        lim.max = upperArms2arms.limits.max + f * 180;
+        upperArms2arms.limits = lim;
+        lim.min = upperLegs2lowerLegs.limits.min + -f * 90;
+        lim.max = upperLegs2lowerLegs.limits.max + -f * 90;
+        upperLegs2lowerLegs.limits = lim;
 
+
+
+    }
 
 
 

@@ -73,14 +73,13 @@ public class GameManager_Trapeze : GameManager, ITapListener
                 pm.Long();*/
             if (dir == SwipeDirection.East)
             {
-                pm.Short();
-                trickGUI.DidTrick("Short", 0);
+                if (pm.FacingRight()) DoShort();
+                else DoLong();
             }
             else if (dir == SwipeDirection.West)
             {
-
-                trickGUI.DidTrick("Long", 0);
-                pm.Long();
+                if (pm.FacingRight()) DoLong();
+                else DoShort();
             }
         }
         else if(pm.state == EnumPTrapezeState.InAir)
@@ -105,6 +104,18 @@ public class GameManager_Trapeze : GameManager, ITapListener
                 }
             }
         }
+    }
+
+    private void DoShort()
+    {
+        pm.Short();
+        trickGUI.DidTrick("Short", 0);
+    }
+
+    private void DoLong()
+    {
+        trickGUI.DidTrick("Long", 0);
+        pm.Long();
     }
 
     public static GameManager_Trapeze GetInstance()

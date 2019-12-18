@@ -30,8 +30,8 @@ public class PlayerManager_Trapeze : BodyManager
     private List<IPTrapezeStateListener> listeners;
     private Rigidbody2D rb;
     private DistanceJoint2D initJoint;
+    private DistanceJoint2D lastJoint;
     private Quaternion initRot;
-    private bool facingRight = true;
 
     void Awake()
     {
@@ -48,6 +48,7 @@ public class PlayerManager_Trapeze : BodyManager
         InitRBs();
         AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
         lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
+        //TurnAround();
     }
 
     // Update is called once per frame
@@ -105,11 +106,16 @@ public class PlayerManager_Trapeze : BodyManager
         if(hasFallen>=fallDis) MassTeleport(joint2D.gameObject.transform.position);
         hasFallen = 0;
         ClearForce();
+        if (initJoint == null)
+        {
+            initJoint = joint2D;
+            lastJoint = joint2D;
+        }
         joint = joint2D;
         joint.enabled = true;
         joint.connectedBody = upperArmsRB;
         SetState(EnumPTrapezeState.OnTrapeze);
-        if (initJoint == null) initJoint = joint;
+        if (joint != lastJoint) TurnAround();
         ClearForce();
         return true;
     }
@@ -124,6 +130,7 @@ public class PlayerManager_Trapeze : BodyManager
         if (joint == null) return false;
         joint.connectedBody = null;
         joint.enabled = false;
+        lastJoint = joint;
         joint = null;
         SetState(EnumPTrapezeState.InAir);
         return true;
@@ -205,6 +212,12 @@ public class PlayerManager_Trapeze : BodyManager
         rb.angularVelocity = 0;
         rb.rotation = 0;
     }
+
+    /*public void TurnAround()
+    {
+        facingRight = !facingRight;
+        this.gameObject.transform.Rotate(0, 180, 0);
+    }*/
 
     
 }
