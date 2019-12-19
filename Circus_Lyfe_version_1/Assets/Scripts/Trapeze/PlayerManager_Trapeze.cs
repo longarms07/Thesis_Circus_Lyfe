@@ -141,11 +141,14 @@ public class PlayerManager_Trapeze : BodyManager
     public bool AttachTo(DistanceJoint2D joint2D)
     {
         if (joint2D == null || joint2D.connectedBody != null) return false;
-        if(hasFallen>=fallDis) MassTeleport(joint2D.gameObject.transform.position);
+        if (hasFallen >= fallDis)
+        {
+            MassTeleport(joint2D.gameObject.transform.position);
+            ClearForce();
+        }
         target = null;
         targetJoint = null;
         hasFallen = 0;
-        ClearForce();
         if (initJoint == null)
         {
             initJoint = joint2D;
@@ -156,7 +159,6 @@ public class PlayerManager_Trapeze : BodyManager
         joint.connectedBody = upperArmsRB;
         SetState(EnumPTrapezeState.OnTrapeze);
         if (joint != lastJoint) TurnAround();
-        ClearForce();
         return true;
     }
 
@@ -179,7 +181,9 @@ public class PlayerManager_Trapeze : BodyManager
     public bool Jump()
     {
         if (!Deattach()) return false;
-        torsoRB.AddForce(jumpForce, ForceMode2D.Impulse);
+        Vector2 dir = new Vector2(1,1);
+        if (!facingRight) dir.x = -1;
+        torsoRB.AddForce(dir*jumpForce, ForceMode2D.Impulse);
         return true;
     }
 
@@ -191,8 +195,8 @@ public class PlayerManager_Trapeze : BodyManager
         if (facingRight) hor = Vector2.right;
         else hor = Vector2.left;
 
-        if (GoingRight()) {
-            torsoRB.MovePosition(Vector2.MoveTowards(torsoRB.position, shortArmForce * (Vector2.up + Vector2.right), moveTowardsDist * Time.deltaTime));
+        if ((GoingRight() && facingRight) || (!GoingRight() && !facingRight)) {
+            torsoRB.MovePosition(Vector2.MoveTowards(torsoRB.position, shortArmForce * (Vector2.up + hor), moveTowardsDist * Time.deltaTime));
             Vector2 armsMoveTo = Vector2.MoveTowards(armsRB.position, shortArmForce * (-hor + Vector2.down), moveTowardsDist * Time.deltaTime);
             armsRB.MovePosition(armsMoveTo);
             Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, shortLegForce * (Vector2.up + hor), moveTowardsDist * Time.deltaTime);
@@ -204,7 +208,7 @@ public class PlayerManager_Trapeze : BodyManager
             armsRB.MovePosition(armsMoveTo);
             Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, shortLegForce * (Vector2.up + hor), moveTowardsDist * Time.deltaTime);
             lowerLegsRB.MovePosition(legsMoveTo);
-            Vector2 headMoveTo = Vector2.MoveTowards(armsRB.position, Vector2.left*shortHeadForce, moveTowardsDist * Time.deltaTime);
+            Vector2 headMoveTo = Vector2.MoveTowards(armsRB.position, -hor*shortHeadForce, moveTowardsDist * Time.deltaTime);
             torsoRB.MovePosition(headMoveTo);
         }
             

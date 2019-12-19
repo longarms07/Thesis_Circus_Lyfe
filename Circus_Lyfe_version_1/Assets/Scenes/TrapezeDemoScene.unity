@@ -1696,7 +1696,7 @@ MonoBehaviour:
     duration: 0
     score: 150
     code: 040000000300000002000000
-  execTime: 15
+  execTime: 20
 --- !u!4 &800483052
 Transform:
   m_ObjectHideFlags: 0
@@ -3106,7 +3106,7 @@ MonoBehaviour:
   shortHeadForce: 100
   longLegForce: 100
   grabRange: 0.5
-  targetMoveSpeed: 5
+  targetMoveSpeed: 10
   state: 3
 --- !u!4 &1756145790
 Transform:
