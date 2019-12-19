@@ -23,9 +23,13 @@ public class PlayerManager_Trapeze : BodyManager
     public float shortLegForce;
     public float shortHeadForce;
     public float longLegForce;
+    public float grabRange;
+    public float targetMoveSpeed;
 
 
     private DistanceJoint2D joint;
+    private DistanceJoint2D targetJoint;
+    private GameObject target;
     public EnumPTrapezeState state = EnumPTrapezeState.NONE;
     private List<IPTrapezeStateListener> listeners;
     private Rigidbody2D rb;
@@ -62,14 +66,39 @@ public class PlayerManager_Trapeze : BodyManager
         }
         if (state == EnumPTrapezeState.InAir)
         {
+            if (target != null)
+            {
+                if (target.transform.position.y > headRB.position.y)
+                {
+                    target = null;
+                    targetJoint = null;
+                }
+                else
+                {
+                    torsoRB.MovePosition(Vector2.MoveTowards(torsoRB.position, target.transform.position, targetMoveSpeed * Time.deltaTime));
+                    upperArmsRB.MovePosition(Vector2.MoveTowards(upperArmsRB.position, target.transform.position, targetMoveSpeed * Time.deltaTime));
+                    if (Mathf.Abs(upperArmsRB.position.x - target.transform.position.x) <= grabRange
+                        && Mathf.Abs(upperArmsRB.position.y - target.transform.position.y) <= grabRange)
+                    {
+                        AttachTo(targetJoint);
+                    }
+                }
+            }
             hasFallen++;
-            if (hasFallen >= fallDis) AttachToInitial();
+            if (hasFallen >= fallDis) AttachToInitial();  
         }
         if (state == EnumPTrapezeState.OnTrapeze)
         {
         }
         
     }
+
+    public bool HasTarget()
+    {
+        if (target == null) return false;
+        return true;
+    }
+
 
     public void SetState(EnumPTrapezeState s)
     {
@@ -100,10 +129,21 @@ public class PlayerManager_Trapeze : BodyManager
         return false;
     }
 
+    public void Target(DistanceJoint2D joint)
+    {
+        if (joint != null)
+        {
+            targetJoint = joint;
+            target = joint.gameObject;
+        }
+    }
+
     public bool AttachTo(DistanceJoint2D joint2D)
     {
         if (joint2D == null || joint2D.connectedBody != null) return false;
         if(hasFallen>=fallDis) MassTeleport(joint2D.gameObject.transform.position);
+        target = null;
+        targetJoint = null;
         hasFallen = 0;
         ClearForce();
         if (initJoint == null)
@@ -213,11 +253,7 @@ public class PlayerManager_Trapeze : BodyManager
         rb.rotation = 0;
     }
 
-    /*public void TurnAround()
-    {
-        facingRight = !facingRight;
-        this.gameObject.transform.Rotate(0, 180, 0);
-    }*/
+    
 
     
 }

@@ -62,7 +62,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     {
         if (inRange)
         {
-            GameManager_Trapeze.GetInstance().GetPlayerManager().AttachTo(joint);
+            GameManager_Trapeze.GetInstance().GetPlayerManager().Target(joint);
         }
     }
 

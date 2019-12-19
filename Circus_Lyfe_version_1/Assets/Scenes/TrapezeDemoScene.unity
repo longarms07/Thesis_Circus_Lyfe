@@ -1583,6 +1583,8 @@ MonoBehaviour:
   shortLegForce: 0
   shortHeadForce: 0
   longLegForce: 0
+  grabRange: 0
+  targetMoveSpeed: 0
   state: 3
 --- !u!1 &753185286
 GameObject:
@@ -3103,6 +3105,8 @@ MonoBehaviour:
   shortLegForce: 100
   shortHeadForce: 100
   longLegForce: 100
+  grabRange: 0.5
+  targetMoveSpeed: 5
   state: 3
 --- !u!4 &1756145790
 Transform:

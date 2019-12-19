@@ -34,7 +34,7 @@ public class TrickManager : MonoBehaviour
     void Update()
     {
         if (pm == null) pm = gm.GetPlayerManager();
-        if (pm.state == EnumPTrapezeState.InAir && currentSwipe.Count != 0)
+        if (pm.state == EnumPTrapezeState.InAir && currentSwipe.Count != 0 && !pm.HasTarget())
         {
             timer++;
             if (timer >= execTime) ExecuteTrick();
