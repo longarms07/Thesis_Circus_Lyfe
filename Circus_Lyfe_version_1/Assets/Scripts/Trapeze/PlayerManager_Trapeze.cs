@@ -25,6 +25,7 @@ public class PlayerManager_Trapeze : BodyManager
     public float longLegForce;
     public float grabRange;
     public float targetMoveSpeed;
+    private GameManager_Trapeze gm;
 
 
     private DistanceJoint2D joint;
@@ -49,6 +50,7 @@ public class PlayerManager_Trapeze : BodyManager
     // Start is called before the first frame update
     void Start()
     {
+        gm = GameManager_Trapeze.GetInstance();
         InitRBs();
         AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
         lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
@@ -141,6 +143,10 @@ public class PlayerManager_Trapeze : BodyManager
     public bool AttachTo(DistanceJoint2D joint2D)
     {
         if (joint2D == null || joint2D.connectedBody != null) return false;
+        if (gm.IsSloMoAllowed() && gm.InSloMo())
+        {
+            gm.ToggleSloMo();
+        }
         if (hasFallen >= fallDis)
         {
             MassTeleport(joint2D.gameObject.transform.position);
@@ -181,6 +187,7 @@ public class PlayerManager_Trapeze : BodyManager
     public bool Jump()
     {
         if (!Deattach()) return false;
+        if (GameManager_Trapeze.GetInstance().IsSloMoAllowed()) GameManager_Trapeze.GetInstance().ToggleSloMo();
         Vector2 dir = new Vector2(1,1);
         if (!facingRight) dir.x = -1;
         torsoRB.AddForce(dir*jumpForce, ForceMode2D.Impulse);

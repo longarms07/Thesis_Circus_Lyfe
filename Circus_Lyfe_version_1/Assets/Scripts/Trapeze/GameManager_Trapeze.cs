@@ -20,6 +20,10 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     private PlayerManager_Trapeze pm;
 
+    private bool sloMo;
+    private bool slowMoAllowed;
+
+
     void Awake()
     {
         if (instance == null)
@@ -31,6 +35,9 @@ public class GameManager_Trapeze : GameManager, ITapListener
             Destroy(this.gameObject);
         }
         interactableDict = new Dictionary<Transform, IInteractable>();
+        buttonDict = new Dictionary<Transform, Button>();
+        sloMo = false;
+        slowMoAllowed = true;
     }
 
     void Start()
@@ -92,7 +99,20 @@ public class GameManager_Trapeze : GameManager, ITapListener
     {
         //Stubbed
         CheckTappedPosition(position);
-        if (pm.state == EnumPTrapezeState.OnTrapeze) pm.Jump();
+        if (pm.state == EnumPTrapezeState.OnTrapeze)
+        {
+            if (lastTap.transform != null && newLastTap)
+            {
+                Debug.Log(lastTap.transform.gameObject);
+                if (lastTap.transform.gameObject.layer == 5)
+                {
+                    Button btn = GetButton(lastTap.transform);
+                    if (btn != null) btn.OnTap();
+                }
+            }
+            else
+                pm.Jump();
+        }
         else if (pm.state == EnumPTrapezeState.InAir)
         {
             if (lastTap.transform != null)
@@ -126,6 +146,45 @@ public class GameManager_Trapeze : GameManager, ITapListener
     public PlayerManager_Trapeze GetPlayerManager()
     {
         return pm;
+    }
+
+    public void ToggleSloMo()
+    {
+        if (sloMo)
+        {
+            Time.timeScale = Time.timeScale * 2;
+        }
+        else
+        {
+            Time.timeScale = Time.timeScale / 2;
+        }
+        Time.fixedDeltaTime = Time.timeScale * .02f;
+        Time.maximumDeltaTime = Time.timeScale * .15f;
+        sloMo = !sloMo;
+    }
+
+    public void SloMoAllowed(bool allow)
+    {
+        if (!allow && sloMo)
+        {
+            ToggleSloMo();
+        }
+        slowMoAllowed = allow;
+    }
+
+    public void SloMoAllowed()
+    {
+        SloMoAllowed(!slowMoAllowed);
+    }
+
+    public bool IsSloMoAllowed()
+    {
+        return slowMoAllowed;
+    }
+
+    public bool InSloMo()
+    {
+        return sloMo;
     }
 
 }

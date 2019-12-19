@@ -22,6 +22,7 @@ public class GameManager :  ISwipeListener, ITapListener
     protected Dictionary<Transform, Button> buttonDict;
     private TouchMovable playerTouchMovable;
     protected RaycastHit2D lastTap;
+    protected bool newLastTap;
     
   
 
@@ -75,7 +76,7 @@ public class GameManager :  ISwipeListener, ITapListener
     public void TapDetected(Vector3 position)
     {
         CheckTappedPosition(position);
-        if (lastTap.transform != null) {
+        if (lastTap.transform != null && newLastTap) {
             Debug.Log("Hit layer = " + lastTap.transform.gameObject.layer);
             if (lastTap.transform.gameObject.layer == floorLayer)
             {
@@ -102,11 +103,14 @@ public class GameManager :  ISwipeListener, ITapListener
 
     protected RaycastHit2D CheckTappedPosition(Vector3 position)
     {
-            RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down);
-            if (hit.collider != null)
-            {
+        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down, 0.1f);
+        if (hit.collider != null)
+        {
             lastTap = hit;
-            }
+            newLastTap = true;
+        }
+        else
+            newLastTap = false;
         return hit;
 
     }

@@ -15,6 +15,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     private bool inRange;
     private DistanceJoint2D joint;
     private SpriteRenderer spriteRenderer;
+    private CircleCollider2D activeCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
         //inactiveSprite = spriteRenderer.sprite;
         inactiveSpriteRenderer = inactiveObject.GetComponent<SpriteRenderer>();
         pm = GameManager_Trapeze.GetInstance().playerAvatar.GetComponent<PlayerManager_Trapeze>();
+        activeCollider = GetComponent<CircleCollider2D>();
         InRange(false);
     }
 
@@ -75,6 +77,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
             //gameObject.transform.localScale = activeSize;
             spriteRenderer.enabled = true;
             inactiveSpriteRenderer.enabled = false;
+            activeCollider.enabled = true;
 
         }
         else
@@ -83,6 +86,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
             //gameObject.transform.localScale = inactiveSize;
             spriteRenderer.enabled = false;
             inactiveSpriteRenderer.enabled = true;
+            activeCollider.enabled = false;
         }
     }
 
