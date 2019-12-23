@@ -42,6 +42,8 @@ public class PlayerManager_Trapeze : BodyManager
     private Vector3 offset;
     private TrickManager tm;
     private Vector3 position;
+    private float jumpX = 0;
+
 
     void Awake()
     {
@@ -98,8 +100,8 @@ public class PlayerManager_Trapeze : BodyManager
                     }
                 }
             }
-            hasFallen++;
-            if (hasFallen >= fallDis) AttachToInitial();  
+            if (Mathf.Abs(jumpX - headRB.position.x) >= fallDis) AttachToInitial();
+            Debug.Log(jumpX - headRB.position.x);
         }
         if (state == EnumPTrapezeState.OnTrapeze)
         {
@@ -159,14 +161,14 @@ public class PlayerManager_Trapeze : BodyManager
         {
             gm.ToggleSloMo();
         }
-        if (hasFallen >= fallDis)
+        if (Mathf.Abs(jumpX - headRB.position.x) >= fallDis)
         {
             MassTeleport(joint2D.gameObject.transform.position);
             ClearForce();
         }
         target = null;
         targetJoint = null;
-        hasFallen = 0;
+        jumpX = 0;
         if (initJoint == null)
         {
             initJoint = joint2D;
@@ -201,6 +203,7 @@ public class PlayerManager_Trapeze : BodyManager
         if (!Deattach()) return false;
         if (GameManager_Trapeze.GetInstance().IsSloMoAllowed()) GameManager_Trapeze.GetInstance().ToggleSloMo();
         Vector2 dir = new Vector2(1,1);
+        jumpX = headRB.position.x;
         if (!facingRight) dir.x = -1;
         torsoRB.AddForce(dir*jumpForce, ForceMode2D.Impulse);
         return true;
@@ -278,6 +281,10 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void DoAnimation(string animName)
     {
+        if (gm.IsSloMoAllowed() && gm.InSloMo())
+        {
+            gm.ToggleSloMo();
+        }
         transform.position = head.transform.position + offset;
         animator.enabled = true;
         SetKinematic(true);
@@ -287,6 +294,10 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void AnimationEnded()
     {
+        if (gm.IsSloMoAllowed() && !gm.InSloMo() && state == EnumPTrapezeState.InAir)
+        {
+            gm.ToggleSloMo();
+        }
         transform.position = position;
         animator.enabled = false;
         SetKinematic(false);
