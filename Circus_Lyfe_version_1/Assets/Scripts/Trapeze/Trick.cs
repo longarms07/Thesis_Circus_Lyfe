@@ -11,6 +11,7 @@ public class Trick
     public float duration;
     public int score;
     public List<SwipeDirection> code;
+    public string playerAnimFile;
     
 
     public Trick(string n, float d, int s, List<SwipeDirection> c)

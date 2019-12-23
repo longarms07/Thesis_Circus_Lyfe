@@ -14,9 +14,12 @@ public class TrickManager : MonoBehaviour
     private float timer;
     private PlayerManager_Trapeze pm;
     private GameManager_Trapeze gm;
+    private static TrickManager instance;
 
     private void Awake()
     {
+        if (instance == null) instance = this;
+        else Destroy(this);
         foreach( Trick t in tricks){
             tricktionary.Add(t.code, t);
         }
@@ -61,6 +64,7 @@ public class TrickManager : MonoBehaviour
             Trick t = tricktionary[currentSwipe];
             gm.trickGUI.DidTrick(t.name, t.score);
             //stubbed, need to handle animation.
+            pm.DoAnimation(t.playerAnimFile);
               
         }
         currentSwipe.Clear();
@@ -77,6 +81,16 @@ public class TrickManager : MonoBehaviour
             if (i + 1 < l.Count) s += ", ";
         }
         return s;
+    }
+
+    public Dictionary<List<SwipeDirection>, Trick> GetTrickionary()
+    {
+        return tricktionary;
+    }
+
+    public static TrickManager GetInstance()
+    {
+        return instance;
     }
 
 }

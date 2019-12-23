@@ -38,12 +38,19 @@ public class PlayerManager_Trapeze : BodyManager
     private DistanceJoint2D lastJoint;
     private Quaternion initRot;
 
+    private Animator animator;
+    private Vector3 offset;
+    private TrickManager tm;
+    private Vector3 position;
+
     void Awake()
     {
         listeners = new List<IPTrapezeStateListener>();
         rb = GetComponent<Rigidbody2D>();
         if (jumpForce == null) jumpForce = new Vector3(0, 0, 0);
         initRot = transform.rotation;
+        offset = transform.position - head.transform.position;
+        position = transform.position;
 
     }
 
@@ -54,12 +61,17 @@ public class PlayerManager_Trapeze : BodyManager
         InitRBs();
         AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
         lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
+        tm = TrickManager.GetInstance();
+        animator = GetComponent<Animator>();
+        animator.enabled = false;
+
         //TurnAround();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         goingRight = GoingRight();
         if (centerOfGravity != null)
         {
@@ -264,7 +276,23 @@ public class PlayerManager_Trapeze : BodyManager
         rb.rotation = 0;
     }
 
-    
+    public void DoAnimation(string animName)
+    {
+        transform.position = head.transform.position + offset;
+        animator.enabled = true;
+        SetKinematic(true);
+        animator.SetTrigger(animName);
 
-    
+    }
+
+    public void AnimationEnded()
+    {
+        transform.position = position;
+        animator.enabled = false;
+        SetKinematic(false);
+    }
+
+
+
+
 }

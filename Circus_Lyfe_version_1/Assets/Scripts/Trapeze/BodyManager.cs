@@ -128,5 +128,16 @@ public class BodyManager : MonoBehaviour
     }
 
 
+    public void SetKinematic(bool t)
+    {
+        headRB.isKinematic = t;
+        torsoRB.isKinematic = t;
+        armsRB.isKinematic = t;
+        upperArmsRB.isKinematic = t;
+        lowerLegsRB.isKinematic = t;
+        upperLegsRB.isKinematic = t;
+    }
+
+
 
 }
