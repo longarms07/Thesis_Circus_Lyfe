@@ -1688,16 +1688,19 @@ MonoBehaviour:
     score: 50
     code: 03000000
     playerAnimFile: p_backflip
+    cloneLimbs: 0
   - name: Pirouette
     duration: 0
     score: 100
     code: 0100000007000000
-    playerAnimFile: player_trapeze_backflip
+    playerAnimFile: p_pirouette
+    cloneLimbs: 1
   - name: Shooting Star
     duration: 0
     score: 150
     code: 040000000300000002000000
-    playerAnimFile: player_trapeze_backflip
+    playerAnimFile: p_shoot_star
+    cloneLimbs: 0
   execTime: 20
 --- !u!4 &800483052
 Transform:
@@ -2840,7 +2843,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1620812591}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.341, y: 0.304, z: 0}
+  m_LocalPosition: {x: 1.341, y: 0.304, z: 1}
   m_LocalScale: {x: 0.25, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1756145790}

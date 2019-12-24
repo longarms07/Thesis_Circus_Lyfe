@@ -27,6 +27,27 @@ public class BodyManager : MonoBehaviour
     protected HingeJoint2D upperLegs2lowerLegs;
     protected bool facingRight = true;
 
+    private Quaternion headRot;
+    private Quaternion torsoRot;
+    private Quaternion armsRot;
+    private Quaternion upperArmsRot;
+    private Quaternion lowerLegsRot;
+    private Quaternion upperLegsRot;
+
+    private Quaternion headRot2;
+    private Quaternion torsoRot2;
+    private Quaternion armsRot2;
+    private Quaternion upperArmsRot2;
+    private Quaternion lowerLegsRot2;
+    private Quaternion upperLegsRot2;
+
+    private bool hasCloned = false;
+    private GameObject lowerLegs2;
+    private GameObject upperLegs2;
+    private GameObject arms2;
+    private GameObject upperArms2;
+
+
 
     protected Animator animator;
 
@@ -51,6 +72,12 @@ public class BodyManager : MonoBehaviour
         upperLegsRB = upperLegs.GetComponent<Rigidbody2D>();
         lowerLegsRB = lowerLegs.GetComponent<Rigidbody2D>();
         upperArmsRB = upperArms.GetComponent<Rigidbody2D>();
+        headRot = head.transform.localRotation;
+        torsoRot = torso.transform.localRotation;
+        armsRot =  arms.transform.localRotation;
+        upperLegsRot = upperLegs.transform.localRotation;
+        lowerLegsRot = lowerLegs.transform.localRotation;
+        upperArmsRot = upperArms.transform.localRotation;
         torso2upperLegs = torso.GetComponent<HingeJoint2D>();
         arms2torso = arms.GetComponent<HingeJoint2D>();
         upperArms2arms = upperArms.GetComponent<HingeJoint2D>();
@@ -143,6 +170,58 @@ public class BodyManager : MonoBehaviour
         upperLegsRB.isKinematic = t;
     }
 
+    protected void ResetRotation()
+    {
+        headRot2 = head.transform.localRotation;
+        torsoRot2 = torso.transform.localRotation;
+        armsRot2 = arms.transform.localRotation;
+        upperLegsRot2 = upperLegs.transform.localRotation;
+        lowerLegsRot2 = lowerLegs.transform.localRotation;
+        upperArmsRot2 = upperArms.transform.localRotation;
+        head.transform.localRotation = headRot;
+        torso.transform.localRotation = torsoRot;
+        arms.transform.localRotation = armsRot;
+        upperLegs.transform.localRotation = upperLegsRot;
+        lowerLegs.transform.localRotation = lowerLegsRot;
+        upperArms.transform.localRotation = upperArmsRot;
+    }
+
+    protected void ResumeRotation()
+    {
+        head.transform.localRotation = headRot2;
+        torso.transform.localRotation = torsoRot2;
+        arms.transform.localRotation = armsRot2;
+        upperLegs.transform.localRotation = upperLegsRot2;
+        lowerLegs.transform.localRotation = lowerLegsRot2;
+        upperArms.transform.localRotation = upperArmsRot2;
+
+    }
+
+    protected void CloneLimbs()
+    {
+        lowerLegs2 = Object.Instantiate(lowerLegs.gameObject, this.gameObject.transform);
+        lowerLegs2.name = "Lower legs(1)";
+        upperLegs2 = Object.Instantiate(upperLegs.gameObject, this.gameObject.transform);
+        upperLegs2.name = "Upper Legs (1)";
+        arms2 = Object.Instantiate(arms.gameObject, this.gameObject.transform);
+        arms2.name = "Arms (1)";
+        upperArms2 = Object.Instantiate(upperArms.gameObject, this.gameObject.transform);
+        upperArms2.name = "Upper Arms (1)";
+
+        hasCloned = true;
+    }
+
+    protected void KillClones()
+    {
+        if (hasCloned)
+        {
+            Destroy(lowerLegs2);
+            Destroy(arms2);
+            Destroy(upperArms2);
+            Destroy(upperLegs2);
+
+        }
+    }
 
 
 }

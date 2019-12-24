@@ -41,6 +41,7 @@ public class PlayerManager_Trapeze : BodyManager
     private Vector3 offset;
     private TrickManager tm;
     private Vector3 position;
+    private Quaternion rotation;
     private float jumpX = 0;
 
 
@@ -52,6 +53,7 @@ public class PlayerManager_Trapeze : BodyManager
         initRot = transform.rotation;
         offset = transform.position - head.transform.position;
         position = transform.position;
+        rotation = transform.rotation;
 
     }
 
@@ -64,7 +66,6 @@ public class PlayerManager_Trapeze : BodyManager
         lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
         tm = TrickManager.GetInstance();
         animator.enabled = false;
-
         //TurnAround();
     }
 
@@ -104,7 +105,7 @@ public class PlayerManager_Trapeze : BodyManager
         if (state == EnumPTrapezeState.OnTrapeze)
         {
         }
-        
+
     }
 
     public bool HasTarget()
@@ -284,8 +285,9 @@ public class PlayerManager_Trapeze : BodyManager
             gm.ToggleSloMo();
         }
         transform.position = head.transform.position + offset;
-        animator.enabled = true;
+        //ResetRotation();
         SetKinematic(true);
+        animator.enabled = true;
         animator.SetTrigger(animName);
 
     }
@@ -296,9 +298,12 @@ public class PlayerManager_Trapeze : BodyManager
         {
             gm.ToggleSloMo();
         }
-        transform.position = position;
         animator.enabled = false;
+        //ResumeRotation();
+        KillClones();
         SetKinematic(false);
+        this.gameObject.transform.position = position;
+        this.gameObject.transform.localPosition = position;
     }
     
 
