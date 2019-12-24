@@ -197,7 +197,7 @@ public class BodyManager : MonoBehaviour
 
     }
 
-    protected void CloneLimbs()
+   /* protected void CloneLimbs()
     {
         lowerLegs2 = Object.Instantiate(lowerLegs.gameObject, this.gameObject.transform);
         lowerLegs2.name = "Lower legs(1)";
@@ -221,7 +221,7 @@ public class BodyManager : MonoBehaviour
             Destroy(upperLegs2);
 
         }
-    }
+    }*/
 
 
 }

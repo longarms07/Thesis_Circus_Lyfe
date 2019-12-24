@@ -300,7 +300,7 @@ public class PlayerManager_Trapeze : BodyManager
         }
         animator.enabled = false;
         //ResumeRotation();
-        KillClones();
+        //KillClones();
         SetKinematic(false);
         this.gameObject.transform.position = position;
         this.gameObject.transform.localPosition = position;
