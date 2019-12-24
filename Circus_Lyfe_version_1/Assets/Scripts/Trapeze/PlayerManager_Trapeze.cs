@@ -38,7 +38,6 @@ public class PlayerManager_Trapeze : BodyManager
     private DistanceJoint2D lastJoint;
     private Quaternion initRot;
 
-    private Animator animator;
     private Vector3 offset;
     private TrickManager tm;
     private Vector3 position;
@@ -64,7 +63,6 @@ public class PlayerManager_Trapeze : BodyManager
         AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
         lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
         tm = TrickManager.GetInstance();
-        animator = GetComponent<Animator>();
         animator.enabled = false;
 
         //TurnAround();
@@ -100,8 +98,8 @@ public class PlayerManager_Trapeze : BodyManager
                     }
                 }
             }
-            if (Mathf.Abs(jumpX - headRB.position.x) >= fallDis) AttachToInitial();
-            Debug.Log(jumpX - headRB.position.x);
+            if (jumpX - headRB.position.y >= fallDis) AttachToInitial();
+            //Debug.Log(jumpX - headRB.position.x);
         }
         if (state == EnumPTrapezeState.OnTrapeze)
         {
@@ -161,7 +159,7 @@ public class PlayerManager_Trapeze : BodyManager
         {
             gm.ToggleSloMo();
         }
-        if (Mathf.Abs(jumpX - headRB.position.x) >= fallDis)
+        if (jumpX - headRB.position.y >= fallDis)
         {
             MassTeleport(joint2D.gameObject.transform.position);
             ClearForce();
@@ -203,7 +201,7 @@ public class PlayerManager_Trapeze : BodyManager
         if (!Deattach()) return false;
         if (GameManager_Trapeze.GetInstance().IsSloMoAllowed()) GameManager_Trapeze.GetInstance().ToggleSloMo();
         Vector2 dir = new Vector2(1,1);
-        jumpX = headRB.position.x;
+        jumpX = headRB.position.y;
         if (!facingRight) dir.x = -1;
         torsoRB.AddForce(dir*jumpForce, ForceMode2D.Impulse);
         return true;
@@ -302,7 +300,7 @@ public class PlayerManager_Trapeze : BodyManager
         animator.enabled = false;
         SetKinematic(false);
     }
-
+    
 
 
 

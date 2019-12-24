@@ -28,6 +28,9 @@ public class BodyManager : MonoBehaviour
     protected bool facingRight = true;
 
 
+    protected Animator animator;
+
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -52,6 +55,7 @@ public class BodyManager : MonoBehaviour
         arms2torso = arms.GetComponent<HingeJoint2D>();
         upperArms2arms = upperArms.GetComponent<HingeJoint2D>();
         upperLegs2lowerLegs = upperLegs.GetComponent<HingeJoint2D>();
+        animator = GetComponent<Animator>();
 
     }
 
@@ -100,6 +104,7 @@ public class BodyManager : MonoBehaviour
         int f = 1;
         if (facingRight) f = -1;
         facingRight = !facingRight;
+        animator.SetBool("facingRight", facingRight);
         //arms.transform.Rotate(0, 180, 0); 
         //upperArms.transform.Rotate(0, 180, 0);
         //lowerLegs.transform.Rotate(0, 180, 0);
@@ -113,9 +118,9 @@ public class BodyManager : MonoBehaviour
         lim.min = arms2torso.limits.min + f * 180;
         lim.max = arms2torso.limits.max + f * 180;
         arms2torso.limits = lim;
-        Debug.Log("Anchor x before: "+ arms2torso.connectedAnchor.x);
+        //Debug.Log("Anchor x before: "+ arms2torso.connectedAnchor.x);
         arms2torso.connectedAnchor = new Vector2(arms2torso.connectedAnchor.x*-1, arms2torso.connectedAnchor.y);
-        Debug.Log("Anchor x after: " + arms2torso.connectedAnchor.x);
+        //Debug.Log("Anchor x after: " + arms2torso.connectedAnchor.x);
         lim.min = upperArms2arms.limits.min + f * 180;
         lim.max = upperArms2arms.limits.max + f * 180;
         upperArms2arms.limits = lim;

@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &40759773
 Transform:
   m_ObjectHideFlags: 0
@@ -1732,7 +1732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &903624481
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3099,7 +3099,7 @@ MonoBehaviour:
   upperLegs: {fileID: 396207523}
   lowerLegs: {fileID: 1057589067}
   centerOfGravity: {fileID: 2081834690}
-  fallDis: 5
+  fallDis: 2
   moveTowardsDist: 20
   jumpForce: {x: 10, y: 75, z: 0}
   attachedTo: {fileID: 1742216238}
