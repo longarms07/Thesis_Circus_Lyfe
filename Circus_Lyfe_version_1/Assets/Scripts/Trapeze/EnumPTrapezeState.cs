@@ -7,5 +7,6 @@ public enum EnumPTrapezeState
     OnTrapeze,
     InAir,
     Paused,
+    Trick,
     NONE
 }

@@ -58,7 +58,7 @@ public abstract class ISwipeListener : MonoBehaviour
                 swipeDirection = SwipeDirection.East;
             }
             //West threshold
-            if (changeInY < -yThreshold)
+            if (changeInY < yThreshold)
             {
                 swipeDirection = SwipeDirection.West;
             }

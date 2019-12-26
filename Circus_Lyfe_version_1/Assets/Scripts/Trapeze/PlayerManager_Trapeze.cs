@@ -9,7 +9,6 @@ public class PlayerManager_Trapeze : BodyManager
     [Tooltip("The distance the player can fall before respawning at the initial trapeze")]
     public int fallDis;
     public float moveTowardsDist;
-    private int hasFallen = 0;
 
     public Vector3 jumpForce;
 
@@ -285,6 +284,7 @@ public class PlayerManager_Trapeze : BodyManager
             gm.ToggleSloMo();
         }
         transform.position = head.transform.position + offset;
+        state = EnumPTrapezeState.Trick;
         //ResetRotation();
         SetKinematic(true);
         animator.enabled = true;
@@ -294,7 +294,7 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void AnimationEnded()
     {
-        if (gm.IsSloMoAllowed() && !gm.InSloMo() && state == EnumPTrapezeState.InAir)
+        if (gm.IsSloMoAllowed() && !gm.InSloMo())
         {
             gm.ToggleSloMo();
         }
@@ -304,6 +304,7 @@ public class PlayerManager_Trapeze : BodyManager
         SetKinematic(false);
         this.gameObject.transform.position = position;
         this.gameObject.transform.localPosition = position;
+        state = EnumPTrapezeState.InAir;
     }
     
 
