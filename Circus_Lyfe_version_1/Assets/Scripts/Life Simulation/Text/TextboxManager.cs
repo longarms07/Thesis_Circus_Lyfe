@@ -20,6 +20,7 @@ public class TextboxManager : MonoBehaviour
     public GameObject textButtonPrefab;
     [Tooltip("The legal positions textbuttons can be in.")]
     public Vector3[] textButtonPositions;
+    public GameObject timeText;
     
 
     private static TextboxManager instance;
@@ -29,6 +30,9 @@ public class TextboxManager : MonoBehaviour
     private BoxCollider2D textCollider;
     private Button[] textButtons;
     private NPCInteractable notifyNPC;
+    private TextMeshProUGUI timeTextMesh;
+    private RectTransform timeTextRect;
+    private GameManager gm;
     
 
     private void Awake()
@@ -47,6 +51,9 @@ public class TextboxManager : MonoBehaviour
         textRect = textMeshPro.GetComponent<RectTransform>();
         if (textRect == null) Destroy(this.gameObject);
         textCollider = textBackground.AddComponent<BoxCollider2D>();
+        timeTextMesh = timeText.GetComponent<TextMeshProUGUI>();
+        timeTextRect = timeText.GetComponent<RectTransform>();
+        gm = GameManager.getInstance();
 
 
 
@@ -59,11 +66,21 @@ public class TextboxManager : MonoBehaviour
         textBackground.transform.localPosition = new Vector3(textBackground.transform.localPosition.x,
                                                              -(canvasRect.sizeDelta.y / 2) + height/2,
                                                                 textBackground.transform.localPosition.z);
+        timeTextRect.sizeDelta = new Vector2(canvasRect.sizeDelta.x/5, canvasRect.sizeDelta.y/5);
+        timeTextRect.transform.localPosition = new Vector3((canvasRect.sizeDelta.x/2),
+                                                            canvasRect.sizeDelta.y / 2, timeTextRect.localPosition.z);
+
+        UpdateDateTime();
     }
 
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public void UpdateDateTime()
+    {
+        timeTextMesh.text = gm.GetCurrentDay() + "\n" + gm.GetCurrentTime();
     }
 
     public static TextboxManager GetInstance() { return instance; }

@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,8 +27,9 @@ public class GameManager :  ISwipeListener, ITapListener
     private TouchMovable playerTouchMovable;
     protected RaycastHit2D lastTap;
     protected bool newLastTap;
-    
-  
+    private string savefile = "savetest.save";
+
+
 
     private static GameManager instance;
 
@@ -42,10 +45,12 @@ public class GameManager :  ISwipeListener, ITapListener
         {
             Destroy(this.gameObject);
         }
-
-        currentDay = DayEnums.Monday;
-        currentTime = TimeEnums.Morning;
-        majorActionDone = false;
+        if (!LoadSaveData())
+        {
+            currentDay = DayEnums.Monday;
+            currentTime = TimeEnums.Morning;
+            majorActionDone = false;
+        }
 
     }
 
@@ -205,6 +210,7 @@ public class GameManager :  ISwipeListener, ITapListener
         else
         {
             currentTime = TimeEnums.Evening;
+            TextboxManager.GetInstance().UpdateDateTime();
             ReloadScene();
         }
     }
@@ -237,6 +243,7 @@ public class GameManager :  ISwipeListener, ITapListener
         }
         currentTime = TimeEnums.Morning;
         majorActionDone = false;
+        TextboxManager.GetInstance().UpdateDateTime();
         ReloadScene();
     }
 
@@ -245,6 +252,58 @@ public class GameManager :  ISwipeListener, ITapListener
         //Stubbed
     }
 
-
-
+    public void SaveData()
+    {
+        LifeSimSaveData save = new LifeSimSaveData();
+        save.day = currentDay;
+        save.time = currentTime;
+        save.majorActionDone = majorActionDone;
+        BinaryFormatter format = new BinaryFormatter();
+        FileStream fs = File.Create(Application.persistentDataPath + savefile);
+        format.Serialize(fs, save);
+        fs.Close();
+        Debug.Log("Game Saved");    
     }
+
+    public bool LoadSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            BinaryFormatter format = new BinaryFormatter();
+            FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
+            LifeSimSaveData save = (LifeSimSaveData)format.Deserialize(fs);
+            fs.Close();
+            currentDay = save.day;
+            currentTime = save.time;
+            majorActionDone = save.majorActionDone;
+            Debug.Log("Game loaded");
+            return true;
+        }
+        return false;
+    }
+
+
+    public void DeleteSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+           File.Delete(Application.persistentDataPath + savefile);
+        }
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        SaveData(); 
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveData();
+    }
+
+    private void OnDestroy()
+    {
+        SaveData();
+    }
+
+}
