@@ -16,7 +16,9 @@ public class GameManager :  ISwipeListener, ITapListener
     [Tooltip("The layer NPCS are found on")]
     public int npcLayer;
 
-    
+    public DayEnums currentDay;
+    public TimeEnums currentTime;
+    public bool majorActionDone;
 
     public Dictionary<Transform, IInteractable> interactableDict;
     protected Dictionary<Transform, Button> buttonDict;
@@ -40,6 +42,11 @@ public class GameManager :  ISwipeListener, ITapListener
         {
             Destroy(this.gameObject);
         }
+
+        currentDay = DayEnums.Monday;
+        currentTime = TimeEnums.Morning;
+        majorActionDone = false;
+
     }
 
     private void Start()
@@ -172,5 +179,72 @@ public class GameManager :  ISwipeListener, ITapListener
             SceneManager.LoadScene("MovementDemoScene");
         }
     }
+
+    public DayEnums GetCurrentDay()
+    {
+        return currentDay;
+    }
+
+    public TimeEnums GetCurrentTime()
+    {
+        return currentTime;
+    }
+
+    public bool MajorActionDone()
+    {
+        return majorActionDone;
+    }
+
+    public void MajorActionCompleted()
+    {
+        if(currentTime == TimeEnums.Evening)
+        {
+            //Disable major interactables. Probably should do this in their script.
+            majorActionDone = true;
+        }
+        else
+        {
+            currentTime = TimeEnums.Evening;
+            ReloadScene();
+        }
+    }
+
+    public void IncrementDay()
+    {
+        switch (currentDay)
+        {
+            case DayEnums.Monday:
+                currentDay = DayEnums.Tuesday;
+                break;
+            case DayEnums.Tuesday:
+                currentDay = DayEnums.Wednesday;
+                break;
+            case DayEnums.Wednesday:
+                currentDay = DayEnums.Thursday;
+                break;
+            case DayEnums.Thursday:
+                currentDay = DayEnums.Friday;
+                break;
+            case DayEnums.Friday:
+                currentDay = DayEnums.Saturday;
+                break;
+            case DayEnums.Saturday:
+                currentDay = DayEnums.Sunday;
+                break;
+            case DayEnums.Sunday:
+                currentDay = DayEnums.Monday;
+                break;
+        }
+        currentTime = TimeEnums.Morning;
+        majorActionDone = false;
+        ReloadScene();
+    }
+
+    public void ReloadScene()
+    {
+        //Stubbed
+    }
+
+
 
     }
