@@ -281,7 +281,8 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (gm.IsSloMoAllowed() && gm.InSloMo())
         {
-            gm.ToggleSloMo();
+            //gm.ToggleSloMo();
+            animator.speed = animator.speed * 2;
         }
         transform.position = head.transform.position + offset;
         state = EnumPTrapezeState.Trick;
@@ -294,9 +295,10 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void AnimationEnded()
     {
-        if (gm.IsSloMoAllowed() && !gm.InSloMo())
+        if (gm.IsSloMoAllowed() && gm.InSloMo())
         {
-            gm.ToggleSloMo();
+            //gm.ToggleSloMo();
+            animator.speed = animator.speed / 2;
         }
         animator.enabled = false;
         //ResumeRotation();
