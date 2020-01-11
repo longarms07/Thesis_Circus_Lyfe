@@ -162,7 +162,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.ErikRidd.CircusLyfeversion02
+    Android: com.ErikRidd.CircusLyfeversion03
     Standalone: com.Company.ProductName
   buildNumber: {}
   AndroidBundleVersionCode: 1
