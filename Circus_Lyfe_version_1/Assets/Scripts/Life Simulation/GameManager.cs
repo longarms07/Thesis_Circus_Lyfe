@@ -94,7 +94,8 @@ public class GameManager :  ISwipeListener, ITapListener
             {
                 playerTouchMovable.OnTap(position);
             }
-            else if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == npcLayer)
+            else if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == npcLayer 
+                || lastTap.transform.gameObject.layer == interactableLayer2)
             {
                 playerTouchMovable.TargetInteractable(lastTap.collider, GetInteractable(lastTap.transform));
             }

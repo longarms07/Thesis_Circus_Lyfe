@@ -18,6 +18,8 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     public GameObject tapCollider;
     [Tooltip("The float used to determine the radius by which this object will search for nearby objects")]
     public float overlapRadius;
+    [Tooltip("The layers of interactables to look for")]
+    public String[] layers;
 
 
     private bool canMove;
@@ -178,8 +180,9 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
 
     public Collider2D[] CheckNearbyInteractables()
     {
+
         Collider2D[] nearbyHits = Physics2D.OverlapCircleAll(this.gameObject.transform.localPosition, overlapRadius,
-                                                             LayerMask.GetMask("Interactable"));
+                                                             LayerMask.GetMask(layers));
         foreach (Collider2D hit in nearbyHits)
         {
             IInteractable tempInteractable = GameManager.getInstance().GetInteractable(hit.transform);

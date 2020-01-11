@@ -29,7 +29,7 @@ public class TextboxManager : MonoBehaviour
     private RectTransform textRect;
     private BoxCollider2D textCollider;
     private Button[] textButtons;
-    private NPCInteractable notifyNPC;
+    private ITextboxListener notifyTarget;
     private TextMeshProUGUI timeTextMesh;
     private RectTransform timeTextRect;
     private GameManager gm;
@@ -104,16 +104,16 @@ public class TextboxManager : MonoBehaviour
         else
         {
             TextBoxActive(false);
-            notifyNPC.OnTextEnded();
-            notifyNPC = null;
+            notifyTarget.OnTextEnded();
+            notifyTarget = null;
         }
     }
 
-    public void SetText(string text, NPCInteractable target)
+    public void SetText(string text, ITextboxListener target)
     {
         textBox.text = text;
         textBox.pageToDisplay = 1;
-        notifyNPC = target;
+        notifyTarget = target;
     }
 
     public void GenerateTextButtons(IButtonListener target, string[] buttonText, int[] buttonCodes)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class NPCInteractable : MonoBehaviour, IInteractable
+public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxListener
 {
     private SpriteRenderer spriteRenderer;
     public Sprite defaultSprite;
