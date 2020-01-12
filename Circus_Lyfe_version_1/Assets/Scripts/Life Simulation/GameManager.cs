@@ -89,7 +89,7 @@ public class GameManager :  ISwipeListener, ITapListener
     {
         CheckTappedPosition(position);
         if (lastTap.transform != null && newLastTap) {
-            Debug.Log("Hit layer = " + lastTap.transform.gameObject.layer);
+            Debug.Log("Hit layer = " + lastTap.transform.gameObject.layer + "name = " + lastTap.transform.gameObject.name);
             if (lastTap.transform.gameObject.layer == floorLayer)
             {
                 playerTouchMovable.OnTap(position);

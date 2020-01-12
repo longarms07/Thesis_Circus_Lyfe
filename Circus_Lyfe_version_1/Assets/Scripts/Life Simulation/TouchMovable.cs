@@ -26,11 +26,11 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     private TouchInputManager touchInputManager;
     private Rigidbody2D da_Rigidbody;
     private bool drag = false;
-    private bool tap = true;
+    private bool tap = false;
     private bool targetingInteractable = false;
     private IInteractable targetInteractable;
     private Collider2D targetCollider;
-    private Vector3 targetPosition;
+    public Vector3 targetPosition;
     private TouchCursor touchCursor;
     private BoxCollider2D tapColliderRB;
     private Collider2D[] nearbyInteractables;
