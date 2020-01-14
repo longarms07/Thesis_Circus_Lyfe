@@ -40,7 +40,6 @@ public class LadderClimb : MonoBehaviour
                 invis.SetActive(true);
                 walls.enabled = false;
                 inter.enabled = false;
-                trigger[1].enabled = true;
                 active = false;
             }
             else
@@ -71,6 +70,7 @@ public class LadderClimb : MonoBehaviour
                 collision.gameObject.transform.position = new Vector3(collision.gameObject.transform.position.x,
                                                                         collision.gameObject.transform.position.y,
                                                                         collision.gameObject.transform.position.z + 3);
+                trigger[1].enabled = true;
             }
         }
 

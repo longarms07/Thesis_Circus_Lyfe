@@ -6,7 +6,8 @@ public class LadderInteractable : YesNoInteractable
 {
     private void Awake()
     {
-            message = "Would you like to practice Trapeze?";
+        message = "Would you like to practice Trapeze?";
+        isMajorAction = true;
     }
 
     override
@@ -15,6 +16,7 @@ public class LadderInteractable : YesNoInteractable
         TextboxManager.GetInstance().DespawnTextButtons();
         if (buttonCode == 0)
         {
+            GameManager.getInstance().MajorActionCompleted(false);
             GameManager.getInstance().ChangeSceneTrapeze();
         }
     }

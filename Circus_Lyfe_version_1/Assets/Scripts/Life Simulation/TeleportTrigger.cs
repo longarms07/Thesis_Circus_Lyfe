@@ -27,7 +27,9 @@ public class TeleportTrigger : MonoBehaviour
         if (collision.gameObject == GameManager.getInstance().playerAvatar && active)
         {
             target.Deactivate();
-            collision.gameObject.transform.position = target.transform.position;
+            collision.gameObject.transform.position = new Vector3(target.transform.position.x,
+                                                                  target.transform.position.y,
+                                                                  collision.gameObject.transform.position.z);
         }
     }
 

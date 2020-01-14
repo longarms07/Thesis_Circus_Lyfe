@@ -20,6 +20,9 @@ public class TextboxManager : MonoBehaviour
     public GameObject textButtonPrefab;
     [Tooltip("The legal positions textbuttons can be in.")]
     public Vector3[] textButtonPositions;
+    public int maxNumButtons;
+    public float buttonOffset;
+    public float buttonHeightPercent;
     public GameObject timeText;
     
 
@@ -29,6 +32,8 @@ public class TextboxManager : MonoBehaviour
     private RectTransform textRect;
     private BoxCollider2D textCollider;
     private Button[] textButtons;
+    private Vector2 buttonSizeDelta;
+    private Vector2 buttonBgrdSizeDelta;
     private ITextboxListener notifyTarget;
     private TextMeshProUGUI timeTextMesh;
     private RectTransform timeTextRect;
@@ -58,8 +63,8 @@ public class TextboxManager : MonoBehaviour
 
 
         float height = canvasRect.sizeDelta.y / heightPercent;
-        textRect.sizeDelta = new Vector2(canvasRect.sizeDelta.x-textOffset, height-(2*textOffset));
-        textRect.localPosition = new Vector3(textRect.localPosition.x+textOffset,
+        textRect.sizeDelta = new Vector2(canvasRect.sizeDelta.x-(2*textOffset), height-(2*textOffset));
+        textRect.localPosition = new Vector3(textRect.transform.localPosition.x,
                                              -(canvasRect.sizeDelta.y/2)+height/2,
                                              textRect.localPosition.z);
         textBackground.transform.localScale = new Vector3(canvasRect.sizeDelta.x, height, 1);
@@ -69,6 +74,18 @@ public class TextboxManager : MonoBehaviour
         timeTextRect.sizeDelta = new Vector2(canvasRect.sizeDelta.x/5, canvasRect.sizeDelta.y/5);
         timeTextRect.transform.localPosition = new Vector3((canvasRect.sizeDelta.x/2),
                                                             canvasRect.sizeDelta.y / 2, timeTextRect.localPosition.z);
+        textButtonPositions = new Vector3[maxNumButtons];
+        buttonHeightPercent = canvasRect.sizeDelta.y / buttonHeightPercent;
+        buttonSizeDelta = new Vector2(textRect.sizeDelta.x - (2*textOffset) ,buttonHeightPercent / maxNumButtons);
+        buttonBgrdSizeDelta = new Vector2(textRect.sizeDelta.x, buttonSizeDelta.y);
+        textButtonPositions[maxNumButtons - 1] = new Vector3(0, textRect.localPosition.y + buttonSizeDelta.y+buttonOffset,
+            textRect.localPosition.z);
+        for(int i = maxNumButtons-2; i >=0; i--)
+        {
+            textButtonPositions[i] = new Vector3(0, textButtonPositions[i+1].y + buttonSizeDelta.y+buttonOffset,
+                textRect.localPosition.z);
+        }
+
 
         UpdateDateTime();
     }
@@ -133,6 +150,7 @@ public class TextboxManager : MonoBehaviour
                 txt.SetListener(target);
                 txt.SetText(buttonText[i]);
                 txt.SetButtonCode(buttonCodes[i]);
+                txt.SetSizeDelta(buttonSizeDelta, buttonBgrdSizeDelta);
                 textButtons[i] = txt;
             }
         }

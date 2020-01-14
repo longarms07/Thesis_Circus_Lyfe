@@ -28,6 +28,7 @@ public class GameManager :  ISwipeListener, ITapListener
     protected RaycastHit2D lastTap;
     protected bool newLastTap;
     private string savefile = "savetest.save";
+    private List<IDayTimeChangeListener> dayTimeChangeListeners;
 
 
 
@@ -51,6 +52,7 @@ public class GameManager :  ISwipeListener, ITapListener
             currentTime = TimeEnums.Morning;
             majorActionDone = false;
         }
+        dayTimeChangeListeners = new List<IDayTimeChangeListener>();
 
     }
 
@@ -201,7 +203,7 @@ public class GameManager :  ISwipeListener, ITapListener
         return majorActionDone;
     }
 
-    public void MajorActionCompleted()
+    public void MajorActionCompleted(bool reload)
     {
         if(currentTime == TimeEnums.Evening)
         {
@@ -212,7 +214,14 @@ public class GameManager :  ISwipeListener, ITapListener
         {
             currentTime = TimeEnums.Evening;
             TextboxManager.GetInstance().UpdateDateTime();
-            ReloadScene();
+            if(reload) ReloadScene();
+            else
+            {
+                foreach (IDayTimeChangeListener listener in dayTimeChangeListeners)
+                {
+                    listener.DayTimeChange(currentDay, currentTime);
+                }
+            }
         }
     }
 
@@ -244,6 +253,10 @@ public class GameManager :  ISwipeListener, ITapListener
         }
         currentTime = TimeEnums.Morning;
         majorActionDone = false;
+        foreach(IDayTimeChangeListener listener in dayTimeChangeListeners)
+        {
+            listener.DayTimeChange(currentDay, currentTime);
+        }
         TextboxManager.GetInstance().UpdateDateTime();
         ReloadScene();
     }
@@ -305,6 +318,27 @@ public class GameManager :  ISwipeListener, ITapListener
     private void OnDestroy()
     {
         SaveData();
+    }
+
+    public bool SubscribeDayTimeChangeListener(IDayTimeChangeListener listener)
+    {
+        if (!dayTimeChangeListeners.Contains(listener))
+        {
+            dayTimeChangeListeners.Add(listener);
+            return true;
+        }
+        return false;
+    }
+
+    public bool UnsubscribeDayTimeChangeListener(IDayTimeChangeListener listener)
+    {
+        if (dayTimeChangeListeners.Contains(listener))
+        {
+            dayTimeChangeListeners.Remove(listener);
+            return true;
+        }
+        return false;
+
     }
 
 }

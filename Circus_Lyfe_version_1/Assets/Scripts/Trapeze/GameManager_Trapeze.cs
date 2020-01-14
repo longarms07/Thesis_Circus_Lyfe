@@ -187,4 +187,9 @@ public class GameManager_Trapeze : GameManager, ITapListener
         return sloMo;
     }
 
+    void OnDestroy()
+    {
+        if (InSloMo()) ToggleSloMo();
+    }
+
 }
