@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LadderInteractable : YesNoInteractable
 {
+    public int trustPoints;
+
     private void Awake()
     {
         message = "Would you like to practice Trapeze?";
@@ -16,8 +18,9 @@ public class LadderInteractable : YesNoInteractable
         TextboxManager.GetInstance().DespawnTextButtons();
         if (buttonCode == 0)
         {
-            GameManager.getInstance().MajorActionCompleted(false);
-            GameManager.getInstance().ChangeSceneTrapeze();
+            gm.MajorActionCompleted(false);
+            gm.GetPlayerManager().increaseTrustDonna(trustPoints);
+            gm.ChangeSceneTrapeze();
         }
     }
 }

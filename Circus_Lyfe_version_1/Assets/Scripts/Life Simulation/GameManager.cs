@@ -29,6 +29,7 @@ public class GameManager :  ISwipeListener, ITapListener
     protected bool newLastTap;
     private string savefile = "savetest.save";
     private List<IDayTimeChangeListener> dayTimeChangeListeners;
+    private PlayerManager pm;
 
 
 
@@ -72,6 +73,7 @@ public class GameManager :  ISwipeListener, ITapListener
                 Destroy(this.gameObject);
             }
             TouchInputManager.getInstance().SubscribeTapListener(this, 0);
+            pm = playerAvatar.GetComponent<PlayerManager>();
         }
     }
 
@@ -339,6 +341,11 @@ public class GameManager :  ISwipeListener, ITapListener
         }
         return false;
 
+    }
+
+    public PlayerManager GetPlayerManager()
+    {
+        return pm;
     }
 
 }

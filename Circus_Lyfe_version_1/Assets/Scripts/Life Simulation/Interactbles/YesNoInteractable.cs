@@ -11,11 +11,13 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable, IButtonL
      public Sprite inRangeSprite;
     protected bool isMajorAction;
     protected bool buttonsEnabled;
+    protected GameManager gm;
 
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.getInstance().RegisterInteractable(this.gameObject.transform, this);
+        gm = GameManager.getInstance();
+        gm.RegisterInteractable(this.gameObject.transform, this);
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         buttonsEnabled = true;
     }
