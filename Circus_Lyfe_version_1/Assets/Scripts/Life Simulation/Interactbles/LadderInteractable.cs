@@ -8,15 +8,14 @@ public class LadderInteractable : YesNoInteractable
 
     private void Awake()
     {
-        message = "Would you like to practice Trapeze?";
         isMajorAction = true;
     }
 
     override
-    public void OnButtonPressed(int buttonCode)
+    public void OnButtonPressed(string answer)
     {
-        TextboxManager.GetInstance().DespawnTextButtons();
-        if (buttonCode == 0)
+        //TextboxManager.GetInstance().DespawnTextButtons();
+        if (answer == "yes")
         {
             gm.MajorActionCompleted(false);
             gm.GetPlayerManager().increaseTrustDonna(trustPoints);

@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class PlayerHouseInteractable : YesNoInteractable
 {
-
+    
     void Start()
     {
-        message = "Would you like to go home and sleep?";
-        GameManager.getInstance().RegisterInteractable(this.gameObject.transform, this);
+        DoAtStart();
+        //yarnNode = "YesNoInteractables.PlayerHouse";
         spriteRenderer = this.gameObject.GetComponentInParent<SpriteRenderer>();
     }
 
     override
-    public void OnButtonPressed(int buttonCode)
+    public void OnButtonPressed(string answer)
     {
-        TextboxManager.GetInstance().DespawnTextButtons();
-        if (buttonCode == 0)
+        //TextboxManager.GetInstance().DespawnTextButtons();
+        if (answer == "yes")
         {
             GameManager.getInstance().IncrementDay();
         }

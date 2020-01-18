@@ -1,25 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Yarn.Unity;
 
-public abstract class YesNoInteractable : MonoBehaviour, IInteractable, IButtonListener, ITextboxListener
+public abstract class YesNoInteractable : MonoBehaviour, IInteractable
 {
 
      protected string message;
      protected SpriteRenderer spriteRenderer;
      public Sprite defaultSprite;
      public Sprite inRangeSprite;
+    public string yarnNode;
+    public string tiredNode;
+    public YarnProgram scriptToLoad;
     protected bool isMajorAction;
-    protected bool buttonsEnabled;
+    //protected bool buttonsEnabled;
     protected GameManager gm;
 
     // Start is called before the first frame update
     void Start()
     {
+        DoAtStart();
+    }
+
+    protected void DoAtStart()
+    {
         gm = GameManager.getInstance();
         gm.RegisterInteractable(this.gameObject.transform, this);
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-        buttonsEnabled = true;
+        //buttonsEnabled = true;
+        if (scriptToLoad != null)
+        {
+            DialogueRunner dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
+            dialogueRunner.Add(scriptToLoad);
+        }
     }
 
     // Update is called once per frame
@@ -32,15 +46,15 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable, IButtonL
     {
         if (!isMajorAction || !GameManager.getInstance().MajorActionDone())
         {
-            TextboxManager.GetInstance().SetText(message, this);
+            FindObjectOfType<DialogueRunner>().StartDialogue(yarnNode);
         }
         else
         {
-            TextboxManager.GetInstance().SetText("You're too tired to do this right now.<page> Go home and sleep.", this);
-            buttonsEnabled = false;
+            FindObjectOfType<DialogueRunner>().StartDialogue(tiredNode);
+            //buttonsEnabled = false;
         }
 
-        TextboxManager.GetInstance().TextBoxActive(true);
+        //TextboxManager.GetInstance().TextBoxActive(true);
     }
 
     public void InRange(bool inRange)
@@ -56,9 +70,10 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable, IButtonL
         }
     }
 
-    public abstract void OnButtonPressed(int buttonCode);
+    [YarnCommand("YesNoAnswer")]
+    public abstract void OnButtonPressed(string answer);
 
-    public void OnTextEnded()
+    /*public void OnTextEnded()
     {
         if (buttonsEnabled)
         {
@@ -74,6 +89,8 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable, IButtonL
         {
             buttonsEnabled = true;
         }
-    
-    }
+    }*/
+
+
+
 }

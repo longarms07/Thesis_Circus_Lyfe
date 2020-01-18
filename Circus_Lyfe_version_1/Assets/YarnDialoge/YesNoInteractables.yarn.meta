@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 0a3fe3194180d0f4289c72ad1422c435
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 94073015eacc34c1d8fc6786e43d60ca, type: 3}
+  baseLanguageID: en
+  stringIDs:
+  - YesNoInteractables-YesNoTooTired-0
+  - YesNoInteractables-YesNoTooTired-1
+  - YesNoInteractables-PlayerHouse-2
+  - YesNoInteractables-PlayerHouse-3
+  - YesNoInteractables-PlayerHouse-4
+  - YesNoInteractables-TrapezeLadder-5
+  - YesNoInteractables-TrapezeLadder-6
+  - YesNoInteractables-TrapezeLadder-7
+  compilationStatus: 1
+  isSuccesfullyCompiled: 1
+  compilationErrorMessage: 

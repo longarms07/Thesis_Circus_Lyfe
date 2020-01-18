@@ -1,0 +1,28 @@
+title: YesNoTired
+tags: 
+---
+You're too tired to do this right now.
+Go home and sleep.
+===
+
+
+title: PlayerHouse
+tags: 
+---
+Would you like to go home and sleep?
+-> Yes
+	<<YesNoAnswer PlayerHouseInteractable yes>>
+-> No
+	<<YesNoAnswer PlayerHouseInteractable no>>
+===
+
+title: TrapezeLadder
+tags: 
+---
+Would you like to practice Trapeze?
+-> Yes
+	<<YesNoAnswer TrapezeLadder yes>>
+-> No
+	<<YesNoAnswer TrapezeLadder no>>
+
+===

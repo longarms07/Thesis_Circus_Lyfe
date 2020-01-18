@@ -7295,7 +7295,7 @@ GameObject:
   - component: {fileID: 1364667442}
   - component: {fileID: 1364667441}
   m_Layer: 11
-  m_Name: Interactable
+  m_Name: PlayerHouseInteractable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7355,6 +7355,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultSprite: {fileID: 21300000, guid: a82f5de7bb3e0b243abfb7c14e2386d9, type: 3}
   inRangeSprite: {fileID: 21300000, guid: 8dc051ca6c770334187a9dcd749652a7, type: 3}
+  yarnNode: PlayerHouse
+  tiredNode: YesNoTired
+  scriptToLoad: {fileID: 2480198943629176163, guid: 0a3fe3194180d0f4289c72ad1422c435,
+    type: 3}
 --- !u!1 &1390933804
 GameObject:
   m_ObjectHideFlags: 0
@@ -7609,7 +7613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueContainer: {fileID: 2073985027}
-  textSpeed: 0.025
+  textSpeed: 0.05
   optionButtons: []
   onDialogueStart:
     m_PersistentCalls:
@@ -10697,7 +10701,7 @@ GameObject:
   - component: {fileID: 2142352757}
   - component: {fileID: 2142352754}
   m_Layer: 11
-  m_Name: Trapeze Ladder
+  m_Name: TrapezeLadder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10810,5 +10814,9 @@ MonoBehaviour:
   defaultSprite: {fileID: 1140353243803619208, guid: 5bddb3ef134205943942fb84c46be796,
     type: 3}
   inRangeSprite: {fileID: 3061592635252434305, guid: 5bddb3ef134205943942fb84c46be796,
+    type: 3}
+  yarnNode: TrapezeLadder
+  tiredNode: YesNoTired
+  scriptToLoad: {fileID: 2480198943629176163, guid: 0a3fe3194180d0f4289c72ad1422c435,
     type: 3}
   trustPoints: 5
