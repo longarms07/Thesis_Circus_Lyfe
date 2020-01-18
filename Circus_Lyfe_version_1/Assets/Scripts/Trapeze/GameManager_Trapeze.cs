@@ -35,7 +35,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
             Destroy(this.gameObject);
         }
         interactableDict = new Dictionary<Transform, IInteractable>();
-        buttonDict = new Dictionary<Transform, Button>();
+        buttonDict = new Dictionary<Transform, IButton>();
         sloMo = false;
         slowMoAllowed = true;
     }
@@ -106,7 +106,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
                 Debug.Log(lastTap.transform.gameObject);
                 if (lastTap.transform.gameObject.layer == 5)
                 {
-                    Button btn = GetButton(lastTap.transform);
+                    IButton btn = GetButton(lastTap.transform);
                     if (btn != null) btn.OnTap();
                 }
             }

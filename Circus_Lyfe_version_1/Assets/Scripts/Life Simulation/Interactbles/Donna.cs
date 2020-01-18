@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Yarn.Unity;
 
 public class Donna : NPCInteractable, IButtonListener
 {
@@ -8,8 +9,11 @@ public class Donna : NPCInteractable, IButtonListener
     override
     public void OnInteraction()
     {
+
+        FindObjectOfType<DialogueRunner>().StartDialogue(GetComponent<Yarn.Unity.Example.NPC>().talkToNode);
+        /*
         TextboxManager.GetInstance().SetText("Hi, my name is Donna!<page>Welcome to Circus Lyfe Version 0.3.", this);
-        TextboxManager.GetInstance().TextBoxActive(true);
+        TextboxManager.GetInstance().TextBoxActive(true);*/
     }
 
     public void OnButtonPressed(int buttonCode)

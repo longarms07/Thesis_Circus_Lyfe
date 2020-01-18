@@ -23,7 +23,7 @@ public class GameManager :  ISwipeListener, ITapListener
     public bool majorActionDone;
 
     public Dictionary<Transform, IInteractable> interactableDict;
-    protected Dictionary<Transform, Button> buttonDict;
+    protected Dictionary<Transform, IButton> buttonDict;
     private TouchMovable playerTouchMovable;
     protected RaycastHit2D lastTap;
     protected bool newLastTap;
@@ -41,7 +41,7 @@ public class GameManager :  ISwipeListener, ITapListener
         {
             instance = this;
             interactableDict = new Dictionary<Transform, IInteractable>();
-            buttonDict = new Dictionary<Transform, Button>();
+            buttonDict = new Dictionary<Transform, IButton>();
         }
         else
         {
@@ -106,11 +106,13 @@ public class GameManager :  ISwipeListener, ITapListener
             else if (lastTap.transform.gameObject.layer == 5)
             {
                 if (lastTap.transform.gameObject == TextboxManager.GetInstance().textBackground)
-                    TextboxManager.GetInstance().OnTap();
-                else 
                 {
-                    Button btn = GetButton(lastTap.transform);
-                    if (btn != null) btn.OnTap();
+                    TextboxManager.GetInstance().OnTap();
+                }
+                else
+                {
+                    /*IButton btn = GetButton(lastTap.transform);
+                    if (btn != null) btn.OnTap();*/
                 }
             }
         }
@@ -150,13 +152,13 @@ public class GameManager :  ISwipeListener, ITapListener
         return null;
     }
 
-    public void RegisterButton(Transform transform, Button button)
+    public void RegisterButton(Transform transform, IButton button)
     {
             buttonDict.Add(transform, button);
             //Debug.Log("Registered button");
     }
 
-    public Button GetButton(Transform transform)
+    public IButton GetButton(Transform transform)
     {
        // Debug.Log("Key = " + transform);
         if (transform!=null && buttonDict.ContainsKey(transform))

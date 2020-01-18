@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class TextButton : Button
+public class TextButton : IButton
 {
 
     private TextMeshProUGUI textMesh;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Yarn.Unity;
+using UnityEngine.UI;
 
 public class TextboxManager : MonoBehaviour
 {
@@ -31,19 +33,27 @@ public class TextboxManager : MonoBehaviour
     private RectTransform canvasRect;
     private RectTransform textRect;
     private BoxCollider2D textCollider;
-    private Button[] textButtons;
+    private List<Button> textButtons;
     private Vector2 buttonSizeDelta;
     private Vector2 buttonBgrdSizeDelta;
     private ITextboxListener notifyTarget;
     private TextMeshProUGUI timeTextMesh;
     private RectTransform timeTextRect;
     private GameManager gm;
-    
+    private DialogueUI dUI;
+    private bool lineComplete;
+    private bool checkBtnSize;
 
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(this);
+        textButtons = new List<Button>();
+        for (int i = 0; i < maxNumButtons; i++)
+        {
+            GameObject btn = Instantiate(textButtonPrefab);
+            textButtons.Add(btn.GetComponent<Button>());
+        }
     }
 
     // Start is called before the first frame update
@@ -59,7 +69,8 @@ public class TextboxManager : MonoBehaviour
         timeTextMesh = timeText.GetComponent<TextMeshProUGUI>();
         timeTextRect = timeText.GetComponent<RectTransform>();
         gm = GameManager.getInstance();
-
+        dUI = GetComponent<DialogueUI>();
+        lineComplete = false;
 
 
         float height = canvasRect.sizeDelta.y / heightPercent;
@@ -78,6 +89,7 @@ public class TextboxManager : MonoBehaviour
         buttonHeightPercent = canvasRect.sizeDelta.y / buttonHeightPercent;
         buttonSizeDelta = new Vector2(textRect.sizeDelta.x - (2*textOffset) ,buttonHeightPercent / maxNumButtons);
         buttonBgrdSizeDelta = new Vector2(textRect.sizeDelta.x, buttonSizeDelta.y);
+        Debug.Log("Button size delta: " + buttonSizeDelta + ", Bgd size delta: " + buttonBgrdSizeDelta);
         textButtonPositions[maxNumButtons - 1] = new Vector3(0, textRect.localPosition.y + buttonSizeDelta.y+buttonOffset,
             textRect.localPosition.z);
         for(int i = maxNumButtons-2; i >=0; i--)
@@ -85,10 +97,27 @@ public class TextboxManager : MonoBehaviour
             textButtonPositions[i] = new Vector3(0, textButtonPositions[i+1].y + buttonSizeDelta.y+buttonOffset,
                 textRect.localPosition.z);
         }
-
+        //textButtons = new List<Button>();
+        for (int i = 0; i < maxNumButtons; i++)
+        {
+            Button btn = textButtons[i];
+            btn.gameObject.name = "TextButton#" + i;
+            /*TextButton txt = btn.GetComponent<TextButton>();
+            textButtons[i] = txt;
+            txt.SetSizeDelta(buttonSizeDelta, buttonBgrdSizeDelta);*/
+            btn.transform.SetParent(textCanvas.transform);
+            btn.transform.localPosition = textButtonPositions[i];
+            RectTransform[] rects = GetComponentsInChildren<RectTransform>();
+            btn.transform.localScale = Vector3.one;
+            btn.GetComponent<BoxCollider2D>().size = buttonBgrdSizeDelta;
+            btn.gameObject.SetActive(false);
+        }
+        checkBtnSize = true;
+        dUI.optionButtons = textButtons;
 
         UpdateDateTime();
     }
+    
 
     // Update is called once per frame
     void Update()
@@ -107,6 +136,15 @@ public class TextboxManager : MonoBehaviour
         textBox.pageToDisplay = 1;
         textMeshPro.SetActive(activate);
         textBackground.SetActive(activate);
+        if (checkBtnSize && textButtons[0].GetComponent<RectTransform>().sizeDelta != buttonSizeDelta)
+        {
+            foreach (Button btn in textButtons)
+            {
+                RectTransform rect = btn.GetComponent<RectTransform>();
+                rect.sizeDelta = buttonBgrdSizeDelta;
+            }
+            checkBtnSize = false;
+        }
         GameManager.getInstance().TogglePlayerMovement(!activate);
     }
 
@@ -118,12 +156,23 @@ public class TextboxManager : MonoBehaviour
             textBox.pageToDisplay = textBox.pageToDisplay + 1;
             Debug.Log("Page to display is now " + textBox.pageToDisplay);
         }
-        else
+        else if (lineComplete)
         {
-            TextBoxActive(false);
-            notifyTarget.OnTextEnded();
-            notifyTarget = null;
+            lineComplete = false;
+            dUI.MarkLineComplete();
         }
+    }
+
+    public void OnTextComplete()
+    {
+        TextBoxActive(false);
+        if(notifyTarget!=null) notifyTarget.OnTextEnded();
+        notifyTarget = null;
+    }
+
+    public void LineComplete(bool b)
+    {
+        lineComplete = b;
     }
 
     public void SetText(string text, ITextboxListener target)
@@ -133,35 +182,39 @@ public class TextboxManager : MonoBehaviour
         notifyTarget = target;
     }
 
+    public void SetText(string text)
+    {
+        textBox.text = text;
+        textBox.pageToDisplay = 1;
+    }
+
     public void GenerateTextButtons(IButtonListener target, string[] buttonText, int[] buttonCodes)
     {
 
         GameManager.getInstance().TogglePlayerMovement(false);
         if (buttonText.Length == buttonCodes.Length)
         {
-            textButtons = new TextButton[buttonText.Length];
+            textButtons = new List<Button>();
             for (int i = 0; i < Mathf.Min(buttonText.Length, textButtonPositions.Length); i++)
             {
-                GameObject btn = Instantiate(textButtonPrefab);
-                btn.name = "TextButton#" + buttonCodes[i];
-                TextButton txt = btn.GetComponent<TextButton>();
-                btn.transform.SetParent(textCanvas.transform);
-                btn.transform.localPosition = textButtonPositions[i];
+                /*IButton btn = textButtons[i];
+                btn.gameObject.SetActive(true);
+                TextButton txt = btn.gameObject.GetComponent<TextButton>();
                 txt.SetListener(target);
                 txt.SetText(buttonText[i]);
-                txt.SetButtonCode(buttonCodes[i]);
-                txt.SetSizeDelta(buttonSizeDelta, buttonBgrdSizeDelta);
-                textButtons[i] = txt;
+                txt.SetButtonCode(buttonCodes[i]);*/
+                Button btn = textButtons[i];
+                btn.gameObject.SetActive(true);
             }
         }
     }
 
     public void DespawnTextButtons()
     {
-        foreach(TextButton btn in textButtons)
+        /*foreach(TextButton btn in textButtons)
         {
-            Destroy(btn.gameObject);
-        }
+            btn.gameObject.SetActive(false);
+        }*/
         GameManager.getInstance().TogglePlayerMovement(true);
     }
 

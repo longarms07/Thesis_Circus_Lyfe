@@ -1,0 +1,16 @@
+title: Donna
+tags: 
+---
+<<if visited("Donna") is false>>
+    Donna: Testing!
+	-> Was the test successful?
+	 Donna: Seems to be!
+	-> What are you testing?
+	 Donna: Yarn spinner in general, and also whether or not branching paths works.
+	Donna: Overall I'd say it is working well.
+<<else>>
+    Donna: Hey!! #line:ship13
+<<endif>>
+
+
+===
