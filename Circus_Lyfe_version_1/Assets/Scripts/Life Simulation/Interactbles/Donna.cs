@@ -10,10 +10,17 @@ public class Donna : NPCInteractable, IButtonListener
     public void OnInteraction()
     {
 
-        FindObjectOfType<DialogueRunner>().StartDialogue(GetComponent<Yarn.Unity.Example.NPC>().talkToNode);
+        FindObjectOfType<DialogueRunner>().StartDialogue(ChooseDialogNode());
         /*
         TextboxManager.GetInstance().SetText("Hi, my name is Donna!<page>Welcome to Circus Lyfe Version 0.3.", this);
         TextboxManager.GetInstance().TextBoxActive(true);*/
+    }
+
+    private string ChooseDialogNode()
+    {
+        List<string> toChose = schedule[gm.currentDay][gm.currentTime].dialogNodes;
+        string chosen = toChose[Random.Range(0, toChose.Count)];
+        return chosen;
     }
 
     public void OnButtonPressed(int buttonCode)

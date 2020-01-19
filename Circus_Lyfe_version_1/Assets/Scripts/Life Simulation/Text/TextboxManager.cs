@@ -133,6 +133,7 @@ public class TextboxManager : MonoBehaviour
 
     public void TextBoxActive(bool activate)
     {
+        textBox.text = "";
         textBox.pageToDisplay = 1;
         textMeshPro.SetActive(activate);
         textBackground.SetActive(activate);
@@ -146,6 +147,15 @@ public class TextboxManager : MonoBehaviour
             checkBtnSize = false;
         }
         GameManager.getInstance().TogglePlayerMovement(!activate);
+    }
+
+    public void HideTextBox(bool hide)
+    {
+        if (!textBox.text.Equals(""))
+        {
+            textMeshPro.SetActive(!hide);
+            textBackground.SetActive(!hide);
+        }
     }
 
     public void OnTap()

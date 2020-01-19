@@ -6144,7 +6144,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1137204067}
   - component: {fileID: 1137204066}
-  - component: {fileID: 1137204070}
   - component: {fileID: 1137204065}
   - component: {fileID: 1137204068}
   - component: {fileID: 1137204069}
@@ -6268,6 +6267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c14b8f0e1dbc7498f8d93753553e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scriptToLoad: {fileID: 2480198943629176163, guid: 930b546754ae0d64ca54ca3bcf3483d0,
+    type: 3}
   defaultSprite: {fileID: 2923565159116723331, guid: 92a31a17841e48e4983af25d41f8efe7,
     type: 3}
   inRangeSprite: {fileID: 1129998183115349062, guid: 92a31a17841e48e4983af25d41f8efe7,
@@ -6275,62 +6276,103 @@ MonoBehaviour:
   schedule2convert:
   - day: 0
     time: 0
-    position: {fileID: 386127371}
+    position:
+      dialogNodes:
+      - DonnaTrapezePractice0
+      - DonnaAdvice1
+      pos: {fileID: 386127373}
   - day: 0
     time: 1
-    position: {fileID: 1197019663}
+    position:
+      dialogNodes:
+      - DonnaSolitaire
+      - DonnaNewDeck
+      - DonnaKaroake
+      pos: {fileID: 158905358}
   - day: 1
     time: 0
-    position: {fileID: 386127371}
+    position:
+      dialogNodes:
+      - DonnaTrapezePractice0
+      - DonnaAdvice1
+      pos: {fileID: 386127373}
   - day: 1
     time: 1
-    position: {fileID: 1197019663}
+    position:
+      dialogNodes:
+      - DonnaSolitaire
+      - DonnaNewDeck
+      - DonnaKaroake
+      pos: {fileID: 980754845}
   - day: 2
     time: 0
-    position: {fileID: 1126228673}
+    position:
+      dialogNodes:
+      - DonnaNewDeck
+      - DonnaArchery
+      pos: {fileID: 1126228675}
   - day: 2
     time: 1
-    position: {fileID: 158905356}
+    position:
+      dialogNodes:
+      - DonnaKaraoke
+      - DonnaTest
+      pos: {fileID: 1197019664}
   - day: 3
     time: 0
-    position: {fileID: 386127371}
+    position:
+      dialogNodes:
+      - DonnaTrapezePractice0
+      - DonnaAdvice1
+      pos: {fileID: 386127373}
   - day: 3
     time: 1
-    position: {fileID: 1197019663}
+    position:
+      dialogNodes:
+      - DonnaArchery
+      - DonnaAdvice1
+      pos: {fileID: 1126228675}
   - day: 4
     time: 0
-    position: {fileID: 386127371}
+    position:
+      dialogNodes:
+      - DonnaTrapezePractice0
+      - DonnaAdvice1
+      pos: {fileID: 386127373}
   - day: 4
     time: 1
-    position: {fileID: 158905356}
+    position:
+      dialogNodes:
+      - DonnaSolitaire
+      - DonnaKaraoke
+      pos: {fileID: 158905358}
   - day: 5
     time: 0
-    position: {fileID: 386127371}
+    position:
+      dialogNodes:
+      - DonnaTrapezePractice0
+      - DonnaAdvice1
+      pos: {fileID: 386127373}
   - day: 5
     time: 1
-    position: {fileID: 1197019663}
+    position:
+      dialogNodes:
+      - DonnaNewDeck
+      - DonnaArchery
+      pos: {fileID: 1197019664}
   - day: 6
     time: 0
-    position: {fileID: 158905356}
+    position:
+      dialogNodes:
+      - DonnaArchery
+      pos: {fileID: 1126228675}
   - day: 6
     time: 1
-    position: {fileID: 1197019663}
---- !u!114 &1137204070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137204064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3419b57eb638f44db88701b5b33b8af8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterName: Donna
-  talkToNode: Donna
-  scriptToLoad: {fileID: 2480198943629176163, guid: 930b546754ae0d64ca54ca3bcf3483d0,
-    type: 3}
+    position:
+      dialogNodes:
+      - DonnaNewDeck
+      - DonnaKaraoke
+      pos: {fileID: 158905358}
 --- !u!1 &1148922797
 GameObject:
   m_ObjectHideFlags: 0
@@ -7560,7 +7602,7 @@ MonoBehaviour:
   textMeshPro: {fileID: 2073985027}
   textBackground: {fileID: 1592310473}
   textCanvas: {fileID: 1060844438}
-  heightPercent: 5
+  heightPercent: 4
   textOffset: 10
   textButtonPrefab: {fileID: 5463225882612016182, guid: 6b1f8ec85fb85c94aa576f867921c391,
     type: 3}
@@ -7598,7 +7640,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultVariables: []
+  defaultVariables:
+  - name: PlayerName
+    value: Player
+    type: 1
   debugTextView: {fileID: 0}
 --- !u!114 &1438867807
 MonoBehaviour:
@@ -7613,7 +7658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueContainer: {fileID: 2073985027}
-  textSpeed: 0.05
+  textSpeed: 0
   optionButtons: []
   onDialogueStart:
     m_PersistentCalls:
@@ -7713,12 +7758,34 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   onOptionsStart:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1438867804}
+        m_MethodName: HideTextBox
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onOptionsEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1438867804}
+        m_MethodName: HideTextBox
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onCommand:
@@ -7726,6 +7793,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: Yarn.Unity.DialogueRunner+StringUnityEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  variableStorage: {fileID: 1438867806}
 --- !u!114 &1438867808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10102,10 +10170,10 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 25
   m_fontSizeMax: 72
   m_fontStyle: 0

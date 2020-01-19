@@ -9,6 +9,6 @@ public class DayTimeScheduleConverter
 
     public DayEnums day;
     public TimeEnums time;
-    public GameObject position;
+    public NPCLocation position;
     
 }

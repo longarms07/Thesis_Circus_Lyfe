@@ -72,7 +72,8 @@ namespace Yarn.Unity {
         public UnityEngine.Events.UnityEvent onOptionsEnd;
 
         public DialogueRunner.StringUnityEvent onCommand;
-        
+        public InMemoryVariableStorage variableStorage;
+
         void Awake ()
         {
             // Start by hiding the container
@@ -82,6 +83,61 @@ namespace Yarn.Unity {
             foreach (var button in optionButtons) {
                 button.gameObject.SetActive (false);
             }
+        }
+
+        //The following two methods were provided by TheSabotender on the Yarn Spinner Github
+        //https://github.com/YarnSpinnerTool/YarnSpinner/issues/25#issuecomment-227475923 
+        string CheckVars(string input)
+        {
+            string output = string.Empty;
+            bool checkingVar = false;
+            string currentVar = string.Empty;
+
+            int index = 0;
+            while (index < input.Length)
+            {
+                if (input[index] == '[')
+                {
+                    checkingVar = true;
+                    currentVar = string.Empty;
+                }
+                else if (input[index] == ']')
+                {
+                    checkingVar = false;
+                    output += ParseVariable(currentVar);
+                    currentVar = string.Empty;
+                }
+                else if (checkingVar)
+                {
+                    currentVar += input[index];
+                }
+                else
+                {
+                    output += input[index];
+                }
+                index += 1;
+            }
+
+            return output;
+        }
+
+        string ParseVariable(string varName)
+        {
+            Debug.Log("varName = " + varName);
+            //Check YarnSpinner's variable storage first
+            if (variableStorage.GetValue(varName) != Yarn.Value.NULL)
+            {
+                return variableStorage.GetValue(varName).AsString;
+            }
+
+            //Handle other variables here
+            if (varName == "$time")
+            {
+                return Time.time.ToString();
+            }
+
+            //If no variables are found, return the variable name
+            return varName;
         }
 
         public override Dialogue.HandlerExecutionType RunLine (Yarn.Line line, IDictionary<string,string> strings, System.Action onComplete)
@@ -101,6 +157,8 @@ namespace Yarn.Unity {
                 Debug.LogWarning($"Line {line.ID} doesn't have any localised text.");
                 text = line.ID;
             }
+
+            text = CheckVars(text);
 
             if (textSpeed > 0.0f) {
                 // Display the line one character at a time

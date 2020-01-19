@@ -1,7 +1,7 @@
-title: Donna
+title: DonnaTest
 tags: 
 ---
-<<if visited("Donna") is false>>
+<<if visited("DonnaTest") is false>>
     Donna: Testing!
 	-> Was the test successful?
 	 Donna: Seems to be!
@@ -9,8 +9,104 @@ tags:
 	 Donna: Yarn spinner in general, and also whether or not branching paths works.
 	Donna: Overall I'd say it is working well.
 <<else>>
-    Donna: Hey!! #line:ship13
+    Donna: Hey!! 
 <<endif>>
+===
 
+title: DonnaTrapezePractice0
+tags: trapeze_practice
+---
+Donna: Oh hey [$PlayerName], are ya here to get some practice in too?
+->Yes
+	Donna: Sweet, good chance for me to see how your technique's improved. 
+->No
+	Donna: Eh, that's alright. It's good to take things at your own pace, just gotta make sure you practice enough that ya don't get rusty. 
+	I'm pretty much here all the time practicing myself, it's become my morning ritual.
+===
 
+title: DonnaSolitaire
+tags: 
+---
+Donna: Ugh, you ever just have one of those nights? 
+I've been playing solitaire for hours now, but can't seem to win a single round. 
+Somehow managed to deal three games in a row where there weren't even any moves I could make!
+->Sounds like bad luck.
+	<<IncreaseTrust PlayerAvatar 2>>
+	Donna: Heh, Lady Luck certainly does have it out for me. 
+	Doesn't help that I'm legendarily bad at these games. 
+	If I actually wagered money on poker, my account would be in the red before the hand was dealt. 
+	Still, I love playing cards, doesn't matter what the game or how hard I lose it.
+->Maybe you should quit while you're behind.
+	<<DecreaseTrust PlayerAvatar 5>>
+	Donna: Nah, no one ever gets anywhere in life with that attitude. 
+	I actually really like playing all these card games, even though you can probably count the number of times I've won on one hand. 
+	But there's no chance of winning one if I don't play. Besides, how can I complain about losing if I don't lose?
+->Say Nothing
+	Donna: Oh well, I'm sure the next round'll go better.
+===
+
+title: DonnaNewDeck
+tags: 
+---
+Donna: I got a new set of playing cards today. I always make sure to check for themed decks I don't have every time the shop gets a shipment.
+===
+
+title: DonnaAdvice1
+tags: 
+---
+<<if visited("DonnaAdvice1") is false>>
+	<<set $DonnaAdviceChosen to "">>
+	<<set $DACbad to false>>
+	Donna: Hmm... It still feels too stale... 
+	Oh! 
+	I almost didn't see you there [$PlayerName]! 
+	But you have good timing, I could really use yer advice. 
+	I've been practicing my routine for the next big show, and I've been tryin' to come up with a trick that might help freshen things up. 
+	Right now the set is jump, shooting star, and then a front flip. 
+	I want to add one more trick before I catch the bar, do ya have any suggestions?
+	->Forward-Over
+		<<set $DonnaAdviceChosen to "Forward-Over">>
+	->Cutaway Half
+		<<set $DonnaAdviceChosen to "Cutaway Half">>
+	->Castaway
+		<<set $DonnaAdviceChosen to "Castaway">>
+	Donna: Sounds worth a try, thanks for the advice.
+<<else>>
+	[[DonnaAdvice2]]
+<<endif>>
+===
+
+title: DonnaAdvice2
+tags: 
+---
+<<if visited("DonnaAdvice1") is false>>
+	[[DonnaAdvice1]]
+<<elseif $DonnaAdviceChosen eq "Castaway">>
+	Donna: I tried out the Castaway catch at the end of my set like you recommended, but it didn't work out. 
+	It needed the opposite momentum I had from the frontflip. Kinda kicking myself for not realizing that before I tried it. 
+	I'd recommend spending some more time practicing, I think we both need to brush up on our tricks. 
+	<<if visited("DonnaAdvice2") is false>>
+		<<DecreaseTrust PlayerAvatar 10>>
+	<<endif>>
+<<else>>
+	Donna: Hey [$PlayerName]! Thanks again for the advice you gave me, the [$DonnaAdviceChosen] worked like a charm. 
+	Really spiced up that part of the routine.
+	<<if visited("DonnaAdvice2") is false>>
+		<<IncreaseTrust PlayerAvatar 10>>
+	<<endif>>
+<<endif>>
+===
+
+title: DonnaArchery
+tags: 
+---
+Donna: Ugh, today's been rough. 
+I need to head to the archery range and take out a few targets, that always helps me feel better.
+===
+
+title: DonnaKaroake
+tags: 
+---
+Donna: There's nothing more fun than some good ol' fashion karaoke. 
+I always get super into the zone, there's nothing quite like singing the night away.
 ===

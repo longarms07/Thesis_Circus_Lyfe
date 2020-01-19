@@ -142,6 +142,8 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
             touchCursor.endTouch();
             touchCursor = null;
         }
+        da_Rigidbody.velocity = Vector2.zero;
+
     }
 
     public void MoveTowards(Vector3 moveTo)

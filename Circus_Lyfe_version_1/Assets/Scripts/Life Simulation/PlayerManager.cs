@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using Yarn.Unity;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -21,15 +22,28 @@ public class PlayerManager : MonoBehaviour
     {
         
     }
-
+    
     public void increaseTrustDonna(int increaseBy)
     {
         trustDonna += Mathf.Abs(increaseBy);
     }
-
+    
     public void decreaseTrustDonna(int decreaseBy)
     {
         trustDonna -= Mathf.Abs(decreaseBy);
+        if (trustDonna < 0) trustDonna = 0;
+    }
+
+    [YarnCommand("IncreaseTrust")]
+    public void increaseTrustDonna(string increaseBy)
+    {
+        trustDonna += Mathf.Abs(int.Parse(increaseBy));
+    }
+
+    [YarnCommand("DecreaseTrust")]
+    public void decreaseTrustDonna(string decreaseBy)
+    {
+        trustDonna -= Mathf.Abs(int.Parse(decreaseBy));
         if (trustDonna < 0) trustDonna = 0;
     }
 
