@@ -350,4 +350,8 @@ public class GameManager :  ISwipeListener, ITapListener
         return pm;
     }
 
+    public TouchMovable GetPlayerMovable()
+    {
+        return playerTouchMovable;
+    }
 }

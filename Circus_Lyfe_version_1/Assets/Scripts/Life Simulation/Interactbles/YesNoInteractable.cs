@@ -16,6 +16,9 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable
     protected bool isMajorAction;
     //protected bool buttonsEnabled;
     protected GameManager gm;
+    protected bool reqFollower = false;
+    protected bool isInRange;
+    protected DialogueRunner dialogueRunner;
 
     // Start is called before the first frame update
     void Start()
@@ -25,13 +28,14 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable
 
     protected void DoAtStart()
     {
+        isInRange = false;
         gm = GameManager.getInstance();
         gm.RegisterInteractable(this.gameObject.transform, this);
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         //buttonsEnabled = true;
+        dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
         if (scriptToLoad != null)
         {
-            DialogueRunner dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
             dialogueRunner.Add(scriptToLoad);
         }
     }
@@ -44,28 +48,34 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable
     
     public void OnInteraction()
     {
-        if (!isMajorAction || !GameManager.getInstance().MajorActionDone())
+        if (isInRange)
         {
-            FindObjectOfType<DialogueRunner>().StartDialogue(yarnNode);
+            if (!isMajorAction || !GameManager.getInstance().MajorActionDone())
+            {
+                dialogueRunner.StartDialogue(yarnNode);
+            }
+            else
+            {
+                dialogueRunner.StartDialogue(tiredNode);
+                //buttonsEnabled = false;
+            }
         }
-        else
-        {
-            FindObjectOfType<DialogueRunner>().StartDialogue(tiredNode);
-            //buttonsEnabled = false;
-        }
-
         //TextboxManager.GetInstance().TextBoxActive(true);
     }
 
     public void InRange(bool inRange)
     {
-        Debug.Log("Player house in range called");
-        if (inRange)
+
+        if (inRange && 
+            ((reqFollower && gm.GetPlayerMovable().GetIsFollowed())
+            || (!reqFollower && !gm.GetPlayerMovable().GetIsFollowed())))
         {
+            isInRange = true;
             spriteRenderer.sprite = inRangeSprite;
         }
         else
         {
+            isInRange = false;
             spriteRenderer.sprite = defaultSprite;
         }
     }

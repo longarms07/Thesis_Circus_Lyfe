@@ -26,6 +26,8 @@ public class TextboxManager : MonoBehaviour
     public float buttonOffset;
     public float buttonHeightPercent;
     public GameObject timeText;
+    public SpriteRenderer imageView;
+    public List<ImageStruct> imageStructs;
     
 
     private static TextboxManager instance;
@@ -43,6 +45,7 @@ public class TextboxManager : MonoBehaviour
     private DialogueUI dUI;
     private bool lineComplete;
     private bool checkBtnSize;
+    private Dictionary<string, ImageStruct> imageDict;
 
     private void Awake()
     {
@@ -71,6 +74,12 @@ public class TextboxManager : MonoBehaviour
         gm = GameManager.getInstance();
         dUI = GetComponent<DialogueUI>();
         lineComplete = false;
+        imageView.enabled = false;
+        imageDict = new Dictionary<string, ImageStruct>();
+        foreach (ImageStruct i in imageStructs)
+        {
+            imageDict.Add(i.name, i);
+        }
 
 
         float height = canvasRect.sizeDelta.y / heightPercent;
@@ -137,6 +146,7 @@ public class TextboxManager : MonoBehaviour
         textBox.pageToDisplay = 1;
         textMeshPro.SetActive(activate);
         textBackground.SetActive(activate);
+        HideButtons();
         if (checkBtnSize && textButtons[0].GetComponent<RectTransform>().sizeDelta != buttonSizeDelta)
         {
             foreach (Button btn in textButtons)
@@ -146,6 +156,7 @@ public class TextboxManager : MonoBehaviour
             }
             checkBtnSize = false;
         }
+        if (!activate) HideImage();
         GameManager.getInstance().TogglePlayerMovement(!activate);
     }
 
@@ -155,6 +166,15 @@ public class TextboxManager : MonoBehaviour
         {
             textMeshPro.SetActive(!hide);
             textBackground.SetActive(!hide);
+            HideImage();
+        }
+    }
+
+    public void HideButtons()
+    {
+        foreach (Button btn in textButtons)
+        {
+            btn.gameObject.SetActive(false);
         }
     }
 
@@ -173,10 +193,17 @@ public class TextboxManager : MonoBehaviour
         }
     }
 
+    public void NotifyMe(ITextboxListener me)
+    {
+        notifyTarget = me;
+    }
+
     public void OnTextComplete()
     {
+        textBox.pageToDisplay = 1;
         TextBoxActive(false);
         if(notifyTarget!=null) notifyTarget.OnTextEnded();
+        
         notifyTarget = null;
     }
 
@@ -194,6 +221,7 @@ public class TextboxManager : MonoBehaviour
 
     public void SetText(string text)
     {
+        Debug.Log("Here" + text);
         textBox.text = text;
         textBox.pageToDisplay = 1;
     }
@@ -228,8 +256,25 @@ public class TextboxManager : MonoBehaviour
         GameManager.getInstance().TogglePlayerMovement(true);
     }
 
+    [YarnCommand("ShowImage")]
+    public void ShowImage(string imagename)
+    {
+        Debug.Log(imageDict.ContainsKey(imagename) + ", " + imageDict.Keys);
+        if (imageDict.ContainsKey(imagename))
+        {
+            ImageStruct imageStruct = imageDict[imagename];
+            imageView.sprite = imageStruct.image;
+            imageView.transform.localScale = imageStruct.scale;
+            imageView.gameObject.SetActive(true);
+            imageView.enabled = true;
+        }
+    }
 
-
+    [YarnCommand("HideImage")]
+    public void HideImage()
+    {
+        imageView.gameObject.SetActive(false);
+    }
 
 
 }

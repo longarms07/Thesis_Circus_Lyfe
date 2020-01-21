@@ -26,3 +26,13 @@ Would you like to practice Trapeze?
 	<<YesNoAnswer TrapezeLadder no>>
 
 ===
+
+title: PokerTable
+tags: Donna, DuoActivity
+---
+Donna: Wanna play blackjack with me?
+-> Yes
+	<<YesNoAnswer PokerTable yes>>
+-> No
+	<<YesNoAnswer PokerTable no>>
+===

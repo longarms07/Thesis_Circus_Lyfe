@@ -20,7 +20,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     public float overlapRadius;
     [Tooltip("The layers of interactables to look for")]
     public String[] layers;
-
+    public float followDist;
 
     private bool canMove;
     private TouchInputManager touchInputManager;
@@ -34,11 +34,16 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     private TouchCursor touchCursor;
     private BoxCollider2D tapColliderRB;
     private Collider2D[] nearbyInteractables;
+    private bool isFollowed;
+    private Rigidbody2D followedBy;
     
     
     
     void Start()
     {
+        followedBy = null;
+        isFollowed = false;
+        nearbyInteractables = new Collider2D[0];
         touchInputManager = TouchInputManager.getInstance();
         if (touchInputManager == null)
         {
@@ -61,13 +66,35 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     {
         if (canMove)
         {
+            Vector3 currentPosition = this.gameObject.transform.position;
             if (drag) MoveTowards(targetPosition);
             if (tap)
             {
                 MoveTowards(targetPosition);
-                if (this.gameObject.transform.localPosition == targetPosition) TapEnded();
+                if (this.gameObject.transform.position == targetPosition) TapEnded();
             }
             CheckTarget();
+            if (isFollowed)
+            {
+                if (Mathf.Abs(transform.position.x - followedBy.transform.position.x) > followDist
+                    || Mathf.Abs(transform.position.y - followedBy.transform.position.y) > followDist)
+                {
+                    float speed = walkSpeed;
+                    if (Math.Abs(this.transform.position.x - followedBy.gameObject.transform.position.x) < runThreshold
+                    && Math.Abs(this.transform.position.y - followedBy.gameObject.transform.position.y) < runThreshold)
+                    {
+                        speed = runSpeed;
+                    }
+                    followedBy.MovePosition(Vector3.MoveTowards(followedBy.gameObject.transform.position, currentPosition, Time.fixedDeltaTime * speed));
+                }
+                followedBy.velocity = Vector2.zero;
+                followedBy.angularDrag = 0;
+                followedBy.angularVelocity = 0;
+
+            }
+            da_Rigidbody.velocity = Vector2.zero;
+            da_Rigidbody.angularDrag = 0;
+            da_Rigidbody.angularVelocity = 0;
         }
         NotfiyInteractablesMovedAway(CheckNearbyInteractables());
     }
@@ -127,6 +154,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
             MoveTowards(targetPosition);
             touchCursor = Instantiate(touchInputManager.touchCursorPrefab).GetComponent<TouchCursor>();
             touchCursor.changePosition(targetPosition);
+            
             //Needs pathfinding
         }
     }
@@ -150,21 +178,23 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     {
         if (canMove)
         {
+
             Vector3 moveTowards;
             //Check if we should walk (in loop) or run (out of loop)
-            /*Debug.Log("X difference = " + (moveTo.x - this.gameObject.transform.localPosition.x)
-                + " , Y difference - " + (moveTo.y - this.gameObject.transform.localPosition.y));*/
-            if (Math.Abs(moveTo.x - this.gameObject.transform.localPosition.x) < runThreshold
-                && Math.Abs(moveTo.y - this.gameObject.transform.localPosition.y) < runThreshold)
+            /*Debug.Log("X difference = " + (moveTo.x - this.gameObject.transform.position.x)
+                + " , Y difference - " + (moveTo.y - this.gameObject.transform.position.y));*/
+            if (Math.Abs(moveTo.x - this.gameObject.transform.position.x) < runThreshold
+                && Math.Abs(moveTo.y - this.gameObject.transform.position.y) < runThreshold)
             {
-                moveTowards = Vector3.MoveTowards(this.gameObject.transform.localPosition, moveTo, Time.fixedDeltaTime * walkSpeed);
+                moveTowards = Vector3.MoveTowards(this.gameObject.transform.position, moveTo, Time.fixedDeltaTime * walkSpeed);
             }
             else
             {
-                moveTowards = Vector3.MoveTowards(this.gameObject.transform.localPosition, moveTo, Time.fixedDeltaTime * runSpeed);
+                moveTowards = Vector3.MoveTowards(this.gameObject.transform.position, moveTo, Time.fixedDeltaTime * runSpeed);
             }
 
             da_Rigidbody.MovePosition(moveTowards);
+            
         }
     }
 
@@ -183,12 +213,13 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     public Collider2D[] CheckNearbyInteractables()
     {
 
-        Collider2D[] nearbyHits = Physics2D.OverlapCircleAll(this.gameObject.transform.localPosition, overlapRadius,
+        Collider2D[] nearbyHits = Physics2D.OverlapCircleAll(this.gameObject.transform.position, overlapRadius,
                                                              LayerMask.GetMask(layers));
         foreach (Collider2D hit in nearbyHits)
         {
             IInteractable tempInteractable = GameManager.getInstance().GetInteractable(hit.transform);
-            if(tempInteractable!=null && !nearbyInteractables.Contains(hit)) tempInteractable.InRange(true);
+            if(tempInteractable!=null && !nearbyInteractables.Contains(hit))
+                tempInteractable.InRange(true);
         }
         return nearbyHits;
     }
@@ -244,7 +275,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
                 targetInteractable = interactable;
                 targetingInteractable = true;
                 targetCollider = collider;
-                OnTap(targetCollider.transform.localPosition);
+                OnTap(targetCollider.transform.position);
             }
         }
     }
@@ -258,4 +289,27 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
         }
     }
 
+    public void NewFollower(Rigidbody2D follower)
+    {
+        followedBy = follower;
+        followedBy.isKinematic = false;
+        isFollowed = true;
+    }
+
+    public void StopFollower()
+    {
+        followedBy.isKinematic = true;
+        followedBy = null;
+        isFollowed = false;
+    }
+
+    public Rigidbody2D GetFollower()
+    {
+        return followedBy;
+    }
+
+    public bool GetIsFollowed()
+    {
+        return isFollowed;
+    }
 }

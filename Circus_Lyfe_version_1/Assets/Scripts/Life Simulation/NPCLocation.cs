@@ -8,6 +8,6 @@ public struct NPCLocation
     
     public List<String> dialogNodes;
     public Transform pos;
-
+    public bool invitable;
     
 }

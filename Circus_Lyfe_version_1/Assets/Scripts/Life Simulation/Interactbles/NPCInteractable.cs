@@ -12,9 +12,12 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     private SpriteRenderer spriteRenderer;
     public Sprite defaultSprite;
     public Sprite inRangeSprite;
+    protected Rigidbody2D rb;
     protected GameManager gm;
     public List<DayTimeScheduleConverter> schedule2convert; 
     protected Dictionary<DayEnums, Dictionary<TimeEnums, NPCLocation>> schedule;
+    protected InMemoryVariableStorage yarnVars;
+    protected DialogueRunner dialogueRunner;
 
     // Start is called before the first frame update
     void Start()
@@ -25,11 +28,14 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         gm.SubscribeDayTimeChangeListener(this);
         DayTimeChange(gm.currentDay, gm.currentTime);
+        rb = GetComponent<Rigidbody2D>();
+        yarnVars = FindObjectOfType<InMemoryVariableStorage>();
         if (scriptToLoad != null)
         {
-            DialogueRunner dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
+            dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
             dialogueRunner.Add(scriptToLoad);
         }
+        AddToStart();
     }
 
     // Update is called once per frame
@@ -37,6 +43,8 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     {
 
     }
+
+    protected abstract void AddToStart();
 
     public abstract void OnInteraction();
     public void InRange(bool inRange)
@@ -74,10 +82,6 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
             }
             else {
                 schedule.Add(c.day, new Dictionary<TimeEnums, NPCLocation>());
-                Debug.Log(schedule.ContainsKey(c.day));
-                Debug.Log(c.day + ", " + c.time);
-                Debug.Log(c.position.pos);
-                Debug.Log(c.time);
                 schedule[c.day].Add(c.time, c.position);
             }
         }

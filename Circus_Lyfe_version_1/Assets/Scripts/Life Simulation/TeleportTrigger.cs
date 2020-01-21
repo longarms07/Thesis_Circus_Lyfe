@@ -30,6 +30,13 @@ public class TeleportTrigger : MonoBehaviour
             collision.gameObject.transform.position = new Vector3(target.transform.position.x,
                                                                   target.transform.position.y,
                                                                   collision.gameObject.transform.position.z);
+            if (GameManager.getInstance().GetPlayerMovable().GetIsFollowed())
+            {
+                TouchMovable t =GameManager.getInstance().GetPlayerMovable();
+                t.GetFollower().transform.localPosition = new Vector3(target.transform.position.x + t.followDist,
+                                                            target.transform.position.y,
+                                                            collision.gameObject.transform.position.z);
+            }
         }
     }
 

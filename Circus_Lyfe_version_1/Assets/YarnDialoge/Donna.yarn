@@ -1,3 +1,122 @@
+title: DonnaIntro
+tags: Major, Cutscene
+---
+Donna: Hey, you're the new trapeze recruit, right?
+->Yes
+    Donna: Welcome to the team, glad to have ya on board.
+	<<IncreaseTrust PlayerAvatar 1>>
+->No
+    Donna: Huh, coulda sworn I was supposed ta meet them here. 
+	You wouldn’t happen to know where they are, would you?
+	...
+	Oh, yer just pulling my leg... 
+	Well anyways, welcome to the team.
+	<<DecreaseTrust PlayerAvatar 1>>
+Donna: What's your name anyway, pal?
+Donna: [$PlayerName], huh? Nice. 
+I'm Donna, the lead trapeze artist round here. 
+Well, technically I'm just 'the trapeze artist,' but since you signed up as my trainee I think I can embellish my title a little bit. 
+Anyways, since you're still new to the whole trapeze gig I'm gonna be showing you the ropes. 
+Follow me to the trapeze tent, and we’ll get started with your first practice session.
+===
+
+title: DonnaBackstory
+tags: Major, Cutscene
+---
+Donna: Hey, [$PlayerName], I need to talk to you about something. 
+Can you come with me to the trapeze tent?
+
+Donna: I've been watching your progress on the trapeze, and you've improved quite a fair bit. 
+I'd say that you could easily captivate an audience on your own, and with a bit more work you might even be able to give me a run for my money. 
+But... that's all we are at the moment, individual acts. 
+I've been thinking lately, about when you first introduced yourself. 
+I told ya 'welcome to the team,' but I've just been treating you like a student and not as a team member.
+I know I need to fix that, but, well… I've been scared. 
+->What are you scared of?
+    Donna: Ugh, no point in beating round the bush.
+->Are you scared of me?
+    Donna: Not exactly, but kind of... 
+	But it's nothing you did! 
+	It's me, 
+	You see...
+->Scared of being overshadowed?
+    Donna: No, not that. 
+	After all, doesn't every teacher want their student to surpass them?
+	It's, well...
+Donna: I'm scared of heights. 
+Well, scared of falling honestly. 
+Have been since I was a kid. 
+Wouldn't even climb a bunk bed cause it was so terrifying. 
+->Sounds pretty bad.
+    Donna: It was, I barely survived having a classroom on the second floor in school. 
+	Thought I'd never be able to handle it. 
+	But that's part of why I became so entranced with the trapeze.
+->Why did you become a trapeze artist then?
+    Donna: It sounds weird, but my phobia is the reason I became one.
+Donna: I was watching a circus performance on TV when I first saw someone perform on the trapeze. 
+It was absolutely magical. 
+The artists were twirling through the air as if gravity couldn't affect them, grabbing the trapeze fearless of falling. 
+In fact, they couldn't fall! 
+They knew how to catch themselves, they had magic that would keep them from hitting the ground. 
+I was convinced of that, sure that if I could do what they did I would never have to fear heights again. 
+The next time I was at the park, I managed to drum up the courage to climb a tree. 
+I grabbed onto a branch, and started swinging myself. 
+Aiming at another nearby branch I jumped, trying to do the pirouette I saw on the TV.
+ ->Were you able to make it?
+	Donna: Course not, fell just as I feared I would. 
+	Broke my leg pretty badly, too.
+->That couldn't have gone well. 
+	Donna: Hehe, it most certainly did not. 
+	Ended up on the ground with a broken leg.
+Donna: I didn't let that stop me, though. 
+You've seen me playing cards, it takes a lot more than one attempt to make me give up. 
+As soon as that cast was off I got to work. 
+Started gymnastics, went to trapeze lessons, eventually even made it to the trapeze academy. 
+And after I graduated, well, obviously I ended up here. 
+I practice trapeze and perform all the time, knowing that I won't- no, can't fall. 
+I have faith in my own skills, and the audience has faith in me. 
+That's what let's me overcome my fear. 
+But you introduced another element. 
+It's... hard to admit, but I've been dodging the idea of performing alongside you. 
+When you first arrived, I could tell that you had talent. 
+But I could also tell that you had a lot to learn. 
+I was scared that if I tried to perform with you, something would go wrong. 
+You might not catch me, or I might not catch you, and somehow we would end up falling and I wouldn't have the ability to stop it.
+That fear of mine has been holding both of us back, but I don't want to let it anymore.
+I'd like to think that I've gotten to know you pretty well, and I now have faith in both you and your skills. 
+Would... 
+Would you be willing to perform with me?
+->Yes
+	Donna: Perfect. I'm sorry it took me so long.
+->Can I trust you to not let me fall?
+	Donna: Yes, if I can trust you to do the same.
+->Are you sure you're comfortable with this?
+	Donna: To be honest I'm not sure, but I think it's about time either way. 
+	I'm ready if you are.
+Donna: The next time you practice trapeze, I'll go over the basics of performing together and start teaching you some collaborative tricks. 
+If we get our act down well enough, we might even be able to debut our team performance at the next show. 
+Thanks again for being patient with me, and for being willing to work together. 
+This time I truly mean it: welcome to the team.  
+
+===
+
+title: DonnaBlackjack
+tags: 
+---
+<<ShowImage TextManager DonnaBlackJack>>
+Donna: Alright, hit me.
+Ah, darn it. Already over 21. You win this round.
+Hmm... I think I'll stand here, got a good feeling about this hand.
+...
+Ah, not even close. This round's yours too.
+But I'm winning this next one.
+<<HideImage TextManager>>
+...Some time later...
+Donna: Man, can't believe I didn't even win a single round.  
+Still, that was a fun. Look forward to playing against you again.
+<<IncreaseTrust PlayerAvatar 5>>
+===
+
 title: DonnaTest
 tags: 
 ---
@@ -11,6 +130,30 @@ tags:
 <<else>>
     Donna: Hey!! 
 <<endif>>
+===
+
+title: DonnaInitConversation
+tags: 
+---
+What do you want to do?
+->Talk to Donna
+->Hang out with Donna
+	<<if $DonnaInvitable is true>>
+		Donna: Sure, it'd be fun to hang out with you.
+		<<DFollowPlayer Donna true>>
+	<<else>>
+		Donna: Sorry, I'm busy right now.
+	<<endif>>
+===
+
+title: DonnaFollowing
+tags: 
+---
+Stop hanging out with Donna?
+->Yes
+	Donna: It's been fun!
+	<<DFollowPlayer Donna false>>
+->No
 ===
 
 title: DonnaTrapezePractice0
