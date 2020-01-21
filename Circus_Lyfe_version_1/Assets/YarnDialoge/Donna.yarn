@@ -110,11 +110,11 @@ Hmm... I think I'll stand here, got a good feeling about this hand.
 ...
 Ah, not even close. This round's yours too.
 But I'm winning this next one.
-<<HideImage TextManager>>
 ...Some time later...
 Donna: Man, can't believe I didn't even win a single round.  
 Still, that was a fun. Look forward to playing against you again.
 <<IncreaseTrust PlayerAvatar 5>>
+<<HideImage TextManager>>
 ===
 
 title: DonnaTest

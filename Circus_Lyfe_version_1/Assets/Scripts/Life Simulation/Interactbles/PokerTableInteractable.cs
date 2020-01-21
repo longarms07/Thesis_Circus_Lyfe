@@ -23,7 +23,7 @@ public class PokerTableInteractable : YesNoInteractable
             {
                 attemptTalking = false;
                 dialogueRunner.StartDialogue(pokerNodeFollower);
-                gm.MajorActionDone();
+                gm.MajorActionCompleted(true);
                 gm.GetPlayerMovable().StopFollower();
             }
         }
