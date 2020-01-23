@@ -27,7 +27,6 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
         gm.RegisterInteractable(this.gameObject.transform, this);
         spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         gm.SubscribeDayTimeChangeListener(this);
-        DayTimeChange(gm.currentDay, gm.currentTime);
         rb = GetComponent<Rigidbody2D>();
         yarnVars = FindObjectOfType<InMemoryVariableStorage>();
         if (scriptToLoad != null)
@@ -36,6 +35,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
             dialogueRunner.Add(scriptToLoad);
         }
         AddToStart();
+        DayTimeChange(gm.currentDay, gm.currentTime);
     }
 
     // Update is called once per frame
@@ -62,7 +62,10 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     public void DayTimeChange(DayEnums newDay, TimeEnums newTime)
     {
         this.transform.position = schedule[newDay][newTime].pos.position;
+        AddToDayTimeChange(newDay, newTime);
     }
+
+    public abstract void AddToDayTimeChange(DayEnums newDay, TimeEnums newTime);
 
     public abstract void OnTextEnded();
 

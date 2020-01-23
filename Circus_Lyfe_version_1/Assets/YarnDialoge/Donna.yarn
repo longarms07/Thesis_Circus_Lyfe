@@ -137,7 +137,8 @@ tags:
 ---
 What do you want to do?
 ->Talk to Donna
-->Hang out with Donna
+	<<DAttemptTalk Donna>>
+->Hang out with Donna 
 	<<if $DonnaInvitable is true>>
 		Donna: Sure, it'd be fun to hang out with you.
 		<<DFollowPlayer Donna true>>

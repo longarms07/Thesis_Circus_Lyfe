@@ -6,7 +6,7 @@ public class PokerTableInteractable : YesNoInteractable
 {
 
     public string pokerNodeFollower;
-    public GameObject follower;
+    public Donna follower;
     private bool attemptTalking = false;
 
     private void Awake()
@@ -24,7 +24,7 @@ public class PokerTableInteractable : YesNoInteractable
                 attemptTalking = false;
                 dialogueRunner.StartDialogue(pokerNodeFollower);
                 gm.MajorActionCompleted(true);
-                gm.GetPlayerMovable().StopFollower();
+                follower.FollowPlayer("false");
             }
         }
     }
@@ -32,7 +32,7 @@ public class PokerTableInteractable : YesNoInteractable
     override
     public void OnButtonPressed(string answer)
     {
-        if (answer == "yes" && gm.GetPlayerMovable().GetFollower().gameObject == follower)
+        if (answer == "yes" && gm.GetPlayerMovable().GetFollower().gameObject == follower.gameObject)
         {
             attemptTalking = true;
         }

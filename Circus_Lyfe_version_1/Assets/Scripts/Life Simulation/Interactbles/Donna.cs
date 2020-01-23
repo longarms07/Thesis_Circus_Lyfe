@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
 
-public class Donna : NPCInteractable, IButtonListener, ITextboxListener
+public class Donna : NPCInteractable, IButtonListener
 {
 
     private bool followingPlayer = false;
@@ -36,7 +36,7 @@ public class Donna : NPCInteractable, IButtonListener, ITextboxListener
     {
         if (!followingPlayer)
         {
-            TextboxManager.GetInstance().NotifyMe(this);
+            //TextboxManager.GetInstance().NotifyMe(this);
             dialogueRunner.StartDialogue(startDialogNode);
         }
         else TalkToDonna();
@@ -67,10 +67,9 @@ public class Donna : NPCInteractable, IButtonListener, ITextboxListener
         }
     }
 
-    public new void DayTimeChange(DayEnums newDay, TimeEnums newTime)
+    public override void AddToDayTimeChange(DayEnums newDay, TimeEnums newTime)
     {
-        this.transform.position = schedule[newDay][newTime].pos.position;
-        yarnVars.SetValue("DonnaInvitable", schedule[newDay][newTime].invitable);
+        yarnVars.SetValue("$DonnaInvitable", schedule[newDay][newTime].invitable);
     }
 
     [YarnCommand("DFollowPlayer")]
@@ -90,6 +89,10 @@ public class Donna : NPCInteractable, IButtonListener, ITextboxListener
     
     override
     public void OnTextEnded()
+    { }
+
+    [YarnCommand("DAttemptTalk")]
+    public void AttemptTalking()
     {
         if(!followingPlayer)
         {
