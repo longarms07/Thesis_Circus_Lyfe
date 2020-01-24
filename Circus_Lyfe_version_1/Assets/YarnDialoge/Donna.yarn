@@ -1,23 +1,34 @@
 title: DonnaIntro
 tags: Major, Cutscene
 ---
-Donna: Hey, you're the new trapeze recruit, right?
+<<TeleportPlayerHouse Donna>>
+<<TeleportPlayerHouse PlayerAvatar>>
+Donna: Hey!
+<<Move Donna up 3>>
+Donna: You're the new trapeze recruit, right?
 ->Yes
     Donna: Welcome to the team, glad to have ya on board.
 	<<IncreaseTrust PlayerAvatar 1>>
 ->No
-    Donna: Huh, coulda sworn I was supposed ta meet them here. 
-	You wouldn’t happen to know where they are, would you?
+	<<Move Donna left 2>>
+    Donna: Huh, coulda sworn I was supposed ta meet them here.
+	<<Move Donna right 2>> 
+	You wouldn't happen to know where they are, would you?
 	...
 	Oh, yer just pulling my leg... 
 	Well anyways, welcome to the team.
 	<<DecreaseTrust PlayerAvatar 1>>
+<<Move Donna up 1>>
 Donna: What's your name anyway, pal?
 Donna: [$PlayerName], huh? Nice. 
 I'm Donna, the lead trapeze artist round here. 
 Well, technically I'm just 'the trapeze artist,' but since you signed up as my trainee I think I can embellish my title a little bit. 
 Anyways, since you're still new to the whole trapeze gig I'm gonna be showing you the ropes. 
-Follow me to the trapeze tent, and we’ll get started with your first practice session.
+Meet me at the trapeze tent, and we’ll get started with your first practice session.
+<<Move Donna Left 20>>
+<<wait 3>>
+<<TeleportTrapezeTent Donna>>
+<<stop>>
 ===
 
 title: DonnaBackstory

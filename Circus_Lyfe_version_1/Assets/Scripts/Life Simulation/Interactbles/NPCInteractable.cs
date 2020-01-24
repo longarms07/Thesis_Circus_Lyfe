@@ -115,7 +115,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
         if(majorConvoIndex < majorConvoNodes.Length && GetTrustLevel() >= majorConvoTrust[majorConvoIndex])
         {
             Debug.Log("Init major conversation: " + majorConvoNodes[majorConvoIndex]);
-            this.transform.position = gm.GetPlayerManager().transform.position + (Vector3.down*gm.GetPlayerMovable().followDist);
+            //this.transform.position = gm.GetPlayerManager().transform.position + (Vector3.down*gm.GetPlayerMovable().followDist);
             dialogueRunner.StartDialogue(majorConvoNodes[majorConvoIndex]);
             majorConvoIndex++; 
         }
