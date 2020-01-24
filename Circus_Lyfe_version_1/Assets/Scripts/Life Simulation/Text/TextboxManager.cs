@@ -276,5 +276,7 @@ public class TextboxManager : MonoBehaviour
         imageView.gameObject.SetActive(false);
     }
 
+    
+
 
 }

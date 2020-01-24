@@ -49,6 +49,11 @@ public class PlayerManager : MonoBehaviour
 
     public int getTrustDonna() { return trustDonna; }
 
+    public void ResetSaveStats()
+    {
+        DeleteSaveData();
+        trustDonna = 0;
+    }
 
     public void SaveStats()
     {

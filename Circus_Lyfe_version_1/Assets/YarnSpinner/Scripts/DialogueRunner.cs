@@ -409,6 +409,7 @@ namespace Yarn.Unity
 
         /// Stop the dialogue
         public void Stop() {
+            Debug.Log("Dialogue Runner Stop called");
             isDialogueRunning = false;
             dialogue.Stop();
         }

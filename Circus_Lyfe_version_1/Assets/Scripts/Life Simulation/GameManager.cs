@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Yarn.Unity;
 
 public class GameManager :  ISwipeListener, ITapListener
 {
@@ -24,6 +25,7 @@ public class GameManager :  ISwipeListener, ITapListener
     public TimeEnums currentTime;
     public bool majorActionDone;
 
+    private bool paused = false;
     public Dictionary<Transform, IInteractable> interactableDict;
     protected Dictionary<Transform, IButton> buttonDict;
     private TouchMovable playerTouchMovable;
@@ -32,6 +34,8 @@ public class GameManager :  ISwipeListener, ITapListener
     private string savefile = "savetest.save";
     private List<IDayTimeChangeListener> dayTimeChangeListeners;
     private PlayerManager pm;
+    private DialogueRunner dr;
+    bool ignoreTap = false;
 
 
 
@@ -76,6 +80,7 @@ public class GameManager :  ISwipeListener, ITapListener
             }
             TouchInputManager.getInstance().SubscribeTapListener(this, 0);
             pm = playerAvatar.GetComponent<PlayerManager>();
+            dr = FindObjectOfType<DialogueRunner>();
         }
     }
 
@@ -91,8 +96,26 @@ public class GameManager :  ISwipeListener, ITapListener
         playerTouchMovable.ToggleMovement(active);
     }
 
+    public void TogglePlayerMovement()
+    {
+        playerTouchMovable.ToggleMovement();
+    }
+
+    public void Pause()
+    {
+        paused = !paused;
+        ignoreTap = true;
+        if(!dr.isDialogueRunning)
+            TogglePlayerMovement(!paused);
+    }
+
     public void TapDetected(Vector3 position)
     {
+        if (paused || ignoreTap)
+        {
+            ignoreTap = false;
+            return;
+        }
         CheckTappedPosition(position);
         if (lastTap.transform != null && newLastTap) {
             Debug.Log("Hit layer = " + lastTap.transform.gameObject.layer + "name = " + lastTap.transform.gameObject.name);
@@ -277,6 +300,16 @@ public class GameManager :  ISwipeListener, ITapListener
 
     }
 
+    public void ResetSavedVars()
+    {
+        FadeToBlack();
+        DeleteSaveData();
+        currentTime = TimeEnums.Morning;
+        currentDay = DayEnums.Monday;
+        majorActionDone = false;
+        Invoke("FadeOutBlack", 1f);
+    }
+
     public void SaveData()
     {
         LifeSimSaveData save = new LifeSimSaveData();
@@ -315,6 +348,7 @@ public class GameManager :  ISwipeListener, ITapListener
            File.Delete(Application.persistentDataPath + savefile);
         }
     }
+
 
     private void OnApplicationPause(bool pause)
     {
@@ -361,4 +395,15 @@ public class GameManager :  ISwipeListener, ITapListener
     {
         return playerTouchMovable;
     }
+
+    public void ReloadScene()
+    {
+        Invoke("ReloadScene4Real", 1);
+    }
+
+    private void ReloadScene4Real()
+    {
+        SceneManager.LoadScene("MovementDemoScene");
+    } 
+
 }

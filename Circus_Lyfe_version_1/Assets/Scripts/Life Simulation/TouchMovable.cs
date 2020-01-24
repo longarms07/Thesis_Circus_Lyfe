@@ -260,6 +260,12 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
 
     }
 
+    public void ToggleMovement()
+    {
+        ToggleMovement(!canMove);
+
+    }
+
     public Collider2D[] GetNearbyInteractables()
     {
         return nearbyInteractables;

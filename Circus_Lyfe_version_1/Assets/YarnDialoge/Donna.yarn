@@ -24,7 +24,7 @@ Donna: [$PlayerName], huh? Nice.
 I'm Donna, the lead trapeze artist round here. 
 Well, technically I'm just 'the trapeze artist,' but since you signed up as my trainee I think I can embellish my title a little bit. 
 Anyways, since you're still new to the whole trapeze gig I'm gonna be showing you the ropes. 
-Meet me at the trapeze tent, and we’ll get started with your first practice session.
+Meet me at the trapeze tent, and we'll get started with your first practice session.
 <<Move Donna Left 20>>
 <<wait 3>>
 <<TeleportTrapezeTent Donna>>
@@ -34,15 +34,20 @@ Meet me at the trapeze tent, and we’ll get started with your first practice sess
 title: DonnaBackstory
 tags: Major, Cutscene
 ---
+
+<<TeleportPlayerHouse Donna>>
+<<TeleportPlayerHouse PlayerAvatar>>
+<<Move Donna up 3>>
 Donna: Hey, [$PlayerName], I need to talk to you about something. 
 Can you come with me to the trapeze tent?
-
+<<TeleportTrapezeTent PlayerAvatar>>
+<<TeleportTrapezeTent Donna>>
 Donna: I've been watching your progress on the trapeze, and you've improved quite a fair bit. 
 I'd say that you could easily captivate an audience on your own, and with a bit more work you might even be able to give me a run for my money. 
 But... that's all we are at the moment, individual acts. 
 I've been thinking lately, about when you first introduced yourself. 
 I told ya 'welcome to the team,' but I've just been treating you like a student and not as a team member.
-I know I need to fix that, but, well… I've been scared. 
+I know I need to fix that, but, well... I've been scared. 
 ->What are you scared of?
     Donna: Ugh, no point in beating round the bush.
 ->Are you scared of me?

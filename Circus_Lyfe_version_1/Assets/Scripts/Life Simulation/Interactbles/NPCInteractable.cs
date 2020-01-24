@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -17,6 +19,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     public string[] majorConvoNodes;
     [Tooltip("The Trust Levels required to unlock each conversation")]
     public float[] majorConvoTrust;
+    public bool doMajorConvos;
     private int majorConvoIndex;
 
 
@@ -26,7 +29,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     protected Dictionary<DayEnums, Dictionary<TimeEnums, NPCLocation>> schedule;
     protected InMemoryVariableStorage yarnVars;
     protected DialogueRunner dialogueRunner;
-    protected string filename;
+    protected string savefile;
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +52,8 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
             dialogueRunner.Add(scriptToLoad);
         }
 
-        majorConvoIndex = 0;
+        if(!LoadStats()) majorConvoIndex = 0;
+        
 
         AddToStart();
         DayTimeChange(gm.currentDay, gm.currentTime);
@@ -80,7 +84,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     {
         this.transform.position = schedule[newDay][newTime].pos.position;
         AddToDayTimeChange(newDay, newTime);
-        if(newTime==TimeEnums.Morning) Invoke("CheckConversation", 0.5f);
+        if (newTime == TimeEnums.Morning && doMajorConvos) Invoke("CheckConversation", 0.5f);
     }
 
     public abstract void AddToDayTimeChange(DayEnums newDay, TimeEnums newTime);
@@ -90,6 +94,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     void OnDestroy()
     {
         if (gm != null) gm.UnsubscribeDayTimeChangeListener(this);
+        SaveStats();
     }
 
     public void ConvertSchedule()
@@ -120,4 +125,56 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
             majorConvoIndex++; 
         }
     }
+
+    public void ResetSaveStats()
+    {
+        DeleteSaveData();
+        majorConvoIndex = 0;
+    }
+
+    public void SaveStats()
+    {
+        NPCStats save = new NPCStats();
+        save.convoIndex = majorConvoIndex;
+        BinaryFormatter format = new BinaryFormatter();
+        FileStream fs = File.Create(Application.persistentDataPath + savefile);
+        format.Serialize(fs, save);
+        fs.Close();
+        Debug.Log(gameObject.name +" Stats Saved");
+    }
+
+    public bool LoadStats()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            BinaryFormatter format = new BinaryFormatter();
+            FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
+            NPCStats save = (NPCStats)format.Deserialize(fs);
+            fs.Close();
+            majorConvoIndex = save.convoIndex;
+            Debug.Log(gameObject.name+" stats loaded");
+            return true;
+        }
+        return false;
+    }
+
+    public void DeleteSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            File.Delete(Application.persistentDataPath + savefile);
+        }
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        SaveStats();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveStats();
+    }
+
+    
 }

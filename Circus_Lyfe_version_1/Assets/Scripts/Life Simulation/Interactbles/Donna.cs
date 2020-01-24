@@ -25,7 +25,7 @@ public class Donna : NPCInteractable, IButtonListener
 
    protected override void AddToStart()
     {
-        filename = "DonnaStats.save";
+        savefile = "DonnaStats.save";
     }
 
     public override float GetTrustLevel()
