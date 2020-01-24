@@ -12,16 +12,30 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     private SpriteRenderer spriteRenderer;
     public Sprite defaultSprite;
     public Sprite inRangeSprite;
+
+    [Tooltip("The Yarn Nodes for each major conversation")]
+    public string[] majorConvoNodes;
+    [Tooltip("The Trust Levels required to unlock each conversation")]
+    public float[] majorConvoTrust;
+    private int majorConvoIndex;
+
+
     protected Rigidbody2D rb;
     protected GameManager gm;
     public List<DayTimeScheduleConverter> schedule2convert; 
     protected Dictionary<DayEnums, Dictionary<TimeEnums, NPCLocation>> schedule;
     protected InMemoryVariableStorage yarnVars;
     protected DialogueRunner dialogueRunner;
+    protected string filename;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (majorConvoNodes.Length != majorConvoTrust.Length)
+        {
+            Debug.LogError("Error! There are not the same number of MajorConvo nodes and required trust levels!");
+            Destroy(this.gameObject);
+        }
         gm = GameManager.getInstance();
         ConvertSchedule();
         gm.RegisterInteractable(this.gameObject.transform, this);
@@ -34,6 +48,9 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
             dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
             dialogueRunner.Add(scriptToLoad);
         }
+
+        majorConvoIndex = 0;
+
         AddToStart();
         DayTimeChange(gm.currentDay, gm.currentTime);
     }
@@ -63,6 +80,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     {
         this.transform.position = schedule[newDay][newTime].pos.position;
         AddToDayTimeChange(newDay, newTime);
+        if(newTime==TimeEnums.Morning) Invoke("CheckConversation", 0.5f);
     }
 
     public abstract void AddToDayTimeChange(DayEnums newDay, TimeEnums newTime);
@@ -90,5 +108,16 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
         }
     }
 
+    public abstract float GetTrustLevel();
 
+    public void CheckConversation()
+    {
+        if(majorConvoIndex < majorConvoNodes.Length && GetTrustLevel() >= majorConvoTrust[majorConvoIndex])
+        {
+            Debug.Log("Init major conversation: " + majorConvoNodes[majorConvoIndex]);
+            this.transform.position = gm.GetPlayerManager().transform.position + (Vector3.down*gm.GetPlayerMovable().followDist);
+            dialogueRunner.StartDialogue(majorConvoNodes[majorConvoIndex]);
+            majorConvoIndex++; 
+        }
+    }
 }

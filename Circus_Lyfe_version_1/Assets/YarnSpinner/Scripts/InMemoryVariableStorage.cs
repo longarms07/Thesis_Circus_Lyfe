@@ -71,8 +71,6 @@ namespace Yarn.Unity {
         /// Erase all variables and reset to default values
         public override void ResetToDefaults ()
         {
-            Debug.Log(new StackTrace().GetFrame(1).GetMethod().Name);
-            Debug.Log("Reset to Defaults");
             Clear ();
 
             // For each default variable that's been defined, parse the
@@ -148,7 +146,6 @@ namespace Yarn.Unity {
         /// Erase all variables
         public override void Clear ()
         {
-            Debug.Log("Clear Yarn Vars");
             variables.Clear ();
         }
 

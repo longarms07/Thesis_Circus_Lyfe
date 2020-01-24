@@ -7097,6 +7097,12 @@ MonoBehaviour:
     type: 3}
   inRangeSprite: {fileID: 1129998183115349062, guid: 92a31a17841e48e4983af25d41f8efe7,
     type: 3}
+  majorConvoNodes:
+  - DonnaIntro
+  - DonnaBackstory
+  majorConvoTrust:
+  - 0
+  - 15
   schedule2convert:
   - day: 0
     time: 0
@@ -11841,7 +11847,7 @@ MonoBehaviour:
   - Interactable
   - IntangibleInteractable
   - NPC
-  followDist: 2
+  followDist: 1.5
   targetPosition: {x: 0, y: 0, z: 0}
 --- !u!50 &1925518070
 Rigidbody2D:

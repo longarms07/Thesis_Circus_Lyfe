@@ -17,6 +17,8 @@ public class GameManager :  ISwipeListener, ITapListener
     public int floorLayer;
     [Tooltip("The layer NPCS are found on")]
     public int npcLayer;
+    [Tooltip("Use for Fade to Black")]
+    public GameObject fadeToBlack;
 
     public DayEnums currentDay;
     public TimeEnums currentTime;
@@ -216,21 +218,20 @@ public class GameManager :  ISwipeListener, ITapListener
         }
         else
         {
+            if (reload) FadeToBlack();
             currentTime = TimeEnums.Evening;
             TextboxManager.GetInstance().UpdateDateTime();
-            if(reload) ReloadScene();
-            else
-            {
                 foreach (IDayTimeChangeListener listener in dayTimeChangeListeners)
                 {
                     listener.DayTimeChange(currentDay, currentTime);
                 }
-            }
+            if (reload) Invoke("FadeOutBlack", 0.5f);
         }
     }
 
     public void IncrementDay()
     {
+        FadeToBlack();
         switch (currentDay)
         {
             case DayEnums.Monday:
@@ -262,12 +263,18 @@ public class GameManager :  ISwipeListener, ITapListener
             listener.DayTimeChange(currentDay, currentTime);
         }
         TextboxManager.GetInstance().UpdateDateTime();
-        ReloadScene();
+        Invoke("FadeOutBlack", 0.5f);
     }
 
-    public void ReloadScene()
+    public void FadeToBlack()
     {
-        //Stubbed
+        fadeToBlack.SetActive(true);
+    }
+
+    public void FadeOutBlack()
+    {
+        fadeToBlack.SetActive(false);
+
     }
 
     public void SaveData()

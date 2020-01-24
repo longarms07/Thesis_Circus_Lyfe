@@ -25,10 +25,12 @@ public class Donna : NPCInteractable, IButtonListener
 
    protected override void AddToStart()
     {
-        /*dialogueRunner.RegisterFunction("DonnaChooseDialog", 0, delegate (Yarn.Value[] parameters)
-        {
-            return ChooseDialogNode();
-        });*/
+        filename = "DonnaStats.save";
+    }
+
+    public override float GetTrustLevel()
+    {
+        return gm.GetPlayerManager().getTrustDonna();
     }
 
     override
@@ -100,4 +102,7 @@ public class Donna : NPCInteractable, IButtonListener
             attemptTalking = true;
         }
     }
+
+
+
 }
