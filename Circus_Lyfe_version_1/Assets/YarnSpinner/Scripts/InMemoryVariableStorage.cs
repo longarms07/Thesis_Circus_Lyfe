@@ -28,6 +28,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Yarn.Unity;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System;
 
 namespace Yarn.Unity {
 
@@ -54,6 +57,7 @@ namespace Yarn.Unity {
 
         /// Our list of default variables, for debugging.
         public DefaultVariable[] defaultVariables;
+        private DefaultVariable[] originalDefaults;
 
         [Header("Optional debugging tools")]
         /// A UI.Text that can show the current list of all variables.
@@ -63,7 +67,10 @@ namespace Yarn.Unity {
         /// Reset to our default values when the game starts
         void Awake ()
         {
-            ResetToDefaults ();
+            originalDefaults = defaultVariables;
+            //DeleteSaveData();
+            LoadSaveData();
+            ResetToDefaults();
         }
 
         /// Erase all variables and reset to default values
@@ -113,8 +120,10 @@ namespace Yarn.Unity {
                 }
 
                 var v = new Yarn.Value(value);
-
-                SetValue ("$" + variable.name, v);
+                //Debug.Log("Before: "+variable.name+" , "+ variable.name[0]+" , "+ variable.name[0].Equals('$'));
+                if (!variable.name[0].Equals('$')) variable.name = "$" + variable.name;
+                //Debug.Log("After: " + variable.name);
+                SetValue (variable.name, v);
             }
         }
 
@@ -132,7 +141,6 @@ namespace Yarn.Unity {
             // value
             if (variables.ContainsKey(variableName) == false)
                 return Yarn.Value.NULL;
-            
             return variables [variableName];
         }
 
@@ -185,5 +193,84 @@ namespace Yarn.Unity {
         {
             return ((IEnumerable<KeyValuePair<string, Value>>)variables).GetEnumerator();
         }
+
+        private string savefile = "yarnvariables.save";
+
+
+        [Serializable]
+        struct YarnVarSave
+        {
+            public DefaultVariable[] variables;
+        }
+
+        public void SaveData()
+        {
+            YarnVarSave save = new YarnVarSave();
+            DefaultVariable[] saveVars = new DefaultVariable[variables.Count];
+            int indx = 0;
+            foreach(String var in variables.Keys)
+            {
+                DefaultVariable newVar = new DefaultVariable();
+                newVar.name = var;
+                newVar.value = variables[var].AsString;
+                newVar.type = variables[var].type;
+                saveVars[indx] = newVar;
+                indx++;
+            }
+            save.variables = saveVars;
+
+            BinaryFormatter format = new BinaryFormatter();
+            FileStream fs = File.Create(Application.persistentDataPath + savefile);
+            //Debug.Log(Application.persistentDataPath + savefile);
+            format.Serialize(fs, save);
+            fs.Close();
+            Debug.Log("Yarn Vars Saved");
+        }
+
+        public bool LoadSaveData()
+        {
+            if (File.Exists(Application.persistentDataPath + savefile))
+            {
+                BinaryFormatter format = new BinaryFormatter();
+                FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
+                YarnVarSave save = (YarnVarSave)format.Deserialize(fs);
+                fs.Close();
+                defaultVariables = save.variables;
+                Debug.Log("Yarn Vars loaded");
+                return true;
+            }
+            return false;
+        }
+
+
+        public void DeleteSaveData()
+        {
+            if (File.Exists(Application.persistentDataPath + savefile))
+            {
+                File.Delete(Application.persistentDataPath + savefile);
+                defaultVariables = originalDefaults;
+                ResetToDefaults();
+            }
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveData();
+        }
+
+        private void OnDestroy()
+        {
+            SaveData();
+        }
+
+        private void OnApplicationPause(bool pause)
+        {
+            if (pause)
+            {
+                SaveData();
+            }
+        }
+
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using TMPro;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -9,12 +10,20 @@ public class PlayerManager : MonoBehaviour
 {
 
     public int trustDonna;
+    public TextMeshProUGUI tmp;
     private string savefile = "player_stats.save";
+    private string trustDonnaMsg = "Friendship With Donna: ";
 
 
     void Awake()
     {
         LoadStats();
+    }
+
+    private void Start()
+    {
+        tmp.SetText(trustDonnaMsg + trustDonna);
+
     }
 
     // Update is called once per frame
@@ -26,25 +35,26 @@ public class PlayerManager : MonoBehaviour
     public void increaseTrustDonna(int increaseBy)
     {
         trustDonna += Mathf.Abs(increaseBy);
+        tmp.SetText(trustDonnaMsg + trustDonna);
     }
     
     public void decreaseTrustDonna(int decreaseBy)
     {
         trustDonna -= Mathf.Abs(decreaseBy);
         if (trustDonna < 0) trustDonna = 0;
+        tmp.SetText(trustDonnaMsg + trustDonna);
     }
 
     [YarnCommand("IncreaseTrust")]
     public void increaseTrustDonna(string increaseBy)
     {
-        trustDonna += Mathf.Abs(int.Parse(increaseBy));
+        increaseTrustDonna(int.Parse(increaseBy));
     }
 
     [YarnCommand("DecreaseTrust")]
     public void decreaseTrustDonna(string decreaseBy)
     {
-        trustDonna -= Mathf.Abs(int.Parse(decreaseBy));
-        if (trustDonna < 0) trustDonna = 0;
+        decreaseTrustDonna(int.Parse(decreaseBy));
     }
 
     public int getTrustDonna() { return trustDonna; }
