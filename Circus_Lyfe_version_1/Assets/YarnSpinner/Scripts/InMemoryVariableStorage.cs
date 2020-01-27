@@ -28,14 +28,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Yarn.Unity;
-using System.Diagnostics;
-using Debug = UnityEngine.Debug;
 
 namespace Yarn.Unity {
 
     /// An extremely simple implementation of DialogueUnityVariableStorage,
     /// which just stores everything in a Dictionary in memory.
-    public class InMemoryVariableStorage : VariableStorageBehaviour
+    public class InMemoryVariableStorage : VariableStorageBehaviour, IEnumerable<KeyValuePair<string, Yarn.Value>>
     {
 
         /// Where we actually keeping our variables
@@ -124,10 +122,7 @@ namespace Yarn.Unity {
         public override void SetValue (string variableName, Yarn.Value value)
         {
             // Copy this value into our list
-            Debug.Log("SetValue: " + variableName + " is " + variables.ContainsKey(variableName)+" new value: "+value);
-
             variables[variableName] = new Yarn.Value(value);
-            Debug.Log("SetValue: " + variableName + " is " + variables[variableName]);
         }
 
         /// Get a variable's value
@@ -135,8 +130,6 @@ namespace Yarn.Unity {
         {
             // If we don't have a variable with this name, return the null
             // value
-            Debug.Log("GetValue: " + variableName + " is " + variables.ContainsKey(variableName));
-
             if (variables.ContainsKey(variableName) == false)
                 return Yarn.Value.NULL;
             
@@ -155,13 +148,42 @@ namespace Yarn.Unity {
             if (debugTextView != null) {
                 var stringBuilder = new System.Text.StringBuilder ();
                 foreach (KeyValuePair<string,Yarn.Value> item in variables) {
+                    string debugDescription;
+                    switch (item.Value.type) {
+                        case Value.Type.Bool:
+                            debugDescription = item.Value.AsBool.ToString();
+                            break;
+                        case Value.Type.Null:
+                            debugDescription = "null";
+                            break;
+                        case Value.Type.Number:
+                            debugDescription = item.Value.AsNumber.ToString();
+                            break;
+                        case Value.Type.String:
+                            debugDescription = $@"""{item.Value.AsString}""";
+                            break;
+                        default:
+                            debugDescription = "<unknown>";
+                            break;
+
+                    }
                     stringBuilder.AppendLine (string.Format ("{0} = {1}",
                                                             item.Key,
-                                                            item.Value));
+                                                            debugDescription));
                 }
                 debugTextView.text = stringBuilder.ToString ();
+                debugTextView.SetAllDirty();
             }
         }
 
+        public IEnumerator<KeyValuePair<string, Value>> GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<string, Value>>)variables).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<string, Value>>)variables).GetEnumerator();
+        }
     }
 }

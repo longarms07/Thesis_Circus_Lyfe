@@ -20,7 +20,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     [Tooltip("The Trust Levels required to unlock each conversation")]
     public float[] majorConvoTrust;
     public bool doMajorConvos;
-    private int majorConvoIndex;
+    public int majorConvoIndex;
 
 
     protected Rigidbody2D rb;
@@ -135,8 +135,11 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
     public void SaveStats()
     {
         NPCStats save = new NPCStats();
+        Debug.Log("Indx to save: " + majorConvoIndex);
         save.convoIndex = majorConvoIndex;
+        Debug.Log("Indx saved: " + save.convoIndex);
         BinaryFormatter format = new BinaryFormatter();
+        //Debug.Log(Application.persistentDataPath + savefile);
         FileStream fs = File.Create(Application.persistentDataPath + savefile);
         format.Serialize(fs, save);
         fs.Close();
@@ -151,7 +154,9 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
             FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
             NPCStats save = (NPCStats)format.Deserialize(fs);
             fs.Close();
+            Debug.Log("Indx before: " + majorConvoIndex);
             majorConvoIndex = save.convoIndex;
+            Debug.Log("Indx after: " + majorConvoIndex);
             Debug.Log(gameObject.name+" stats loaded");
             return true;
         }
@@ -166,10 +171,7 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
         }
     }
 
-    private void OnApplicationPause(bool pause)
-    {
-        SaveStats();
-    }
+    
 
     private void OnApplicationQuit()
     {

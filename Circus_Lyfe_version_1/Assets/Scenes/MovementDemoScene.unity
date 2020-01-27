@@ -7768,6 +7768,7 @@ MonoBehaviour:
   - 0
   - 15
   doMajorConvos: 1
+  majorConvoIndex: 0
   schedule2convert:
   - day: 0
     time: 0
@@ -9965,12 +9966,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yarnScripts: []
+  textLanguage: 
   variableStorage: {fileID: 1438867806}
   dialogueUI: {fileID: 1438867807}
   startNode: 
   startAutomatically: 0
   automaticCommands: 1
-  stringTables: []
   onNodeComplete:
     m_PersistentCalls:
       m_Calls:

@@ -11,6 +11,11 @@ public class Donna : NPCInteractable, IButtonListener
     public string startDialogNode;
     private bool attemptTalking = false;
 
+    void Awake()
+    {
+        savefile = "donnastats.save";
+    }
+
     void Update()
     {
         if (attemptTalking)
@@ -25,7 +30,7 @@ public class Donna : NPCInteractable, IButtonListener
 
    protected override void AddToStart()
     {
-        savefile = "DonnaStats.save";
+        
     }
 
     public override float GetTrustLevel()
@@ -47,6 +52,7 @@ public class Donna : NPCInteractable, IButtonListener
         TextboxManager.GetInstance().TextBoxActive(true);*/
     }
     
+    [YarnCommand("TalkToDonna")]
     public void TalkToDonna()
     {
         dialogueRunner.StartDialogue(ChooseDialogNode());

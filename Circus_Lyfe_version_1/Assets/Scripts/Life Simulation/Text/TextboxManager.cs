@@ -221,7 +221,7 @@ public class TextboxManager : MonoBehaviour
 
     public void SetText(string text)
     {
-        Debug.Log("Here" + text);
+        //Debug.Log("Here" + text);
         textBox.text = text;
         textBox.pageToDisplay = 1;
     }

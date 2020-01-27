@@ -318,6 +318,7 @@ public class GameManager :  ISwipeListener, ITapListener
         save.majorActionDone = majorActionDone;
         BinaryFormatter format = new BinaryFormatter();
         FileStream fs = File.Create(Application.persistentDataPath + savefile);
+        //Debug.Log(Application.persistentDataPath + savefile);
         format.Serialize(fs, save);
         fs.Close();
         Debug.Log("Game Saved");    
