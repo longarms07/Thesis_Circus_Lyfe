@@ -21,10 +21,10 @@ public class BodyManager : MonoBehaviour
     protected Rigidbody2D lowerLegsRB;
     
 
-    protected HingeJoint2D torso2upperLegs;
-    protected HingeJoint2D arms2torso;
-    protected HingeJoint2D upperArms2arms;
-    protected HingeJoint2D upperLegs2lowerLegs;
+    public HingeJoint2D torso2upperLegs;
+    public HingeJoint2D arms2torso;
+    public HingeJoint2D upperArms2arms;
+    public HingeJoint2D upperLegs2lowerLegs;
     public bool facingRight = true;
 
     private Quaternion headRot;
@@ -72,16 +72,22 @@ public class BodyManager : MonoBehaviour
         upperLegsRB = upperLegs.GetComponent<Rigidbody2D>();
         lowerLegsRB = lowerLegs.GetComponent<Rigidbody2D>();
         upperArmsRB = upperArms.GetComponent<Rigidbody2D>();
-        headRot = head.transform.localRotation;
-        torsoRot = torso.transform.localRotation;
+        headRot = head.transform.rotation;
+        torsoRot = torso.transform.rotation;
         armsRot =  arms.transform.localRotation;
-        upperLegsRot = upperLegs.transform.localRotation;
-        lowerLegsRot = lowerLegs.transform.localRotation;
-        upperArmsRot = upperArms.transform.localRotation;
-        torso2upperLegs = torso.GetComponent<HingeJoint2D>();
+        upperLegsRot = upperLegs.transform.rotation;
+        lowerLegsRot = lowerLegs.transform.rotation;
+        upperArmsRot = upperArms.transform.rotation;
+        HingeJoint2D[] torsoJoints = torso.GetComponents<HingeJoint2D>();
+        foreach(HingeJoint2D tj in torsoJoints)
+        {
+            if (tj.connectedBody == armsRB) arms2torso = tj;
+            else torso2upperLegs = tj;
+        }
+       /* torso2upperLegs = torso.GetComponent<HingeJoint2D>();
         arms2torso = arms.GetComponent<HingeJoint2D>();
         upperArms2arms = upperArms.GetComponent<HingeJoint2D>();
-        upperLegs2lowerLegs = upperLegs.GetComponent<HingeJoint2D>();
+        upperLegs2lowerLegs = upperLegs.GetComponent<HingeJoint2D>();*/
         animator = GetComponent<Animator>();
 
     }
@@ -128,6 +134,8 @@ public class BodyManager : MonoBehaviour
 
     public void TurnAround()
     {
+        SetKinematic(true);
+        ResetRotation();
         int f = 1;
         if (facingRight) f = -1;
         facingRight = !facingRight;
@@ -139,22 +147,23 @@ public class BodyManager : MonoBehaviour
         torso.transform.Rotate(0, 180, 0);
         //upperLegs.transform.Rotate(0, 180, 0);
         //Debug.Log("Anchor x before: "+ arms2torso.connectedAnchor.x);
-        arms2torso.connectedAnchor = new Vector2(arms2torso.connectedAnchor.x * -1, arms2torso.connectedAnchor.y);
+        arms2torso.anchor = new Vector2(arms2torso.anchor.x * -1, arms2torso.anchor.y);
         //Debug.Log("Anchor x after: " + arms2torso.connectedAnchor.x);
         JointAngleLimits2D lim = new JointAngleLimits2D();
-        lim.min = torso2upperLegs.limits.min + f*60;
-        lim.max = torso2upperLegs.limits.max + f*60;
+        lim.min = torso2upperLegs.limits.min + -f*300;
+        lim.max = torso2upperLegs.limits.max + -f*300;
         torso2upperLegs.limits = lim;
-        lim.min = arms2torso.limits.min + f * 180;
-        lim.max = arms2torso.limits.max + f * 180;
+        lim.min = arms2torso.limits.min + f * 500;
+        lim.max = arms2torso.limits.max + f * 500;
         arms2torso.limits = lim;
         lim.min = upperArms2arms.limits.min + f * 139;
         lim.max = upperArms2arms.limits.max + f * 152;
         upperArms2arms.limits = lim;
-        lim.min = upperLegs2lowerLegs.limits.min + -f * 90;
-        lim.max = upperLegs2lowerLegs.limits.max + -f * 90;
+        lim.min = upperLegs2lowerLegs.limits.min + f * 270;
+        lim.max = upperLegs2lowerLegs.limits.max + f * 270;
         upperLegs2lowerLegs.limits = lim;
 
+        SetKinematic(false);
 
 
     }
@@ -178,12 +187,12 @@ public class BodyManager : MonoBehaviour
         upperLegsRot2 = upperLegs.transform.localRotation;
         lowerLegsRot2 = lowerLegs.transform.localRotation;
         upperArmsRot2 = upperArms.transform.localRotation;
-        head.transform.localRotation = headRot;
-        torso.transform.localRotation = torsoRot;
-        arms.transform.localRotation = armsRot;
-        upperLegs.transform.localRotation = upperLegsRot;
-        lowerLegs.transform.localRotation = lowerLegsRot;
-        upperArms.transform.localRotation = upperArmsRot;
+        head.transform.rotation = headRot;
+        torso.transform.rotation = torsoRot;
+        arms.transform.rotation = armsRot;
+        upperLegs.transform.rotation = upperLegsRot;
+        lowerLegs.transform.rotation = lowerLegsRot;
+        upperArms.transform.rotation = upperArmsRot;
     }
 
     protected void ResumeRotation()
