@@ -25,7 +25,7 @@ public class BodyManager : MonoBehaviour
     protected HingeJoint2D arms2torso;
     protected HingeJoint2D upperArms2arms;
     protected HingeJoint2D upperLegs2lowerLegs;
-    protected bool facingRight = true;
+    public bool facingRight = true;
 
     private Quaternion headRot;
     private Quaternion torsoRot;
@@ -138,6 +138,9 @@ public class BodyManager : MonoBehaviour
         head.transform.Rotate(0, 180, 0);
         torso.transform.Rotate(0, 180, 0);
         //upperLegs.transform.Rotate(0, 180, 0);
+        //Debug.Log("Anchor x before: "+ arms2torso.connectedAnchor.x);
+        arms2torso.connectedAnchor = new Vector2(arms2torso.connectedAnchor.x * -1, arms2torso.connectedAnchor.y);
+        //Debug.Log("Anchor x after: " + arms2torso.connectedAnchor.x);
         JointAngleLimits2D lim = new JointAngleLimits2D();
         lim.min = torso2upperLegs.limits.min + f*60;
         lim.max = torso2upperLegs.limits.max + f*60;
@@ -145,11 +148,8 @@ public class BodyManager : MonoBehaviour
         lim.min = arms2torso.limits.min + f * 180;
         lim.max = arms2torso.limits.max + f * 180;
         arms2torso.limits = lim;
-        //Debug.Log("Anchor x before: "+ arms2torso.connectedAnchor.x);
-        arms2torso.connectedAnchor = new Vector2(arms2torso.connectedAnchor.x*-1, arms2torso.connectedAnchor.y);
-        //Debug.Log("Anchor x after: " + arms2torso.connectedAnchor.x);
-        lim.min = upperArms2arms.limits.min + f * 180;
-        lim.max = upperArms2arms.limits.max + f * 180;
+        lim.min = upperArms2arms.limits.min + f * 139;
+        lim.max = upperArms2arms.limits.max + f * 152;
         upperArms2arms.limits = lim;
         lim.min = upperLegs2lowerLegs.limits.min + -f * 90;
         lim.max = upperLegs2lowerLegs.limits.max + -f * 90;

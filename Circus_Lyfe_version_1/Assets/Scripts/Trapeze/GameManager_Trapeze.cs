@@ -6,8 +6,6 @@ using UnityEngine;
 public class GameManager_Trapeze : GameManager, ITapListener
 {
     
-    [Tooltip("Whether or not the game is paused")]
-    public bool paused;
     [Tooltip("How long a short swipe is, distance wise")]
     public float swipeShortDis;
 
@@ -18,7 +16,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
 
 
-    private PlayerManager_Trapeze pm;
+    private PlayerManager_Trapeze pmt;
 
     private bool sloMo;
     private bool slowMoAllowed;
@@ -52,8 +50,8 @@ public class GameManager_Trapeze : GameManager, ITapListener
             Debug.Log("Player Avatar is null");
             Destroy(this);
         }
-        pm = playerAvatar.GetComponent<PlayerManager_Trapeze>();
-        if(pm == null)
+        pmt = playerAvatar.GetComponent<PlayerManager_Trapeze>();
+        if(pmt == null)
         {
             Debug.Log("Player Avatar is missing PlayerManager_Trapeze script");
             Destroy(this);
@@ -71,25 +69,25 @@ public class GameManager_Trapeze : GameManager, ITapListener
     {
         //Stubbed
         SwipeDirection dir = FindDirection(swipePositions);
-        if(pm.state == EnumPTrapezeState.OnTrapeze)
+        if(pmt.state == EnumPTrapezeState.OnTrapeze)
         {
             /*if ((dir != SwipeDirection.North && dir!=SwipeDirection.South) &&
                 (Math.Abs(swipePositions[1].x - swipePositions[0].x) <= swipeShortDis))
-                pm.Short();
+                pmt.Short();
             else
-                pm.Long();*/
+                pmt.Long();*/
             if (dir == SwipeDirection.East)
             {
-                if (pm.FacingRight()) DoShort();
+                if (pmt.FacingRight()) DoShort();
                 else DoLong();
             }
             else if (dir == SwipeDirection.West)
             {
-                if (pm.FacingRight()) DoLong();
+                if (pmt.FacingRight()) DoLong();
                 else DoShort();
             }
         }
-        else if(pm.state == EnumPTrapezeState.InAir)
+        else if(pmt.state == EnumPTrapezeState.InAir)
         {
             trickManager.AddSwipe(dir);
         }
@@ -99,7 +97,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
     {
         //Stubbed
         CheckTappedPosition(position);
-        if (pm.state == EnumPTrapezeState.OnTrapeze)
+        if (pmt.state == EnumPTrapezeState.OnTrapeze)
         {
             if (lastTap.transform != null && newLastTap)
             {
@@ -111,9 +109,9 @@ public class GameManager_Trapeze : GameManager, ITapListener
                 }
             }
             else
-                pm.Jump();
+                pmt.Jump();
         }
-        else if (pm.state == EnumPTrapezeState.InAir)
+        else if (pmt.state == EnumPTrapezeState.InAir)
         {
             if (lastTap.transform != null)
             {
@@ -128,14 +126,14 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     private void DoShort()
     {
-        pm.Short();
+        pmt.Short();
         trickGUI.DidTrick("Short", 0);
     }
 
     private void DoLong()
     {
         trickGUI.DidTrick("Long", 0);
-        pm.Long();
+        pmt.Long();
     }
 
     public static GameManager_Trapeze GetInstance()
@@ -145,7 +143,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     public PlayerManager_Trapeze GetPlayerManager()
     {
-        return pm;
+        return pmt;
     }
 
     public void ToggleSloMo()

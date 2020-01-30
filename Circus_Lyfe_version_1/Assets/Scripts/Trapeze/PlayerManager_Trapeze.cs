@@ -61,6 +61,7 @@ public class PlayerManager_Trapeze : BodyManager
     {
         gm = GameManager_Trapeze.GetInstance();
         InitRBs();
+        if (!facingRight) TurnAround();
         AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
         lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
         tm = TrickManager.GetInstance();

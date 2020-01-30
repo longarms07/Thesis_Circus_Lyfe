@@ -25,7 +25,7 @@ public class GameManager :  ISwipeListener, ITapListener
     public TimeEnums currentTime;
     public bool majorActionDone;
 
-    private bool paused = false;
+    public bool paused = false;
     public Dictionary<Transform, IInteractable> interactableDict;
     protected Dictionary<Transform, IButton> buttonDict;
     private TouchMovable playerTouchMovable;
