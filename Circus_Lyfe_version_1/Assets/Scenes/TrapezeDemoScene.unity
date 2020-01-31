@@ -1951,6 +1951,7 @@ MonoBehaviour:
   longLegForce: 0
   grabRange: 0
   targetMoveSpeed: 0
+  cooldownTimeSL: 0
   state: 3
 --- !u!1 &753185286
 GameObject:
@@ -3661,12 +3662,13 @@ MonoBehaviour:
   attachedTo: {fileID: 688901480}
   grabTargetXRange: 5
   goingRight: 0
-  shortArmForce: 100
-  shortLegForce: 100
-  shortHeadForce: 100
-  longLegForce: 100
+  shortArmForce: 60
+  shortLegForce: 60
+  shortHeadForce: 80
+  longLegForce: 60
   grabRange: 0.5
   targetMoveSpeed: 10
+  cooldownTimeSL: 1
   state: 4
 --- !u!95 &1644516904
 Animator:
@@ -3980,13 +3982,14 @@ MonoBehaviour:
   attachedTo: {fileID: 1524321075}
   grabTargetXRange: 5
   goingRight: 0
-  shortArmForce: 100
-  shortLegForce: 100
-  shortHeadForce: 100
-  longLegForce: 100
+  shortArmForce: 60
+  shortLegForce: 60
+  shortHeadForce: 80
+  longLegForce: 60
   grabRange: 0.5
   targetMoveSpeed: 10
-  state: 3
+  cooldownTimeSL: 1
+  state: 4
 --- !u!4 &1756145790
 Transform:
   m_ObjectHideFlags: 0
