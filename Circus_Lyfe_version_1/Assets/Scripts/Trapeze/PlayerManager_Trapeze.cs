@@ -26,24 +26,24 @@ public class PlayerManager_Trapeze : BodyManager
     public float targetMoveSpeed;
     public float cooldownTimeSL;
 
-    private GameManager_Trapeze gm;
+    protected GameManager_Trapeze gm;
 
-    private float timerSL;
-    private GrabTarget grabTarget;
-    private GrabTarget targetGrabTarget;
-    private GameObject target;
+    protected float timerSL;
+    protected GrabTarget grabTarget;
+    protected GrabTarget targetGrabTarget;
+    protected GameObject target;
     public EnumPTrapezeState state = EnumPTrapezeState.NONE;
-    private List<IPTrapezeStateListener> listeners;
-    private Rigidbody2D rb;
-    private GrabTarget initGrabTarget;
-    private GrabTarget lastGrabTarget;
-    private Quaternion initRot;
+    protected List<IPTrapezeStateListener> listeners;
+    protected Rigidbody2D rb;
+    protected GrabTarget initGrabTarget;
+    protected GrabTarget lastGrabTarget;
+    protected Quaternion initRot;
 
-    private Vector3 offset;
-    private TrickManager tm;
-    private Vector3 position;
-    private Quaternion rotation;
-    private float jumpX = 0;
+    protected Vector3 offset;
+    protected TrickManager tm;
+    protected Vector3 position;
+    protected Quaternion rotation;
+    protected float jumpX = 0;
 
 
     void Awake()
@@ -84,7 +84,7 @@ public class PlayerManager_Trapeze : BodyManager
     // Update is called once per frame
     void Update()
     {
-        
+
         goingRight = GoingRight();
         if (centerOfGravity != null)
         {
@@ -93,31 +93,33 @@ public class PlayerManager_Trapeze : BodyManager
         }
         if (state == EnumPTrapezeState.InAir)
         {
-            if (target != null)
-            {
-                if (target.transform.position.y > headRB.position.y)
-                {
-                    target = null;
-                    targetGrabTarget = null;
-                }
-                else
-                {
-                    torsoRB.MovePosition(Vector2.MoveTowards(torsoRB.position, target.transform.position, targetMoveSpeed * Time.deltaTime));
-                    upperArmsRB.MovePosition(Vector2.MoveTowards(upperArmsRB.position, target.transform.position, targetMoveSpeed * Time.deltaTime));
-                    if (Mathf.Abs(upperArmsRB.position.x - target.transform.position.x) <= grabRange
-                        && Mathf.Abs(upperArmsRB.position.y - target.transform.position.y) <= grabRange)
-                    {
-                        AttachTo(targetGrabTarget);
-                    }
-                }
-            }
-            if (jumpX - headRB.position.y >= fallDis) AttachToInitial();
-            //Debug.Log(jumpX - headRB.position.x);
-        }
-        if (state == EnumPTrapezeState.OnTrapeze)
-        {
+            DoInAir();
         }
 
+    }
+
+    protected void DoInAir()
+    {
+        if (target != null)
+        {
+            if (target.transform.position.y > headRB.position.y)
+            {
+                target = null;
+                targetGrabTarget = null;
+            }
+            else
+            {
+                torsoRB.MovePosition(Vector2.MoveTowards(torsoRB.position, target.transform.position, targetMoveSpeed * Time.deltaTime));
+                upperArmsRB.MovePosition(Vector2.MoveTowards(upperArmsRB.position, target.transform.position, targetMoveSpeed * Time.deltaTime));
+                if (Mathf.Abs(upperArmsRB.position.x - target.transform.position.x) <= grabRange
+                    && Mathf.Abs(upperArmsRB.position.y - target.transform.position.y) <= grabRange)
+                {
+                    AttachTo(targetGrabTarget);
+                }
+            }
+        }
+        if (jumpX - headRB.position.y >= fallDis) AttachToInitial();
+        //Debug.Log(jumpX - headRB.position.x);
     }
 
     public bool HasTarget()
@@ -225,7 +227,7 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (timerSL >= cooldownTimeSL)
         {
-            Debug.Log("Short");
+            Debug.Log(gameObject.name+" Short Degrees: " +grabTarget.angleDegrees + " Going Right? "+goingRight);
             Vector2 hor;
             if (facingRight) hor = Vector2.right;
             else hor = Vector2.left;
@@ -257,7 +259,7 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (timerSL >= cooldownTimeSL)
         {
-            Debug.Log("Long");
+            Debug.Log(gameObject.name + " Long Degrees: " + grabTarget.angleDegrees);
             Vector2 hor;
             if (!facingRight) hor = Vector2.right;
             else hor = Vector2.left;

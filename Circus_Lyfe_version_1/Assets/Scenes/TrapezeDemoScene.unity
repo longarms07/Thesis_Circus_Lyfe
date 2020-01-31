@@ -1265,7 +1265,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.806247, y: 3.5648227, z: 0.0893718}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1524321071}
+  - {fileID: 1742216239}
   m_Father: {fileID: 753185287}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1463,11 +1465,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688901477}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8410001, y: 1.193, z: 1}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalPosition: {x: -7.294494, y: -4.7436457, z: 0.9106282}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
-  m_Father: {fileID: 775042319}
-  m_RootOrder: 2
+  m_Father: {fileID: 1549445041}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &688901479
 CircleCollider2D:
@@ -1982,8 +1984,6 @@ Transform:
   m_Children:
   - {fileID: 644848403}
   - {fileID: 1924037876}
-  - {fileID: 1524321071}
-  - {fileID: 1742216239}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2016,8 +2016,6 @@ Transform:
   m_Children:
   - {fileID: 1549445041}
   - {fileID: 734569592}
-  - {fileID: 688901478}
-  - {fileID: 1547827368}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3072,11 +3070,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524321070}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.841, y: 1.193, z: 1}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalPosition: {x: -7.294493, y: -4.7436457, z: 0.9106282}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
-  m_Father: {fileID: 753185287}
-  m_RootOrder: 2
+  m_Father: {fileID: 644848403}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!232 &1524321072
 DistanceJoint2D:
@@ -3226,11 +3224,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547827367}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.841, y: 1.193, z: 0.0893718}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalPosition: {x: -7.2944937, y: -4.7436457, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
-  m_Father: {fileID: 775042319}
-  m_RootOrder: 3
+  m_Father: {fileID: 1549445041}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!232 &1547827369
 DistanceJoint2D:
@@ -3351,7 +3349,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.806247, y: 3.5648227, z: 0.0893718}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 688901478}
+  - {fileID: 1547827368}
   m_Father: {fileID: 775042319}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3668,8 +3668,13 @@ MonoBehaviour:
   longLegForce: 60
   grabRange: 0.5
   targetMoveSpeed: 10
-  cooldownTimeSL: 1
+  cooldownTimeSL: 0
   state: 4
+  shortDegreesForwardMin: 160
+  shortDegreesForwardMax: 130
+  shortDegreesBackwardMin: -140
+  shortDegreesBackwardMax: -130
+  longDegrees: 170
 --- !u!95 &1644516904
 Animator:
   serializedVersion: 3
@@ -3697,7 +3702,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644516902}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.99, y: 0.31, z: -1}
+  m_LocalPosition: {x: 0.49, y: 0.34, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 705988252}
@@ -3839,11 +3844,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1742216238}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.841, y: 1.193, z: 0.0893718}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalPosition: {x: -7.294493, y: -4.7436457, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
-  m_Father: {fileID: 753185287}
-  m_RootOrder: 3
+  m_Father: {fileID: 644848403}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!232 &1742216240
 DistanceJoint2D:
@@ -3981,14 +3986,14 @@ MonoBehaviour:
   jumpForce: {x: 10, y: 75, z: 0}
   attachedTo: {fileID: 1524321075}
   grabTargetXRange: 5
-  goingRight: 0
+  goingRight: 1
   shortArmForce: 60
   shortLegForce: 60
   shortHeadForce: 80
   longLegForce: 60
   grabRange: 0.5
   targetMoveSpeed: 10
-  cooldownTimeSL: 1
+  cooldownTimeSL: 0.5
   state: 4
 --- !u!4 &1756145790
 Transform:
