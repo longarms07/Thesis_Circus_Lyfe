@@ -6,6 +6,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
 {
     public Sprite activeSprite;
     public GameObject inactiveObject;
+    public float angleDegrees;
     //private Sprite inactiveSprite;
     //public Vector3 activeSize;
     //private Vector3 inactiveSize;
@@ -13,7 +14,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     private PlayerManager_Trapeze pm;
 
     private bool inRange;
-    private DistanceJoint2D joint;
+    public DistanceJoint2D joint;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D activeCollider;
 
@@ -36,7 +37,8 @@ public class GrabTarget : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        if(pm.state == EnumPTrapezeState.InAir)
+        angleDegrees = Mathf.Atan2(this.transform.localPosition.x, this.transform.localPosition.y) * Mathf.Rad2Deg;
+        if (pm.state == EnumPTrapezeState.InAir && joint.connectedBody == null)
         {
 
             if (pm.head.transform.position.y > this.transform.position.y &&
@@ -64,7 +66,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     {
         if (inRange)
         {
-            GameManager_Trapeze.GetInstance().GetPlayerManager().Target(joint);
+            GameManager_Trapeze.GetInstance().GetPlayerManager().Target(this);
         }
     }
 

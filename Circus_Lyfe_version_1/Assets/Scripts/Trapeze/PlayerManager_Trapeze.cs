@@ -12,7 +12,7 @@ public class PlayerManager_Trapeze : BodyManager
 
     public Vector3 jumpForce;
 
-    public GameObject attachedTo;
+    public GrabTarget attachedTo;
 
     public float grabTargetXRange;
 
@@ -27,14 +27,14 @@ public class PlayerManager_Trapeze : BodyManager
     private GameManager_Trapeze gm;
 
 
-    private DistanceJoint2D joint;
-    private DistanceJoint2D targetJoint;
+    private GrabTarget grabTarget;
+    private GrabTarget targetGrabTarget;
     private GameObject target;
     public EnumPTrapezeState state = EnumPTrapezeState.NONE;
     private List<IPTrapezeStateListener> listeners;
     private Rigidbody2D rb;
-    private DistanceJoint2D initJoint;
-    private DistanceJoint2D lastJoint;
+    private GrabTarget initGrabTarget;
+    private GrabTarget lastGrabTarget;
     private Quaternion initRot;
 
     private Vector3 offset;
@@ -66,7 +66,7 @@ public class PlayerManager_Trapeze : BodyManager
             facingRight = true;
             TurnAround();
         }
-        AttachTo(attachedTo.GetComponent<DistanceJoint2D>());
+        AttachTo(attachedTo);
         lowerLegsRB.AddForce(10 * Vector2.right, ForceMode2D.Impulse);
         tm = TrickManager.GetInstance();
         animator.enabled = false;
@@ -90,7 +90,7 @@ public class PlayerManager_Trapeze : BodyManager
                 if (target.transform.position.y > headRB.position.y)
                 {
                     target = null;
-                    targetJoint = null;
+                    targetGrabTarget = null;
                 }
                 else
                 {
@@ -99,7 +99,7 @@ public class PlayerManager_Trapeze : BodyManager
                     if (Mathf.Abs(upperArmsRB.position.x - target.transform.position.x) <= grabRange
                         && Mathf.Abs(upperArmsRB.position.y - target.transform.position.y) <= grabRange)
                     {
-                        AttachTo(targetJoint);
+                        AttachTo(targetGrabTarget);
                     }
                 }
             }
@@ -148,17 +148,18 @@ public class PlayerManager_Trapeze : BodyManager
         return false;
     }
 
-    public void Target(DistanceJoint2D joint)
+    public void Target(GrabTarget grabTarget)
     {
-        if (joint != null)
+        if (grabTarget != null)
         {
-            targetJoint = joint;
-            target = joint.gameObject;
+            targetGrabTarget = grabTarget;
+            target = grabTarget.gameObject;
         }
     }
 
-    public bool AttachTo(DistanceJoint2D joint2D)
+    public bool AttachTo(GrabTarget gt)
     {
+        DistanceJoint2D joint2D = gt.joint;
         if (joint2D == null || joint2D.connectedBody != null) return false;
         if (gm.IsSloMoAllowed() && gm.InSloMo())
         {
@@ -170,33 +171,33 @@ public class PlayerManager_Trapeze : BodyManager
         }
         ClearForce();
         target = null;
-        targetJoint = null;
+        targetGrabTarget = null;
         jumpX = 0;
-        if (initJoint == null)
+        if (initGrabTarget == null)
         {
-            initJoint = joint2D;
-            lastJoint = joint2D;
+            initGrabTarget = gt;
+            lastGrabTarget = gt;
         }
-        joint = joint2D;
-        joint.enabled = true;
-        joint.connectedBody = upperArmsRB;
+        grabTarget = gt;
+        joint2D.enabled = true;
+        joint2D.connectedBody = upperArmsRB;
         SetState(EnumPTrapezeState.OnTrapeze);
-        if (joint != lastJoint) TurnAround();
+        if (grabTarget != lastGrabTarget) TurnAround();
         return true;
     }
 
     public bool AttachToInitial()
     {
-        return AttachTo(initJoint);
+        return AttachTo(initGrabTarget);
     }
 
     public bool Deattach()
     {
-        if (joint == null) return false;
-        joint.connectedBody = null;
-        joint.enabled = false;
-        lastJoint = joint;
-        joint = null;
+        if (grabTarget == null) return false;
+        grabTarget.joint.connectedBody = null;
+        grabTarget.joint.enabled = false;
+        lastGrabTarget = grabTarget;
+        grabTarget = null;
         SetState(EnumPTrapezeState.InAir);
         return true;
     }
