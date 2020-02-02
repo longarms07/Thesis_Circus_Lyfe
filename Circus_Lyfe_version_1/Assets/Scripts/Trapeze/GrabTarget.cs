@@ -14,7 +14,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     private PlayerManager_Trapeze pm;
 
     private bool inRange;
-    public DistanceJoint2D joint;
+    public Joint2D joint;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D activeCollider;
 
@@ -23,7 +23,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     {
         inRange = false;
         //joint = this.gameObject.GetComponent<DistanceJoint2D>();
-        joint = inactiveObject.GetComponent<DistanceJoint2D>();
+        //joint = inactiveObject.GetComponent<Joint2D>();
         GameManager_Trapeze.GetInstance().RegisterInteractable(gameObject.transform, this);
         //inactiveSize = gameObject.transform.localScale;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -62,7 +62,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
         }
     }
 
-    public void OnInteraction()
+    public virtual void OnInteraction()
     {
         if (inRange)
         {
@@ -70,7 +70,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
         }
     }
 
-    public void InRange(bool inRange)
+    public virtual void InRange(bool inRange)
     {
         this.inRange = inRange;
         if (inRange)

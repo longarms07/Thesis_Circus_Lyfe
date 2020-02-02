@@ -156,8 +156,8 @@ public class BodyManager : MonoBehaviour
         lim.min = arms2torso.limits.min + f * 500;
         lim.max = arms2torso.limits.max + f * 500;
         arms2torso.limits = lim;
-        lim.min = upperArms2arms.limits.min + f * 139;
-        lim.max = upperArms2arms.limits.max + f * 152;
+        lim.min = upperArms2arms.limits.min + f * 150;
+        lim.max = upperArms2arms.limits.max + f * 150;
         upperArms2arms.limits = lim;
         lim.min = upperLegs2lowerLegs.limits.min + f * 270;
         lim.max = upperLegs2lowerLegs.limits.max + f * 270;

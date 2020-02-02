@@ -167,9 +167,9 @@ public class PlayerManager_Trapeze : BodyManager
         }
     }
 
-    public bool AttachTo(GrabTarget gt)
+    public virtual bool AttachTo(GrabTarget gt)
     {
-        DistanceJoint2D joint2D = gt.joint;
+        Joint2D joint2D = gt.joint;
         if (joint2D == null || joint2D.connectedBody != null) return false;
         if (gm.IsSloMoAllowed() && gm.InSloMo())
         {
