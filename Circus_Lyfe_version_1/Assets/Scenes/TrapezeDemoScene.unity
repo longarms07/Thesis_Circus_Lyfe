@@ -1954,6 +1954,7 @@ MonoBehaviour:
   grabRange: 0
   targetMoveSpeed: 0
   cooldownTimeSL: 0
+  canSloMo: 1
   state: 3
 --- !u!1 &753185286
 GameObject:
@@ -2804,10 +2805,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -3814,7 +3815,7 @@ MonoBehaviour:
   facingRight: 0
   fallDis: 4
   moveTowardsDist: 20
-  jumpForce: {x: 10, y: 75, z: 0}
+  jumpForce: {x: 10, y: 40, z: 0}
   attachedTo: {fileID: 688901480}
   grabTargetXRange: 5
   goingRight: 0
@@ -3825,13 +3826,17 @@ MonoBehaviour:
   grabRange: 1
   targetMoveSpeed: 10
   cooldownTimeSL: 0
+  canSloMo: 0
   state: 4
   shortDegreesForwardMin: 160
   shortDegreesForwardMax: 140
   shortDegreesBackwardMin: -140
   shortDegreesBackwardMax: -135
-  waitTime: 1
   longDegrees: 170
+  jumpDegrees: {x: 150, y: 135}
+  jumpOdds: {x: 1, y: 5}
+  waitTime: 1
+  playerJoint: {fileID: 1710496859}
 --- !u!95 &1644516904
 Animator:
   serializedVersion: 3
@@ -4160,7 +4165,7 @@ MonoBehaviour:
   facingRight: 1
   fallDis: 4
   moveTowardsDist: 20
-  jumpForce: {x: 10, y: 75, z: 0}
+  jumpForce: {x: 10, y: 40, z: 0}
   attachedTo: {fileID: 1524321075}
   grabTargetXRange: 5
   goingRight: 1
@@ -4171,6 +4176,7 @@ MonoBehaviour:
   grabRange: 1
   targetMoveSpeed: 10
   cooldownTimeSL: 0.5
+  canSloMo: 1
   state: 4
 --- !u!4 &1756145790
 Transform:

@@ -25,6 +25,7 @@ public class PlayerManager_Trapeze : BodyManager
     public float grabRange;
     public float targetMoveSpeed;
     public float cooldownTimeSL;
+    public bool canSloMo = true;
 
     protected GameManager_Trapeze gm;
 
@@ -171,7 +172,7 @@ public class PlayerManager_Trapeze : BodyManager
     {
         Joint2D joint2D = gt.joint;
         if (joint2D == null || joint2D.connectedBody != null) return false;
-        if (gm.IsSloMoAllowed() && gm.InSloMo())
+        if (canSloMo && gm.IsSloMoAllowed() && gm.InSloMo())
         {
             gm.ToggleSloMo();
         }
@@ -214,8 +215,9 @@ public class PlayerManager_Trapeze : BodyManager
 
     public bool Jump()
     {
+        Debug.Log(gameObject.name + "Jumped at " + grabTarget.angleDegrees);
         if (!Deattach()) return false;
-        if (GameManager_Trapeze.GetInstance().IsSloMoAllowed()) GameManager_Trapeze.GetInstance().ToggleSloMo();
+        if (canSloMo && GameManager_Trapeze.GetInstance().IsSloMoAllowed()) GameManager_Trapeze.GetInstance().ToggleSloMo();
         Vector2 dir = new Vector2(1,1);
         jumpX = headRB.position.y;
         if (!facingRight) dir.x = -1;
@@ -319,7 +321,7 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void AnimationEnded()
     {
-        if (gm.IsSloMoAllowed() && gm.InSloMo())
+        if (canSloMo && gm.IsSloMoAllowed() && gm.InSloMo())
         {
             //gm.ToggleSloMo();
             animator.speed = animator.speed / 2;
