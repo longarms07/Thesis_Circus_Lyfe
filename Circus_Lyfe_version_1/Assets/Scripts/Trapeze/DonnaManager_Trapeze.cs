@@ -155,7 +155,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
 
     public void CalculateJump()
     {
-        int jumpNum = Random.Range(0, jumpOdds.y);
+        int jumpNum = Mathf.CeilToInt(Random.Range(0, jumpOdds.y));
         Debug.Log("jumpNum is " + jumpNum + " , num to beat is "+ jumpOdds.x);
         if (jumpNum < jumpOdds.x && playerJoint.connectedBody == null) {
             doJump = true;
