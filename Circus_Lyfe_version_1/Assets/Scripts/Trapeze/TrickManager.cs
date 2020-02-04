@@ -12,7 +12,8 @@ public class TrickManager : MonoBehaviour
 
     private List<SwipeDirection> currentSwipe;
     private float timer;
-    private PlayerManager_Trapeze pm;
+    public PlayerManager_Trapeze playerManager;
+    public DonnaManager_Trapeze donnaManager;
     private GameManager_Trapeze gm;
     private static TrickManager instance;
 
@@ -30,14 +31,13 @@ public class TrickManager : MonoBehaviour
     void Start()
     {
         gm = GameManager_Trapeze.GetInstance();
-        pm = gm.GetPlayerManager();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (pm == null) pm = gm.GetPlayerManager();
-        if (pm.state == EnumPTrapezeState.InAir && currentSwipe.Count != 0 && !pm.HasTarget())
+        if (playerManager == null) playerManager = gm.GetPlayerManager();
+        if (playerManager.state == EnumPTrapezeState.InAir && currentSwipe.Count != 0 && !playerManager.HasTarget())
         {
             timer++;
             if (timer >= execTime) ExecuteTrick();
@@ -63,13 +63,23 @@ public class TrickManager : MonoBehaviour
         {
             Trick t = tricktionary[currentSwipe];
             gm.trickGUI.DidTrick(t.name, t.score);
-            //stubbed, need to handle animation.
-            pm.DoAnimation(t.playerAnimFile);
+            playerManager.DoAnimation(t.playerAnimFile);
               
         }
         currentSwipe.Clear();
         timer = 0;
 
+    }
+
+    public void ExecuteTrickDonna(List<SwipeDirection> trickCode)
+    {
+        if (tricktionary.ContainsKey(trickCode))
+        {
+            Trick t = tricktionary[trickCode];
+            //gm.trickGUI.DidTrick(t.name, t.score);
+            donnaManager.DoAnimation(t.playerAnimFile);
+
+        }
     }
 
     public string PrintList(List<SwipeDirection> l)
@@ -91,6 +101,11 @@ public class TrickManager : MonoBehaviour
     public static TrickManager GetInstance()
     {
         return instance;
+    }
+
+    public List<Trick> GetAvaliableTricks()
+    {
+        return tricks;
     }
 
 }

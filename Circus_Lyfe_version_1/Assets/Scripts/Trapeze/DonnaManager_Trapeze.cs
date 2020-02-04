@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DonnaManager_Trapeze : PlayerManager_Trapeze
+public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListener
 {
     public float shortDegreesForwardMin;
     public float shortDegreesForwardMax;
@@ -12,14 +12,26 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze
     public Vector2 jumpDegrees;
     [Tooltip("The odds that Donna will jump. In the format of x:y, for example 1:5")]
     public Vector2 jumpOdds;
+    public int maxNumTricks;
     public float waitTime;
-    public FixedJoint2D playerJoint;
+    public GrabTarget playerGrabTarget;
+    public GrabTarget trapezeLeftGrabTarget;
+    public GrabTarget trapezeRightGrabTarget;
     private bool shortDone;
     private bool longDone;
     private bool doJump;
     private bool runAI = false;
     private float waitTimer = 0;
+    private int tricksPerformed;
+    private int numTricksToDo;
+    private bool targetChosen;
     
+    void Start()
+    {
+        DoAtStart();
+        gm.GetPlayerManager().SubscribeStateListener(this);
+    }
+
     private void Update()
     {
         
@@ -42,6 +54,18 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze
         {
             if (state == EnumPTrapezeState.InAir)
             {
+                if(torsoRB.velocity.y > 0 && torsoRB.velocity.y<2 && tricksPerformed < numTricksToDo)
+                {
+                    List<Trick> trickCodes = tm.GetAvaliableTricks();
+                    List<SwipeDirection> trickToDo = trickCodes[Random.Range(0, trickCodes.Count - 1)].code;
+                    tricksPerformed++;
+                    tm.ExecuteTrickDonna(trickToDo);
+                }
+                else if (torsoRB.velocity.y<0)
+                {
+                    ChooseTarget();
+                    targetChosen = true;
+                }
                 DoInAir();
             }
             else if (state == EnumPTrapezeState.OnTrapeze)
@@ -131,10 +155,13 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze
 
     public void CalculateJump()
     {
-        float jumpNum = Random.Range(0, jumpOdds.y);
+        int jumpNum = Random.Range(0, jumpOdds.y);
         Debug.Log("jumpNum is " + jumpNum + " , num to beat is "+ jumpOdds.x);
         if (jumpNum < jumpOdds.x && playerJoint.connectedBody == null) {
             doJump = true;
+            tricksPerformed = 0;
+            targetChosen = false;
+            numTricksToDo = Random.Range(1, maxNumTricks);
             WarnJump();
         }
         else doJump = false;
@@ -144,5 +171,32 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze
     public void WarnJump()
     {
         Debug.Log("Donna is about to Jump!!!");
+    }
+
+    private void ChooseTarget()
+    {
+        EnumPTrapezeState pState = gm.GetPlayerManager().state;
+        if(pState == EnumPTrapezeState.InAir)
+        {
+            if (facingRight) Target(trapezeRightGrabTarget);
+            else Target(trapezeLeftGrabTarget);
+        }
+        else if (pState == EnumPTrapezeState.OnTrapeze)
+        {
+            Target(playerGrabTarget);
+        }
+    }
+
+    public override string GetAnimName(string animName)
+    {
+        return "d_" + animName;
+    }
+
+    public void OnPlayerStateChange(EnumPTrapezeState pState)
+    {
+        if(state == EnumPTrapezeState.InAir)
+        {
+            ChooseTarget();
+        }
     }
 }

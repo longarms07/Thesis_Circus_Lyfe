@@ -26,6 +26,7 @@ public class PlayerManager_Trapeze : BodyManager
     public float targetMoveSpeed;
     public float cooldownTimeSL;
     public bool canSloMo = true;
+    public FixedJoint2D playerJoint;
 
     protected GameManager_Trapeze gm;
 
@@ -45,7 +46,7 @@ public class PlayerManager_Trapeze : BodyManager
     protected Vector3 position;
     protected Quaternion rotation;
     protected float jumpX = 0;
-
+    
 
     void Awake()
     {
@@ -63,6 +64,11 @@ public class PlayerManager_Trapeze : BodyManager
     // Start is called before the first frame update
     void Start()
     {
+        DoAtStart(); 
+    }
+
+
+    protected void DoAtStart() {
         gm = GameManager_Trapeze.GetInstance();
         InitRBs();
         if (!facingRight)
@@ -77,7 +83,7 @@ public class PlayerManager_Trapeze : BodyManager
         //TurnAround();
     }
 
-    private void FixedUpdate()
+        private void FixedUpdate()
     {
         timerSL += Time.deltaTime;
     }
@@ -115,6 +121,7 @@ public class PlayerManager_Trapeze : BodyManager
                 if (Mathf.Abs(upperArmsRB.position.x - target.transform.position.x) <= grabRange
                     && Mathf.Abs(upperArmsRB.position.y - target.transform.position.y) <= grabRange)
                 {
+                    Debug.Log(gameObject.name + " is attempting to attach to " + targetGrabTarget.gameObject.name );//+ " returned "+ AttachTo(targetGrabTarget));
                     AttachTo(targetGrabTarget);
                 }
             }
@@ -165,13 +172,16 @@ public class PlayerManager_Trapeze : BodyManager
         {
             targetGrabTarget = grabTarget;
             target = grabTarget.gameObject;
+            //Debug.Log("Targeting " + target.name);
         }
     }
 
     public virtual bool AttachTo(GrabTarget gt)
     {
         Joint2D joint2D = gt.joint;
-        if (joint2D == null || joint2D.connectedBody != null) return false;
+        Debug.Log("Joint2d is null?" + (joint2D == null));
+        Debug.Log("Connected body is not null?" + (joint2D.connectedBody != null));
+        //if (joint2D == null || joint2D.connectedBody != null) return false;
         if (canSloMo && gm.IsSloMoAllowed() && gm.InSloMo())
         {
             gm.ToggleSloMo();
@@ -315,13 +325,13 @@ public class PlayerManager_Trapeze : BodyManager
         //ResetRotation();
         SetKinematic(true);
         animator.enabled = true;
-        animator.SetTrigger(animName);
+        animator.SetTrigger(GetAnimName(animName));
 
     }
 
     public void AnimationEnded()
     {
-        if (canSloMo && gm.IsSloMoAllowed() && gm.InSloMo())
+        if (gm.IsSloMoAllowed() && gm.InSloMo())
         {
             //gm.ToggleSloMo();
             animator.speed = animator.speed / 2;
@@ -334,8 +344,16 @@ public class PlayerManager_Trapeze : BodyManager
         this.gameObject.transform.localPosition = position;
         state = EnumPTrapezeState.InAir;
     }
-    
 
+    public virtual string GetAnimName(string animName)
+    {
+        return "p_" + animName;
+    }
+    
+    public GrabTarget GetGrabTarget()
+    {
+        return grabTarget;
+    }
 
 
 }

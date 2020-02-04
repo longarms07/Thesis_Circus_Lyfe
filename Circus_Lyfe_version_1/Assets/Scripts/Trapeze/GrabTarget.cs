@@ -11,9 +11,9 @@ public class GrabTarget : MonoBehaviour, IInteractable
     //public Vector3 activeSize;
     //private Vector3 inactiveSize;
     private SpriteRenderer inactiveSpriteRenderer;
-    private PlayerManager_Trapeze pm;
+    protected PlayerManager_Trapeze pm;
 
-    private bool inRange;
+    protected bool inRange;
     public Joint2D joint;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D activeCollider;
@@ -37,7 +37,7 @@ public class GrabTarget : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        angleDegrees = Mathf.Atan2(this.transform.localPosition.x, this.transform.localPosition.y) * Mathf.Rad2Deg;
+        CalculateAngleDegrees();
         if (pm.state == EnumPTrapezeState.InAir && joint.connectedBody == null)
         {
 
@@ -92,5 +92,9 @@ public class GrabTarget : MonoBehaviour, IInteractable
         }
     }
 
+    protected virtual void CalculateAngleDegrees()
+    {
+        angleDegrees = Mathf.Atan2(this.transform.localPosition.x, this.transform.localPosition.y) * Mathf.Rad2Deg;
+    }
 
 }

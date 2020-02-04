@@ -15,8 +15,9 @@ public class GameManager_Trapeze : GameManager, ITapListener
     private static GameManager_Trapeze instance;
 
 
-
+    public DonnaManager_Trapeze donnaManager;
     private PlayerManager_Trapeze pmt;
+
 
     private bool sloMo;
     private bool slowMoAllowed;
