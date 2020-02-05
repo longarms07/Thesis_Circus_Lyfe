@@ -63,10 +63,8 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
                 }
                 else if (torsoRB.velocity.y<0)
                 {
-                    ChooseTarget();
-                    targetChosen = true;
+                    DoInAir();
                 }
-                DoInAir();
             }
             else if (state == EnumPTrapezeState.OnTrapeze)
             {
@@ -157,12 +155,13 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
     {
         int jumpNum = Mathf.CeilToInt(Random.Range(0, jumpOdds.y));
         Debug.Log("jumpNum is " + jumpNum + " , num to beat is "+ jumpOdds.x);
-        if (jumpNum < jumpOdds.x && playerJoint.connectedBody == null) {
+        if (jumpNum <= jumpOdds.x && playerJoint.connectedBody == null) {
             doJump = true;
             tricksPerformed = 0;
             targetChosen = false;
             numTricksToDo = Random.Range(1, maxNumTricks);
             WarnJump();
+            ChooseTarget();
         }
         else doJump = false;
             
@@ -176,14 +175,16 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
     private void ChooseTarget()
     {
         EnumPTrapezeState pState = gm.GetPlayerManager().state;
-        if(pState == EnumPTrapezeState.InAir)
+        
+        if (pState == EnumPTrapezeState.OnTrapeze && gm.GetPlayerManager().facingRight != facingRight)
+        {
+            Target(playerGrabTarget);
+        }
+        else
         {
             if (facingRight) Target(trapezeRightGrabTarget);
             else Target(trapezeLeftGrabTarget);
-        }
-        else if (pState == EnumPTrapezeState.OnTrapeze)
-        {
-            Target(playerGrabTarget);
+            
         }
     }
 

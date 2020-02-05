@@ -109,7 +109,9 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (target != null)
         {
-            if (target.transform.position.y > headRB.position.y)
+            if (target.transform.position.y > headRB.position.y || 
+                (goingRight && target.transform.position.x < torsoRB.position.y)
+                || (!goingRight && target.transform.position.x > torsoRB.position.y))
             {
                 target = null;
                 targetGrabTarget = null;
@@ -225,6 +227,7 @@ public class PlayerManager_Trapeze : BodyManager
 
     public bool Jump()
     {
+        if (playerJoint.connectedBody != null) return false; 
         Debug.Log(gameObject.name + "Jumped at " + grabTarget.angleDegrees);
         if (!Deattach()) return false;
         if (canSloMo && GameManager_Trapeze.GetInstance().IsSloMoAllowed()) GameManager_Trapeze.GetInstance().ToggleSloMo();
@@ -315,10 +318,10 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void DoAnimation(string animName)
     {
-        if (gm.IsSloMoAllowed() && gm.InSloMo())
+        if (gm.IsSloMoAllowed() && gm.InSloMo() && animator.speed < 1)
         {
             //gm.ToggleSloMo();
-            animator.speed = animator.speed * 2;
+            animator.speed = 1;
         }
         transform.position = head.transform.position + offset;
         state = EnumPTrapezeState.Trick;
@@ -331,10 +334,10 @@ public class PlayerManager_Trapeze : BodyManager
 
     public void AnimationEnded()
     {
-        if (gm.IsSloMoAllowed() && gm.InSloMo())
+        if (gm.IsSloMoAllowed() && gm.InSloMo() && animator.speed == 1)
         {
             //gm.ToggleSloMo();
-            animator.speed = animator.speed / 2;
+            animator.speed = 0.5f;
         }
         animator.enabled = false;
         //ResumeRotation();

@@ -2909,7 +2909,7 @@ DistanceJoint2D:
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0.019999554, y: -0.47999996}
-  m_AutoConfigureDistance: 1
+  m_AutoConfigureDistance: 0
   m_Distance: 0.005
   m_MaxDistanceOnly: 0
 --- !u!1 &1320001622
@@ -3969,7 +3969,7 @@ MonoBehaviour:
   facingRight: 0
   fallDis: 4
   moveTowardsDist: 20
-  jumpForce: {x: 10, y: 40, z: 0}
+  jumpForce: {x: 1, y: 60, z: 0}
   attachedTo: {fileID: 688901480}
   grabTargetXRange: 5
   goingRight: 0
@@ -3988,8 +3988,8 @@ MonoBehaviour:
   shortDegreesBackwardMin: -140
   shortDegreesBackwardMax: -135
   longDegrees: 170
-  jumpDegrees: {x: 160, y: 135}
-  jumpOdds: {x: 1, y: 5}
+  jumpDegrees: {x: 150, y: 135}
+  jumpOdds: {x: 2, y: 5}
   maxNumTricks: 3
   waitTime: 1
   playerGrabTarget: {fileID: 1341391956}
@@ -4323,7 +4323,7 @@ MonoBehaviour:
   facingRight: 1
   fallDis: 4
   moveTowardsDist: 20
-  jumpForce: {x: 10, y: 40, z: 0}
+  jumpForce: {x: 1, y: 60, z: 0}
   attachedTo: {fileID: 1524321075}
   grabTargetXRange: 5
   goingRight: 1
