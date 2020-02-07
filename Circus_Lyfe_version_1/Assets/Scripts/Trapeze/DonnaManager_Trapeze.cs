@@ -17,6 +17,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
     public GrabTarget playerGrabTarget;
     public GrabTarget trapezeLeftGrabTarget;
     public GrabTarget trapezeRightGrabTarget;
+    public GameObject jumpWarning;
     private bool shortDone;
     private bool longDone;
     private bool doJump;
@@ -47,7 +48,10 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
             goingRight = gr;
             shortDone = false;
             longDone = false;
-            if((facingRight && goingRight) || (!facingRight && !goingRight))
+            if (this.runAI == true 
+                && state == EnumPTrapezeState.OnTrapeze
+                &&(facingRight && grabTarget.angleDegrees > -jumpDegrees.x && grabTarget.angleDegrees < 0)
+                || (!facingRight && grabTarget.angleDegrees < jumpDegrees.x && grabTarget.angleDegrees > 0))
                 CalculateJump();
         }
         if (runAI)
@@ -144,8 +148,9 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
         }
     }
 
-    public override bool AttachTo(GrabTarget gt)
+    public override bool AttachTo(GrabTarget gt, bool turnAround=true)
     {
+        legGrabTarget.enabled = true;
         runAI = false;
         waitTimer = 0;
         return base.AttachTo(gt);
@@ -153,9 +158,10 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
 
     public void CalculateJump()
     {
+        jumpWarning.SetActive(false);
         int jumpNum = Mathf.CeilToInt(Random.Range(0, jumpOdds.y));
         Debug.Log("jumpNum is " + jumpNum + " , num to beat is "+ jumpOdds.x);
-        if (jumpNum <= jumpOdds.x && playerJoint.connectedBody == null) {
+        if (jumpNum <= jumpOdds.x && playerJoint.connectedBody == null && state == EnumPTrapezeState.OnTrapeze) {
             doJump = true;
             tricksPerformed = 0;
             targetChosen = false;
@@ -169,7 +175,17 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
 
     public void WarnJump()
     {
-        Debug.Log("Donna is about to Jump!!!");
+        
+            jumpWarning.SetActive(true);
+            Debug.Log("Donna is about to Jump!!!");
+    }
+
+    public override bool Jump()
+    {
+        doJump = false;
+        jumpWarning.SetActive(false);
+        legGrabTarget.enabled = false;
+        return base.Jump();
     }
 
     private void ChooseTarget()
@@ -179,12 +195,14 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
         if (pState == EnumPTrapezeState.OnTrapeze && gm.GetPlayerManager().facingRight != facingRight)
         {
             Target(playerGrabTarget);
+            Debug.Log("Donna is targeting the player");
         }
         else
         {
             if (facingRight) Target(trapezeRightGrabTarget);
             else Target(trapezeLeftGrabTarget);
-            
+            Debug.Log("Donna is targeting the trapeze");
+
         }
     }
 
