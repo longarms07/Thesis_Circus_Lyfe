@@ -151,7 +151,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
 
     public override bool AttachTo(GrabTarget gt, bool turnAround=true)
     {
-        legGrabTarget.enabled = true;
+        legGrabTarget.gameObject.SetActive(true);
         runAI = false;
         waitTimer = 0;
         return base.AttachTo(gt, turnAround);
@@ -185,7 +185,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
     {
         doJump = false;
         jumpWarning.SetActive(false);
-        legGrabTarget.enabled = false;
+        legGrabTarget.gameObject.SetActive(false) ;
         return base.Jump();
     }
 
@@ -214,7 +214,9 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
 
     public void OnPlayerStateChange(EnumPTrapezeState pState)
     {
-        if(state == EnumPTrapezeState.InAir)
+        if(pState == EnumPTrapezeState.InAir)
+            numTricksToDo = 0;
+        if (state == EnumPTrapezeState.InAir)
         {
             ChooseTarget();
         }

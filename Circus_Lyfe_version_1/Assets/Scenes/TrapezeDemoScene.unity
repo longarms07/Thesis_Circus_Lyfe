@@ -2186,26 +2186,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tricks:
   - name: Backflip
-    duration: 0
+    unlocked: 0
     score: 50
     code: 03000000
     playerAnimFile: backflip
   - name: Pirouette
-    duration: 0
+    unlocked: 0
     score: 100
     code: 0100000007000000
     playerAnimFile: pirouette
   - name: Shooting Star
-    duration: 0
+    unlocked: 0
     score: 150
     code: 040000000300000002000000
     playerAnimFile: shoot_star
   - name: Frontflip
-    duration: 0
+    unlocked: 0
     score: 50
     code: 02000000
     playerAnimFile: frontflip
-  execTime: 20
+  execTime: 0.2
   playerManager: {fileID: 1756145789}
   donnaManager: {fileID: 1644516903}
 --- !u!4 &800483052

@@ -8,7 +8,7 @@ public class Trick
 {
     
     public string name;
-    public float duration;
+    public bool unlocked;
     public int score;
     public List<SwipeDirection> code;
     public string playerAnimFile;
@@ -17,7 +17,7 @@ public class Trick
     public Trick(string n, float d, int s, List<SwipeDirection> c)
     {
         name = n;
-        duration = d;
+        unlocked = false;
         score = s;
         code = c;
     }

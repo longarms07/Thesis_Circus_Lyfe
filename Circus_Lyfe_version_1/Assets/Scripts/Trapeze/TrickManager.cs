@@ -34,12 +34,12 @@ public class TrickManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (playerManager == null) playerManager = gm.GetPlayerManager();
         if (playerManager.state == EnumPTrapezeState.InAir && currentSwipe.Count != 0 && !playerManager.HasTarget())
         {
-            timer++;
+            timer+=Time.deltaTime;
             if (timer >= execTime) ExecuteTrick();
         }
         else
@@ -62,9 +62,17 @@ public class TrickManager : MonoBehaviour
         if (tricktionary.ContainsKey(currentSwipe))
         {
             Trick t = tricktionary[currentSwipe];
-            gm.trickGUI.DidTrick(t.name, t.score);
+            if (donnaManager.state == EnumPTrapezeState.InAir)
+            {
+                ExecuteTrickDonna(currentSwipe);
+                gm.trickGUI.DidTrick("Duo "+t.name, t.score*4);
+            }
+            else
+            {
+                gm.trickGUI.DidTrick(t.name, t.score);
+            }
             playerManager.DoAnimation(t.playerAnimFile);
-              
+
         }
         currentSwipe.Clear();
         timer = 0;

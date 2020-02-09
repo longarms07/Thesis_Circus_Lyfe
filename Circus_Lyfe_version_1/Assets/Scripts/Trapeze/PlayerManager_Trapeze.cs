@@ -31,6 +31,7 @@ public class PlayerManager_Trapeze : BodyManager
 
     protected GameManager_Trapeze gm;
 
+    private bool initFacingRight;
     protected float timerSL;
     protected GrabTarget grabTarget;
     protected GrabTarget targetGrabTarget;
@@ -51,6 +52,7 @@ public class PlayerManager_Trapeze : BodyManager
 
     void Awake()
     {
+        initFacingRight = facingRight;
         listeners = new List<IPTrapezeStateListener>();
         rb = GetComponent<Rigidbody2D>();
         if (jumpForce == null) jumpForce = new Vector3(0, 0, 0);
@@ -215,9 +217,13 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (initGrabTarget.joint.connectedBody != null)
         {
-            return AttachTo(initGrabTarget.joint.connectedBody.gameObject.GetComponentInParent<PlayerManager_Trapeze>().legGrabTarget, false);
+            PlayerManager_Trapeze pm = initGrabTarget.joint.connectedBody.gameObject.GetComponentInParent<PlayerManager_Trapeze>();
+            if(pm.facingRight != facingRight) AttachTo(pm.legGrabTarget);
+            return AttachTo(pm.legGrabTarget, false);
         }
-        return AttachTo(initGrabTarget);
+        bool turn = true;
+        if (lastGrabTarget != initGrabTarget && facingRight == initFacingRight) turn = false;
+        return AttachTo(initGrabTarget, turn);
     }
 
     public bool Deattach()
