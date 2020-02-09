@@ -21,7 +21,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
     private bool shortDone;
     private bool longDone;
     private bool doJump;
-    private bool runAI = false;
+    private bool runAI;
     private float waitTimer = 0;
     private int tricksPerformed;
     private int numTricksToDo;
@@ -29,6 +29,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
     
     void Start()
     {
+        runAI = false;
         DoAtStart();
         gm.GetPlayerManager().SubscribeStateListener(this);
     }
@@ -48,7 +49,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
             goingRight = gr;
             shortDone = false;
             longDone = false;
-            if (this.runAI == true 
+            if (runAI 
                 && state == EnumPTrapezeState.OnTrapeze
                 &&(facingRight && grabTarget.angleDegrees > -jumpDegrees.x && grabTarget.angleDegrees < 0)
                 || (!facingRight && grabTarget.angleDegrees < jumpDegrees.x && grabTarget.angleDegrees > 0))
@@ -153,7 +154,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
         legGrabTarget.enabled = true;
         runAI = false;
         waitTimer = 0;
-        return base.AttachTo(gt);
+        return base.AttachTo(gt, turnAround);
     }
 
     public void CalculateJump()

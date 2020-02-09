@@ -111,8 +111,8 @@ public class PlayerManager_Trapeze : BodyManager
         if (target != null)
         {
             if (target.transform.position.y > headRB.position.y || 
-                (goingRight && target.transform.position.x < torsoRB.position.y)
-                || (!goingRight && target.transform.position.x > torsoRB.position.y))
+                (goingRight && target.transform.position.x+1 < torsoRB.position.x)
+                || (!goingRight && target.transform.position.x-1 > torsoRB.position.x))
             {
                 Debug.Log(gameObject.name + " gave up on targeting " + targetGrabTarget.gameObject.name);
                 target = null;
@@ -248,7 +248,7 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (timerSL >= cooldownTimeSL)
         {
-            Debug.Log(gameObject.name+" Short Degrees: " +grabTarget.angleDegrees + " Going Right? "+goingRight);
+            //Debug.Log(gameObject.name+" Short Degrees: " +grabTarget.angleDegrees + " Going Right? "+goingRight);
             Vector2 hor;
             if (facingRight) hor = Vector2.right;
             else hor = Vector2.left;
@@ -280,7 +280,7 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (timerSL >= cooldownTimeSL)
         {
-            Debug.Log(gameObject.name + " Long Degrees: " + grabTarget.angleDegrees);
+           //Debug.Log(gameObject.name + " Long Degrees: " + grabTarget.angleDegrees);
             Vector2 hor;
             if (!facingRight) hor = Vector2.right;
             else hor = Vector2.left;
@@ -298,9 +298,10 @@ public class PlayerManager_Trapeze : BodyManager
 
     public bool GoingRight()
     {
+        if (state != EnumPTrapezeState.OnTrapeze) return goingRight;
         float totalVelocity = headRB.velocity.x + torsoRB.velocity.x + upperArmsRB.velocity.x
             + armsRB.velocity.x + lowerLegsRB.velocity.x + upperLegsRB.velocity.x;
-        if (headRB.velocity.x > 0) return true;
+        if (totalVelocity > 0) return true;
         return false;
     }
 

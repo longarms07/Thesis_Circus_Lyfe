@@ -2566,7 +2566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -3163,8 +3163,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
-    m_LowerAngle: -88.082596
-    m_UpperAngle: 92.60188
+    m_LowerAngle: -89.87716
+    m_UpperAngle: 59.42305
 --- !u!212 &1320001626
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3993,8 +3993,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
-    m_LowerAngle: -88.082596
-    m_UpperAngle: 92.60188
+    m_LowerAngle: -89.87716
+    m_UpperAngle: 59.42305
 --- !u!233 &1620812594
 HingeJoint2D:
   m_ObjectHideFlags: 0
