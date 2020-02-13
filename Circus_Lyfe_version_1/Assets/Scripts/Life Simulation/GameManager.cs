@@ -35,7 +35,7 @@ public class GameManager :  ISwipeListener, ITapListener
     private List<IDayTimeChangeListener> dayTimeChangeListeners;
     private PlayerManager pm;
     private DialogueRunner dr;
-    bool ignoreTap = false;
+    protected bool ignoreTap = false;
 
 
 
@@ -101,7 +101,7 @@ public class GameManager :  ISwipeListener, ITapListener
         playerTouchMovable.ToggleMovement();
     }
 
-    public void Pause()
+    public virtual void Pause()
     {
         paused = !paused;
         ignoreTap = true;

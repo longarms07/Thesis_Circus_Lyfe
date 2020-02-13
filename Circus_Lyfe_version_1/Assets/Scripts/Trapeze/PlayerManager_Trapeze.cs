@@ -26,6 +26,7 @@ public class PlayerManager_Trapeze : BodyManager
     public float targetMoveSpeed;
     public float cooldownTimeSL;
     public bool canSloMo = true;
+    public float grabRangeTargetingOffest;
     public FixedJoint2D playerJoint;
     public GrabTarget legGrabTarget;
 
@@ -113,10 +114,16 @@ public class PlayerManager_Trapeze : BodyManager
         if (target != null)
         {
             if (target.transform.position.y > headRB.position.y || 
-                (goingRight && target.transform.position.x+1 < torsoRB.position.x)
-                || (!goingRight && target.transform.position.x-1 > torsoRB.position.x))
+                (goingRight && target.transform.position.x+ grabRangeTargetingOffest < torsoRB.position.x)
+                || (!goingRight && target.transform.position.x- grabRangeTargetingOffest > torsoRB.position.x))
             {
                 Debug.Log(gameObject.name + " gave up on targeting " + targetGrabTarget.gameObject.name);
+                if (target.transform.position.y > headRB.position.y)
+                    Debug.Log("Because target.transform.position.y "+ target.transform.position.y+" > headRB.position.y "+ headRB.position.y);
+                else if (goingRight && target.transform.position.x + grabRangeTargetingOffest < torsoRB.position.x)
+                    Debug.Log("Because goingRight && target.transform.position.x + grabRangeTargetingOffest < torsoRB.position.x");
+                else
+                    Debug.Log("Because !goingRight && target.transform.position.x-grabRangeTargetingOffest > torsoRB.position.x");
                 target = null;
                 targetGrabTarget = null;
             }
@@ -218,7 +225,7 @@ public class PlayerManager_Trapeze : BodyManager
         if (initGrabTarget.joint.connectedBody != null)
         {
             PlayerManager_Trapeze pm = initGrabTarget.joint.connectedBody.gameObject.GetComponentInParent<PlayerManager_Trapeze>();
-            if(pm.facingRight != facingRight) AttachTo(pm.legGrabTarget);
+            if(pm.facingRight != facingRight) return AttachTo(pm.legGrabTarget);
             return AttachTo(pm.legGrabTarget, false);
         }
         bool turn = true;

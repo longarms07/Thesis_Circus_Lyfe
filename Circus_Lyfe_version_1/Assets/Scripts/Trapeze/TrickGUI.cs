@@ -35,7 +35,7 @@ public class TrickGUI : MonoBehaviour
         cRect = canvasObject.GetComponent<RectTransform>();
         textRect = textObject.GetComponent<RectTransform>();
         scoreRect = scoreObject.GetComponent<RectTransform>();
-        Vector2 screenScale2 = new Vector2(cRect.sizeDelta.x / screenScale.x, cRect.sizeDelta.y / screenScale.y);
+        /*Vector2 screenScale2 = new Vector2(cRect.sizeDelta.x / screenScale.x, cRect.sizeDelta.y / screenScale.y);
         textRect.sizeDelta = textRect.sizeDelta * screenScale2;
         scoreRect.sizeDelta = scoreRect.sizeDelta * screenScale2;
         RectTransform quitRect = quitButton.GetComponent<RectTransform>();
@@ -44,6 +44,7 @@ public class TrickGUI : MonoBehaviour
         //Debug.Log(scoreRect.localPosition + " should be " + new Vector2(Mathf.Abs((cRect.sizeDelta.x / 2) - (textRect.sizeDelta.x)), Mathf.Abs(cRect.sizeDelta.y / 2)));
         textRect.localPosition = new Vector2(scoreRect.localPosition.x, scoreRect.localPosition.y - scoreRect.sizeDelta.y);
         quitRect.localPosition = new Vector3(-scoreRect.localPosition.x, scoreRect.localPosition.y, quitButton.transform.position.z);
+        */
         textTMP = textObject.GetComponent<TextMeshProUGUI>();
         scoreTMP = scoreObject.GetComponent<TextMeshProUGUI>();
     }

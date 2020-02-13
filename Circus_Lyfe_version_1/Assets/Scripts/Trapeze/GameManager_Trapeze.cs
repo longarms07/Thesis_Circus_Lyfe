@@ -21,6 +21,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     private bool sloMo;
     private bool slowMoAllowed;
+    private float timePrePause;
 
 
     void Awake()
@@ -65,9 +66,25 @@ public class GameManager_Trapeze : GameManager, ITapListener
         
     }
 
+    public override void Pause()
+    {
+        paused = !paused;
+        if (paused)
+        {
+            timePrePause = Time.timeScale;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = timePrePause;
+            ignoreTap = true;
+        }
+    }
+
     override
     public void SwipeDetected(Vector3[] swipePositions)
     {
+        if (paused) return;
         //Stubbed
         SwipeDirection dir = FindDirection(swipePositions);
         if(pmt.state == EnumPTrapezeState.OnTrapeze)
@@ -96,6 +113,11 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     new public void TapDetected(Vector3 position)
     {
+        if (paused || ignoreTap)
+        {
+            ignoreTap = false;
+            return;
+        }
         //Stubbed
         CheckTappedPosition(position);
         if (pmt.state == EnumPTrapezeState.OnTrapeze)
