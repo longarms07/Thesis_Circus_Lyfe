@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class GameManager_Trapeze : GameManager, ITapListener
@@ -22,6 +24,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
     private bool sloMo;
     private bool slowMoAllowed;
     private float timePrePause;
+    private int timesPlayed = 0;
 
 
     void Awake()
@@ -38,6 +41,10 @@ public class GameManager_Trapeze : GameManager, ITapListener
         buttonDict = new Dictionary<Transform, IButton>();
         sloMo = false;
         slowMoAllowed = true;
+        savefile = "gamemanager_trapeze.save";
+        //DeleteSaveData();
+        LoadSaveData();
+        timesPlayed++;
     }
 
     void Start()
@@ -210,7 +217,46 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     void OnDestroy()
     {
+        SaveData();
         if (InSloMo()) ToggleSloMo();
+    }
+
+    public int GetTimesPlayed()
+    {
+        return timesPlayed;
+    }
+
+    [System.Serializable]
+    class TrapezeSaveData
+    {
+        public int timesPlayed;
+    }
+
+    override public void SaveData()
+    {
+        TrapezeSaveData save = new TrapezeSaveData();
+        save.timesPlayed = timesPlayed;
+        BinaryFormatter format = new BinaryFormatter();
+        FileStream fs = File.Create(Application.persistentDataPath + savefile);
+        //Debug.Log(Application.persistentDataPath + savefile);
+        format.Serialize(fs, save);
+        fs.Close();
+        Debug.Log("Game Saved");
+    }
+
+    public override bool LoadSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            BinaryFormatter format = new BinaryFormatter();
+            FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
+            TrapezeSaveData save = (TrapezeSaveData) format.Deserialize(fs);
+            fs.Close();
+            timesPlayed = save.timesPlayed;
+            Debug.Log("Game loaded");
+            return true;
+        }
+        return false;
     }
 
 }

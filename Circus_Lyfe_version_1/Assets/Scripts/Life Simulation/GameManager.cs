@@ -31,7 +31,7 @@ public class GameManager :  ISwipeListener, ITapListener
     private TouchMovable playerTouchMovable;
     protected RaycastHit2D lastTap;
     protected bool newLastTap;
-    private string savefile = "savetest.save";
+    protected string savefile = "gamemanager.save";
     private List<IDayTimeChangeListener> dayTimeChangeListeners;
     private PlayerManager pm;
     private DialogueRunner dr;
@@ -310,7 +310,7 @@ public class GameManager :  ISwipeListener, ITapListener
         Invoke("FadeOutBlack", 1f);
     }
 
-    public void SaveData()
+    public virtual void SaveData()
     {
         LifeSimSaveData save = new LifeSimSaveData();
         save.day = currentDay;
@@ -324,7 +324,7 @@ public class GameManager :  ISwipeListener, ITapListener
         Debug.Log("Game Saved");    
     }
 
-    public bool LoadSaveData()
+    public virtual bool LoadSaveData()
     {
         if (File.Exists(Application.persistentDataPath + savefile))
         {

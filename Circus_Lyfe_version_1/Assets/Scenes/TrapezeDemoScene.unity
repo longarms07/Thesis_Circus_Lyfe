@@ -562,7 +562,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 258
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1555,6 +1555,7 @@ MonoBehaviour:
   trickGUI: {fileID: 1988478915}
   trickManager: {fileID: 800483051}
   donnaManager: {fileID: 1644516903}
+  timesPlayed: 0
 --- !u!4 &654089319
 Transform:
   m_ObjectHideFlags: 0
