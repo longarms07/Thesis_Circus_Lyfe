@@ -367,7 +367,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 28, y: 150}
+  m_AnchoredPosition: {x: 20, y: 140}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &73552641
@@ -644,7 +644,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: 100}
+  m_AnchoredPosition: {x: 334, y: 90}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &169482838
@@ -1555,7 +1555,6 @@ MonoBehaviour:
   trickGUI: {fileID: 1988478915}
   trickManager: {fileID: 800483051}
   donnaManager: {fileID: 1644516903}
-  timesPlayed: 0
 --- !u!4 &654089319
 Transform:
   m_ObjectHideFlags: 0
@@ -1640,12 +1639,12 @@ PrefabInstance:
     - target: {fileID: 374996021375799264, guid: 9e20f3fad5963a34d8daaa39f8320fdd,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -324
+      value: -334
       objectReference: {fileID: 0}
     - target: {fileID: 374996021375799264, guid: 9e20f3fad5963a34d8daaa39f8320fdd,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 132
       objectReference: {fileID: 0}
     - target: {fileID: 374996021375799264, guid: 9e20f3fad5963a34d8daaa39f8320fdd,
         type: 3}
@@ -2387,26 +2386,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tricks:
   - name: Backflip
-    unlocked: 0
+    unlocked: 1
     score: 50
     code: 03000000
     playerAnimFile: backflip
+  - name: Frontflip
+    unlocked: 1
+    score: 50
+    code: 02000000
+    playerAnimFile: frontflip
   - name: Pirouette
-    unlocked: 0
+    unlocked: 1
     score: 100
     code: 0100000007000000
     playerAnimFile: pirouette
   - name: Shooting Star
-    unlocked: 0
+    unlocked: 1
     score: 150
     code: 040000000300000002000000
     playerAnimFile: shoot_star
-  - name: Frontflip
-    unlocked: 0
-    score: 50
-    code: 02000000
-    playerAnimFile: frontflip
   execTime: 0.2
+  nextTrickToUnlockIndex: 1
   playerManager: {fileID: 1756145789}
   donnaManager: {fileID: 1644516903}
 --- !u!4 &800483052
@@ -2716,7 +2716,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 266.8, y: 150}
+  m_AnchoredPosition: {x: 300, y: 140}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1018166092
@@ -3622,7 +3622,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -218, y: 150}
+  m_AnchoredPosition: {x: -228, y: 132}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1429835890

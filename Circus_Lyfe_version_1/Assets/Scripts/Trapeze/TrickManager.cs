@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +10,7 @@ public class TrickManager : MonoBehaviour
     [Tooltip("Add tricks to this list and they will be added to the Tricktionary.")]
     public List<Trick> tricks;
     public float execTime;
+    public int nextTrickToUnlockIndex;
 
     private Dictionary<List<SwipeDirection>, Trick> tricktionary = new Dictionary<List<SwipeDirection>, Trick>(new TrickCodeComparer());
 
@@ -17,11 +20,13 @@ public class TrickManager : MonoBehaviour
     public DonnaManager_Trapeze donnaManager;
     private GameManager_Trapeze gm;
     private static TrickManager instance;
+    private string savefile = "tricks.save";
 
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(this);
+        LoadSaveData();
         foreach( Trick t in tricks){
             tricktionary.Add(t.code, t);
         }
@@ -63,17 +68,19 @@ public class TrickManager : MonoBehaviour
         if (tricktionary.ContainsKey(currentSwipe))
         {
             Trick t = tricktionary[currentSwipe];
-            if (donnaManager.state == EnumPTrapezeState.InAir)
+            if (t.unlocked)
             {
-                ExecuteTrickDonna(currentSwipe);
-                gm.trickGUI.DidTrick("Duo "+t.name, t.score*4);
+                if (donnaManager.state == EnumPTrapezeState.InAir)
+                {
+                    ExecuteTrickDonna(currentSwipe);
+                    gm.trickGUI.DidTrick("Duo " + t.name, t.score * 4);
+                }
+                else
+                {
+                    gm.trickGUI.DidTrick(t.name, t.score);
+                }
+                playerManager.DoAnimation(t.playerAnimFile);
             }
-            else
-            {
-                gm.trickGUI.DidTrick(t.name, t.score);
-            }
-            playerManager.DoAnimation(t.playerAnimFile);
-
         }
         currentSwipe.Clear();
         timer = 0;
@@ -102,6 +109,17 @@ public class TrickManager : MonoBehaviour
         return s;
     }
 
+    public void unlockTrick()
+    {
+        if (nextTrickToUnlockIndex >= 0 && nextTrickToUnlockIndex < tricks.Count)
+        {
+            Trick t = tricks[nextTrickToUnlockIndex];
+            t.unlocked = true;
+            nextTrickToUnlockIndex++;
+        }
+
+    }
+
     public Dictionary<List<SwipeDirection>, Trick> GetTrickionary()
     {
         return tricktionary;
@@ -115,6 +133,55 @@ public class TrickManager : MonoBehaviour
     public List<Trick> GetAvaliableTricks()
     {
         return tricks;
+    }
+
+    public virtual void SaveData()
+    {
+        BinaryFormatter format = new BinaryFormatter();
+        FileStream fs = File.Create(Application.persistentDataPath + savefile);
+        //Debug.Log(Application.persistentDataPath + savefile);
+        format.Serialize(fs, tricks);
+        fs.Close();
+        Debug.Log("Tricks Saved");
+    }
+
+    public virtual bool LoadSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            BinaryFormatter format = new BinaryFormatter();
+            FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
+            tricks = (List<Trick>)format.Deserialize(fs);
+            fs.Close();
+            Debug.Log("Tricks loaded");
+            return true;
+        }
+        return false;
+    }
+
+
+    public void DeleteSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            File.Delete(Application.persistentDataPath + savefile);
+        }
+    }
+
+
+    private void OnApplicationPause(bool pause)
+    {
+        SaveData();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveData();
+    }
+
+    private void OnDestroy()
+    {
+        SaveData();
     }
 
 }
