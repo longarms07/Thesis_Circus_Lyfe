@@ -8115,6 +8115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultSprite: {fileID: 21300000, guid: a82f5de7bb3e0b243abfb7c14e2386d9, type: 3}
   inRangeSprite: {fileID: 21300000, guid: 8dc051ca6c770334187a9dcd749652a7, type: 3}
+  donnaSpawnPosition: {fileID: 0}
   yarnNode: PlayerHouse
   tiredNode: YesNoTired
   scriptToLoad: {fileID: 2480198943629176163, guid: 0a3fe3194180d0f4289c72ad1422c435,
@@ -10399,6 +10400,7 @@ MonoBehaviour:
     type: 3}
   inRangeSprite: {fileID: -4911729155475835494, guid: a6baa2c0828f7ca40814edb414b201ab,
     type: 3}
+  donnaSpawnPosition: {fileID: 0}
   yarnNode: PokerTable
   tiredNode: YesNoTired
   scriptToLoad: {fileID: 0}
@@ -12994,11 +12996,14 @@ MonoBehaviour:
     type: 3}
   inRangeSprite: {fileID: 3061592635252434305, guid: 5bddb3ef134205943942fb84c46be796,
     type: 3}
+  donnaSpawnPosition: {fileID: 386127371}
   yarnNode: TrapezeLadder
   tiredNode: YesNoTired
-  scriptToLoad: {fileID: 2480198943629176163, guid: 0a3fe3194180d0f4289c72ad1422c435,
-    type: 3}
+  scriptToLoad: {fileID: 0}
   trustPoints: 5
+  inviteDonnaNode: TrapezeLadder2
+  trustLevelReq: 15
+  donna: {fileID: 1137204069}
 --- !u!1001 &374996022414108909
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13074,7 +13079,7 @@ PrefabInstance:
     - target: {fileID: 374996021375799264, guid: 9e20f3fad5963a34d8daaa39f8320fdd,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 169
+      value: 133
       objectReference: {fileID: 0}
     - target: {fileID: 374996021375799264, guid: 9e20f3fad5963a34d8daaa39f8320fdd,
         type: 3}

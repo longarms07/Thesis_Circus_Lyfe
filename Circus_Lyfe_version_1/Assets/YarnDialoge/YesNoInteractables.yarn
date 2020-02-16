@@ -27,6 +27,17 @@ Would you like to practice Trapeze?
 
 ===
 
+title: TrapezeLadder2
+tags: 
+---
+Do you want to practice with Donna?
+-> Yes
+	<<YesNoAnswer TrapezeLadder yes>>
+-> No
+	<<YesNoAnswer TrapezeLadder no>>
+
+===
+
 title: PokerTable
 tags: Donna, DuoActivity
 ---

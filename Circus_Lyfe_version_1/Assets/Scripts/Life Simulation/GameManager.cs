@@ -36,7 +36,7 @@ public class GameManager :  ISwipeListener, ITapListener
     private PlayerManager pm;
     private DialogueRunner dr;
     protected bool ignoreTap = false;
-
+    protected static bool duoTrapeze = false;
 
 
     private static GameManager instance;
@@ -385,6 +385,11 @@ public class GameManager :  ISwipeListener, ITapListener
         }
         return false;
 
+    }
+
+    public void AllowDonnaOnTrapeze(bool yesno)
+    {
+        duoTrapeze = yesno;
     }
 
     public PlayerManager GetPlayerManager()

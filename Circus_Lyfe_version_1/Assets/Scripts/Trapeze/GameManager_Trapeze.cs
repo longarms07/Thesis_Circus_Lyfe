@@ -49,6 +49,8 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     void Start()
     {
+        donnaManager.gameObject.SetActive(duoTrapeze);
+        duoTrapeze = false;
         TouchInputManager t = TouchInputManager.getInstance();
         if (t == null) Destroy(this);
         trickGUI = TrickGUI.GetInstance();

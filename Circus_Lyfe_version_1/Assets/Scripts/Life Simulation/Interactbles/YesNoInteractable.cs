@@ -10,6 +10,7 @@ public abstract class YesNoInteractable : MonoBehaviour, IInteractable
      protected SpriteRenderer spriteRenderer;
      public Sprite defaultSprite;
      public Sprite inRangeSprite;
+    public GameObject donnaSpawnPosition;
     public string yarnNode;
     public string tiredNode;
     public YarnProgram scriptToLoad;
