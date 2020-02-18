@@ -12,6 +12,7 @@ public class TrickManager : MonoBehaviour
     public float execTime;
     public int nextTrickToUnlockIndex;
 
+
     private Dictionary<List<SwipeDirection>, Trick> tricktionary = new Dictionary<List<SwipeDirection>, Trick>(new TrickCodeComparer());
 
     private List<SwipeDirection> currentSwipe;

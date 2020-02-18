@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TextboxManager : MonoBehaviour
 {
@@ -69,8 +70,10 @@ public class TextboxManager : MonoBehaviour
         textRect = textMeshPro.GetComponent<RectTransform>();
         if (textRect == null) Destroy(this.gameObject);
         textCollider = textBackground.AddComponent<BoxCollider2D>();
-        timeTextMesh = timeText.GetComponent<TextMeshProUGUI>();
-        timeTextRect = timeText.GetComponent<RectTransform>();
+        if(timeText!=null){
+            timeTextMesh = timeText.GetComponent<TextMeshProUGUI>();
+            timeTextRect = timeText.GetComponent<RectTransform>();
+        }
         gm = GameManager.getInstance();
         dUI = GetComponent<DialogueUI>();
         lineComplete = false;
@@ -91,9 +94,9 @@ public class TextboxManager : MonoBehaviour
         textBackground.transform.localPosition = new Vector3(textBackground.transform.localPosition.x,
                                                              -(canvasRect.sizeDelta.y / 2) + height/2,
                                                                 textBackground.transform.localPosition.z);
-        timeTextRect.sizeDelta = new Vector2(canvasRect.sizeDelta.x/5, canvasRect.sizeDelta.y/5);
+        /*timeTextRect.sizeDelta = new Vector2(canvasRect.sizeDelta.x/5, canvasRect.sizeDelta.y/5);
         timeTextRect.transform.localPosition = new Vector3((canvasRect.sizeDelta.x/2),
-                                                            canvasRect.sizeDelta.y / 2, timeTextRect.localPosition.z);
+                                                            canvasRect.sizeDelta.y / 2, timeTextRect.localPosition.z);*/
         textButtonPositions = new Vector3[maxNumButtons];
         buttonHeightPercent = canvasRect.sizeDelta.y / buttonHeightPercent;
         buttonSizeDelta = new Vector2(textRect.sizeDelta.x - (2*textOffset) ,buttonHeightPercent / maxNumButtons);
@@ -123,8 +126,8 @@ public class TextboxManager : MonoBehaviour
         }
         checkBtnSize = true;
         dUI.optionButtons = textButtons;
-
-        UpdateDateTime();
+        if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
+            UpdateDateTime();
     }
     
 
@@ -135,7 +138,8 @@ public class TextboxManager : MonoBehaviour
 
     public void UpdateDateTime()
     {
-        timeTextMesh.text = gm.GetCurrentDay() + "\n" + gm.GetCurrentTime();
+        if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
+            timeTextMesh.text = gm.GetCurrentDay() + "\n" + gm.GetCurrentTime();
     }
 
     public static TextboxManager GetInstance() { return instance; }
