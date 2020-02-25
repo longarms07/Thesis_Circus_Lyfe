@@ -60,6 +60,7 @@ public class TrickManager : MonoBehaviour
     {
         currentSwipe.Add(s);
         timer = 0;
+        gm.trickGUI.DisplayTrickCode(currentSwipe);
         Debug.Log("Recieved swipe going " + s);
     }
 

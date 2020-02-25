@@ -24,7 +24,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
     private bool sloMo;
     private bool slowMoAllowed;
     private float timePrePause;
-    private int timesPlayed = 0;
+    public int timesPlayed = 0;
 
 
     void Awake()

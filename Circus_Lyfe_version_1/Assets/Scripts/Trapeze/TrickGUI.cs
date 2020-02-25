@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TrickGUI : MonoBehaviour
 {
-
+    
     public GameObject textObject;
     public GameObject scoreObject;
     public GameObject quitButton;
@@ -62,6 +62,41 @@ public class TrickGUI : MonoBehaviour
         scoreTMP.text = "Score: " + score;
     }
     
+    public void DisplayTrickCode(List<SwipeDirection> trickCode)
+    {
+        string text = "Current Swipes: \n";
+        foreach(SwipeDirection swipe in trickCode)
+        {
+            switch (swipe)
+            {
+                case SwipeDirection.North:
+                    text += "\u2191 ";
+                    break;
+                case SwipeDirection.NorthWest:
+                    text += "\u2196 ";
+                    break;
+                case SwipeDirection.NorthEast:
+                    text += "\u2197 ";
+                    break;
+                case SwipeDirection.South:
+                    text += "\u2193 ";
+                    break;
+                case SwipeDirection.SouthWest:
+                    text += "\u2199 ";
+                    break;
+                case SwipeDirection.SouthEast:
+                    text += "\u2198 ";
+                    break;
+                case SwipeDirection.East:
+                    text += "\u2192 ";
+                    break;
+                case SwipeDirection.West:
+                    text += "\u2190 ";
+                    break;
+            }
+        }
+        textTMP.text = text;
+    }
 
     public static TrickGUI GetInstance() { return instance; }
 }
