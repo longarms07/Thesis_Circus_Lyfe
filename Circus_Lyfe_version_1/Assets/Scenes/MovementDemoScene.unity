@@ -3261,7 +3261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 400, y: 164.20001}
+  m_AnchoredPosition: {x: 400.00003, y: 200.50003}
   m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 1.0000001, y: 1.0000001}
 --- !u!114 &613781953
@@ -12722,11 +12722,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1060844442}
     m_Modifications:
-    - target: {fileID: 6321269804861263740, guid: 11c6e662177776a4eb9f944b0e4db62c,
-        type: 3}
-      propertyPath: m_Name
-      value: TextManager
-      objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263741, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12832,6 +12827,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263740, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: m_Name
+      value: TextManager
+      objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: textCanvas
@@ -12842,15 +12842,15 @@ PrefabInstance:
       propertyPath: timeText
       value: 
       objectReference: {fileID: 613781951}
-    - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
-        type: 3}
-      propertyPath: debugTextView
-      value: 
-      objectReference: {fileID: 1389749245}
     - target: {fileID: 6321269805043373295, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: debugTextView
+      value: 
+      objectReference: {fileID: 1389749245}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c6e662177776a4eb9f944b0e4db62c, type: 3}

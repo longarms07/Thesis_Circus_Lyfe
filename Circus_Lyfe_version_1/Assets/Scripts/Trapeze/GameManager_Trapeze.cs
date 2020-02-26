@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using Yarn.Unity;
 
 public class GameManager_Trapeze : GameManager, ITapListener
 {
@@ -75,6 +76,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
         
     }
 
+    [YarnCommand("Pause")]
     public override void Pause()
     {
         paused = !paused;
