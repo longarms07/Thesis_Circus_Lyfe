@@ -88,7 +88,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
         else
         {
             Time.timeScale = timePrePause;
-            ignoreTap = true;
+            if(!lastTap.transform.gameObject.name.Equals("Textbox Bgrd")) ignoreTap = true;
         }
     }
 
@@ -124,37 +124,36 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     new public void TapDetected(Vector3 position)
     {
-        if (paused || ignoreTap)
+        if (ignoreTap)
         {
             ignoreTap = false;
             return;
         }
-        //Stubbed
         CheckTappedPosition(position);
-        if (pmt.state == EnumPTrapezeState.OnTrapeze)
+        if (lastTap.transform != null && newLastTap)
         {
-            if (lastTap.transform != null && newLastTap)
+            Debug.Log(lastTap.transform.gameObject);
+            if (lastTap.transform.gameObject.layer == 5)
             {
-                Debug.Log(lastTap.transform.gameObject);
-                if (lastTap.transform.gameObject.layer == 5)
+                if (lastTap.transform.gameObject == TextboxManager.GetInstance().textBackground)
                 {
-                    IButton btn = GetButton(lastTap.transform);
-                    if (btn != null) btn.OnTap();
+                    TextboxManager.GetInstance().OnTap();
+                    ignoreTap = false;
                 }
             }
-            else
-                pmt.Jump();
+            else if (pmt.state == EnumPTrapezeState.InAir)
+            {
+                    Debug.Log(lastTap.transform.name);
+                    if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == interactableLayer2)
+                    {
+                        GetInteractable(lastTap.transform).OnInteraction();
+                    }
+            }
         }
-        else if (pmt.state == EnumPTrapezeState.InAir)
+        else if (pmt.state == EnumPTrapezeState.OnTrapeze)
         {
-            if (lastTap.transform != null)
-            {
-                Debug.Log(lastTap.transform.name);
-                if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == interactableLayer2)
-                {
-                    GetInteractable(lastTap.transform).OnInteraction();
-                }
-            }
+            if (!paused)
+                pmt.Jump();
         }
     }
 

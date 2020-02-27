@@ -161,7 +161,10 @@ public class TextboxManager : MonoBehaviour
             checkBtnSize = false;
         }
         if (!activate) HideImage();
-        GameManager.getInstance().TogglePlayerMovement(!activate);
+        if (SceneManager.GetActiveScene().name == "MovementDemoScene")
+            GameManager.getInstance().TogglePlayerMovement(!activate);
+        else if (SceneManager.GetActiveScene().name == "TrapezeDemoScene")
+            GameManager_Trapeze.GetInstance().Pause();
     }
 
     public void HideTextBox(bool hide)

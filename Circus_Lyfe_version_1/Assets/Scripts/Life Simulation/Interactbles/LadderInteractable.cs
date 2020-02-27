@@ -54,6 +54,7 @@ public class LadderInteractable : YesNoInteractable
 
     private void StartTrapeze()
     {
+        if (donna.transform.position == donnaSpawnPosition.transform.position) gm.AllowTrapezeTutorial(true);
         gm.MajorActionCompleted(false);
         gm.GetPlayerManager().increaseTrustDonna(trustPoints);
         gm.ChangeSceneTrapeze();

@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine;
+using Yarn.Unity;
 
 public class TrickManager : MonoBehaviour
 {
@@ -111,6 +112,7 @@ public class TrickManager : MonoBehaviour
         return s;
     }
 
+    [YarnCommand("UnlockTrick")]
     public void unlockTrick()
     {
         if (nextTrickToUnlockIndex >= 0 && nextTrickToUnlockIndex < tricks.Count)

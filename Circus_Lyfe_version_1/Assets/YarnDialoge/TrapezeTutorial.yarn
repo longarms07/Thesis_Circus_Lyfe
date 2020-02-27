@@ -1,0 +1,74 @@
+title: TutorialShortStart
+tags: 
+---
+Donna: Let's test short detection!
+<<DetectShort TutorialManager 1 player TutorialShortEnd>>
+===
+
+title: TutorialShortEnd
+tags: 
+---
+Donna: Yay you did a short!
+[[TutorialLongStart]]
+===
+
+title: TutorialLongStart
+tags: 
+---
+Donna: Next Let's try a long.
+<<DetectLong TutorialManager 1 player TutorialLongEnd>>
+===
+
+title: TutorialLongEnd
+tags: 
+---
+Donna: Yay you did a long!
+[[TutorialJumpStart]]
+===
+
+title: TutorialJumpStart
+tags: 
+---
+Donna: Next Let's try a jump.
+<<DetectJump TutorialManager 1 player TutorialJumpEnd>>
+===
+
+title: TutorialJumpEnd
+tags: 
+---
+Donna: Yay you did a jump!
+[[TutorialGrabStart]]
+===
+
+title: TutorialGrabStart
+tags: 
+---
+Donna: Next Let's try grabbing the other trapeze.
+<<DetectGrab TutorialManager player right TutorialGrabEnd>>
+===
+
+title: TutorialGrabEnd
+tags: 
+---
+Donna: Yay you grabbed the target!
+[[TutorialTrickStart]]
+===
+
+title: TutorialTrickStart
+tags: 
+---
+Donna: Next Let's try doing a backflip.
+<<DetectTrick TutorialManager 1 player backflip TutorialTrickEnd TutorialTrickWrong>>
+===
+
+title: TutorialTrickEnd
+tags: 
+---
+Donna: Yay you did a backflip!
+===
+
+title: TutorialTrickWrong
+tags: 
+---
+Donna: No, do a backflip!
+===

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
+using System;
 
 public class PlayerManager_Trapeze : BodyManager
 {
@@ -49,7 +51,9 @@ public class PlayerManager_Trapeze : BodyManager
     protected Vector3 position;
     protected Quaternion rotation;
     protected float jumpX = 0;
+    protected string lastTrick;
     
+
 
     void Awake()
     {
@@ -189,6 +193,8 @@ public class PlayerManager_Trapeze : BodyManager
         }
     }
 
+
+    public Action OnAttachTo = () => { };
     public virtual bool AttachTo(GrabTarget gt, bool turnAround=true)
     {
         Joint2D joint2D = gt.joint;
@@ -216,6 +222,7 @@ public class PlayerManager_Trapeze : BodyManager
         joint2D.enabled = true;
         joint2D.connectedBody = upperArmsRB;
         SetState(EnumPTrapezeState.OnTrapeze);
+        if (grabTarget != lastGrabTarget) OnAttachTo();
         if (turnAround && grabTarget != lastGrabTarget) TurnAround();
         return true;
     }
@@ -244,6 +251,7 @@ public class PlayerManager_Trapeze : BodyManager
         return true;
     }
 
+    public Action OnJump = () => { };
     public virtual bool Jump()
     {
         if (playerJoint.connectedBody != null) return false; 
@@ -254,9 +262,11 @@ public class PlayerManager_Trapeze : BodyManager
         jumpX = headRB.position.y;
         if (!facingRight) dir.x = -1;
         torsoRB.AddForce(dir*jumpForce, ForceMode2D.Impulse);
+        OnJump();
         return true;
     }
 
+    public Action OnShort = ()=>{};
     public void Short()
     {
         if (timerSL >= cooldownTimeSL)
@@ -283,12 +293,14 @@ public class PlayerManager_Trapeze : BodyManager
                 Vector2 headMoveTo = Vector2.MoveTowards(armsRB.position, -hor * shortHeadForce, moveTowardsDist * Time.deltaTime);
                 torsoRB.MovePosition(headMoveTo);
             }
+            OnShort();
             timerSL = 0;
         }
             
     }
 
 
+    public Action OnLong = () => { };
     public void Long()
     {
         if (timerSL >= cooldownTimeSL)
@@ -300,6 +312,7 @@ public class PlayerManager_Trapeze : BodyManager
 
             Vector2 legsMoveTo = Vector2.MoveTowards(lowerLegsRB.position, longLegForce * (Vector2.down + hor), moveTowardsDist * Time.deltaTime);
             lowerLegsRB.MovePosition(legsMoveTo);
+            OnLong();
             timerSL = 0;
         }
     }
@@ -336,6 +349,8 @@ public class PlayerManager_Trapeze : BodyManager
         rb.rotation = 0;
     }
 
+
+    public Action OnTrick = () => { };
     public void DoAnimation(string animName)
     {
        if (gm.IsSloMoAllowed() && gm.InSloMo() && animator.speed == 1)
@@ -349,6 +364,7 @@ public class PlayerManager_Trapeze : BodyManager
         SetKinematic(true);
         animator.enabled = true;
         animator.SetTrigger(GetAnimName(animName));
+        lastTrick = animName;
 
     }
 
@@ -366,6 +382,7 @@ public class PlayerManager_Trapeze : BodyManager
         this.gameObject.transform.position = position;
         this.gameObject.transform.localPosition = position;
         state = EnumPTrapezeState.InAir;
+        OnTrick();
     }
 
     public virtual string GetAnimName(string animName)
@@ -378,5 +395,8 @@ public class PlayerManager_Trapeze : BodyManager
         return grabTarget;
     }
 
-
+    public string GetLastTrickPerformed()
+    {
+        return lastTrick;
+    }
 }

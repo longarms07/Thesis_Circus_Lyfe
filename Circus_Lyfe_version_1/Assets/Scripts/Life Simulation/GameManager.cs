@@ -37,6 +37,8 @@ public class GameManager :  ISwipeListener, ITapListener
     private DialogueRunner dr;
     protected bool ignoreTap = false;
     protected static bool duoTrapeze = false;
+    protected static bool canTutorial = false;
+    protected static bool inTutorial = false;
 
 
     private static GameManager instance;
@@ -385,6 +387,11 @@ public class GameManager :  ISwipeListener, ITapListener
         }
         return false;
 
+    }
+
+    public void AllowTrapezeTutorial(bool yesno)
+    {
+        canTutorial = yesno;
     }
 
     public void AllowDonnaOnTrapeze(bool yesno)
