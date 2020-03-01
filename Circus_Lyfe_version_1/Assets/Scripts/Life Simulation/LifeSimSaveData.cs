@@ -10,5 +10,5 @@ public class LifeSimSaveData
     public DayEnums day;
     public TimeEnums time;
     public bool majorActionDone;
-
+    public bool duoTutorial;
 }

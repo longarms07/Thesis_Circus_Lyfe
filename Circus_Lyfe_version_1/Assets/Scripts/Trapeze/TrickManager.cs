@@ -28,8 +28,9 @@ public class TrickManager : MonoBehaviour
     {
         if (instance == null) instance = this;
         else Destroy(this);
+        //DeleteSaveData();
         LoadSaveData();
-        foreach( Trick t in tricks){
+        foreach (Trick t in tricks) {
             tricktionary.Add(t.code, t);
         }
         currentSwipe = new List<SwipeDirection>();
@@ -47,7 +48,7 @@ public class TrickManager : MonoBehaviour
         if (playerManager == null) playerManager = gm.GetPlayerManager();
         if (playerManager.state == EnumPTrapezeState.InAir && currentSwipe.Count != 0 && !playerManager.HasTarget())
         {
-            timer+=Time.deltaTime;
+            timer += Time.deltaTime;
             if (timer >= execTime) ExecuteTrick();
         }
         else
@@ -139,12 +140,21 @@ public class TrickManager : MonoBehaviour
         return tricks;
     }
 
+    [System.Serializable]
+    struct TrickSave{
+        public List<Trick> tricks;
+        public int nextTrickToUnlockIndex;
+    }
+
     public virtual void SaveData()
     {
         BinaryFormatter format = new BinaryFormatter();
         FileStream fs = File.Create(Application.persistentDataPath + savefile);
         //Debug.Log(Application.persistentDataPath + savefile);
-        format.Serialize(fs, tricks);
+        TrickSave save = new TrickSave();
+        save.tricks = tricks;
+        save.nextTrickToUnlockIndex = nextTrickToUnlockIndex;
+        format.Serialize(fs, save);
         fs.Close();
         Debug.Log("Tricks Saved");
     }
@@ -155,7 +165,9 @@ public class TrickManager : MonoBehaviour
         {
             BinaryFormatter format = new BinaryFormatter();
             FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
-            tricks = (List<Trick>)format.Deserialize(fs);
+            TrickSave save = (TrickSave)format.Deserialize(fs);
+            tricks = save.tricks;
+            nextTrickToUnlockIndex = save.nextTrickToUnlockIndex;
             fs.Close();
             Debug.Log("Tricks loaded");
             return true;

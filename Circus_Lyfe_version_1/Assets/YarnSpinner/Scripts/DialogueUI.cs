@@ -29,6 +29,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Text;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Yarn.Unity {
     /// Displays dialogue lines to the player, and sends
@@ -113,6 +114,13 @@ namespace Yarn.Unity {
                 else if (checkingVar)
                 {
                     currentVar += input[index];
+                }
+                else if(input[index] == '\\' && input[index+1] == 'u')
+                {
+                    currentVar = "\\u" + input[index + 2] + input[index + 3] + input[index + 4] + input[index + 5];
+                    output += Regex.Unescape(currentVar);
+                    currentVar = string.Empty;
+                    index +=5;
                 }
                 else
                 {

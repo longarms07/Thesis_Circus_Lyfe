@@ -38,7 +38,7 @@ public class GameManager :  ISwipeListener, ITapListener
     protected bool ignoreTap = false;
     protected static bool duoTrapeze = false;
     protected static bool canTutorial = false;
-    protected static bool inTutorial = false;
+    protected static bool duoTutorial = false;
 
 
     private static GameManager instance;
@@ -318,6 +318,7 @@ public class GameManager :  ISwipeListener, ITapListener
         save.day = currentDay;
         save.time = currentTime;
         save.majorActionDone = majorActionDone;
+        save.duoTutorial = duoTutorial;
         BinaryFormatter format = new BinaryFormatter();
         FileStream fs = File.Create(Application.persistentDataPath + savefile);
         //Debug.Log(Application.persistentDataPath + savefile);
@@ -337,6 +338,7 @@ public class GameManager :  ISwipeListener, ITapListener
             currentDay = save.day;
             currentTime = save.time;
             majorActionDone = save.majorActionDone;
+            duoTutorial = save.duoTutorial;
             Debug.Log("Game loaded");
             return true;
         }
@@ -393,6 +395,14 @@ public class GameManager :  ISwipeListener, ITapListener
     {
         canTutorial = yesno;
     }
+
+    [YarnCommand("ActivateDuoTutorial")]
+    public void ActivateDuoTutorial()
+    {
+        duoTutorial = true;
+    }
+
+    public bool GetDuoTutorial() { return duoTutorial; }
 
     public void AllowDonnaOnTrapeze(bool yesno)
     {

@@ -39,7 +39,7 @@ public class LadderInteractable : YesNoInteractable
                 }
                 else
                 {
-                    Debug.Log("here");
+                    
                     ask2 = true;
                 }
             }

@@ -14,6 +14,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
 
     public TrickGUI trickGUI;
     public TrickManager trickManager;
+    public GameObject tutorialManager;
 
     private static GameManager_Trapeze instance;
 
@@ -27,6 +28,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
     private float timePrePause;
     public int timesPlayed = 0;
 
+    
 
     void Awake()
     {
@@ -68,6 +70,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
             Debug.Log("Player Avatar is missing PlayerManager_Trapeze script");
             Destroy(this);
         }
+        if (canTutorial) tutorialManager.SetActive(true);
     }
 
     // Update is called once per frame
@@ -143,11 +146,14 @@ public class GameManager_Trapeze : GameManager, ITapListener
             }
             else if (pmt.state == EnumPTrapezeState.InAir)
             {
+                if (!paused)
+                {
                     Debug.Log(lastTap.transform.name);
                     if (lastTap.transform.gameObject.layer == interactableLayer || lastTap.transform.gameObject.layer == interactableLayer2)
                     {
                         GetInteractable(lastTap.transform).OnInteraction();
                     }
+                }
             }
         }
         else if (pmt.state == EnumPTrapezeState.OnTrapeze)

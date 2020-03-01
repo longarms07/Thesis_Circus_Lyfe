@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -10,9 +12,11 @@ public class TutorialManager : MonoBehaviour
     public DonnaManager_Trapeze donna;
     public DialogueRunner dialogueRunner;
     public YarnProgram scriptToLoad;
-    public List<string> tutorialNodes;
+    public List<tutorialNode> tutorialNodes;
     public int nextTutorial = 0;
+    public string duoTutorialNode;
     public GrabTarget rightTrapezeTarget;
+    public GrabTarget leftTrapezeTarget;
     public GrabTarget playerLegTarget;
     public GrabTarget donnaLegTarget;
 
@@ -24,6 +28,21 @@ public class TutorialManager : MonoBehaviour
     private string failNode = "";
     private bool detecting = false;
     private string targetTrick;
+    private bool duoTutorialDone;
+    private static string savefile = "tutorial.save";
+
+    [System.Serializable]
+    public struct tutorialNode
+    {
+        public string name;
+        public int minPracticeSessions;
+    }
+
+    private void Awake()
+    {
+        //DeleteSaveData();
+        LoadSaveData();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +51,14 @@ public class TutorialManager : MonoBehaviour
         {
             dialogueRunner.Add(scriptToLoad);
         }
-        dialogueRunner.StartDialogue(tutorialNodes[nextTutorial]);
+
+        Debug.Log((nextTutorial < tutorialNodes.Count) + " , " + (tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed()));
+        if (GameManager_Trapeze.GetInstance().GetDuoTutorial() && !duoTutorialDone)
+            dialogueRunner.StartDialogue(duoTutorialNode);
+        else if (nextTutorial < tutorialNodes.Count && tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed())
+        {
+            dialogueRunner.StartDialogue(tutorialNodes[nextTutorial].name);
+        }
     }
     
     // Update is called once per frame
@@ -68,9 +94,11 @@ public class TutorialManager : MonoBehaviour
         if (numDetected >= targetNum)
         {
             targetManager.OnShort -= this.InvokeShortDetected;
-            dialogueRunner.StartDialogue(successNode);
-            //Debug.Log("Started runnning "+ successNode);
+            string s = successNode;
             ResetVars();
+            dialogueRunner.StartDialogue(s);
+            
+            //Debug.Log("Started runnning "+ successNode);
         }
     }
 
@@ -99,8 +127,9 @@ public class TutorialManager : MonoBehaviour
         if (numDetected >= targetNum)
         {
             targetManager.OnLong -= this.InvokeLongDetected;
-            dialogueRunner.StartDialogue(successNode);
+            string s = successNode;
             ResetVars();
+            dialogueRunner.StartDialogue(s);
         }
     }
 
@@ -127,44 +156,58 @@ public class TutorialManager : MonoBehaviour
     private void JumpDetected()
     {
         if (!detecting) return;
+        Debug.Log("Jump detected in tutorial manager!");
         numDetected++;
         if (numDetected >= targetNum)
         {
             targetManager.OnJump -= this.InvokeJumpDetected;
-            dialogueRunner.StartDialogue(successNode);
+            string s = successNode;
             ResetVars();
+            dialogueRunner.StartDialogue(s);
         }
     }
 
     [YarnCommand("DetectGrab")]
     public void DetectAttachTo(string target, string grabTarget, string nextNode)
     {
+        Debug.Log("Detect grab");
         if (detecting) return;
         detecting = true;
+        //Debug.Log("Detect grab made it to past detecting check");
         SetTarget(target);
+        //Debug.Log("grabTarget == " + grabTarget + ", is right? " + (grabTarget.Equals("right")));
         if (grabTarget.Equals("right")) targetGrabTarget = rightTrapezeTarget;
+        else if (grabTarget.Equals("left")) targetGrabTarget = leftTrapezeTarget;
         else if (grabTarget.Equals("donna")) targetGrabTarget = donnaLegTarget;
         else if (grabTarget.Equals("player")) targetGrabTarget = playerLegTarget;
         else return;
+        //Debug.Log("Detect grab made it to past grab target check");
         if (targetManager == null) return;
+        //Debug.Log("Detect grab made it to past target check");
         successNode = nextNode;
         targetManager.OnAttachTo += this.InvokeAttachToDetected;
+
+        //Debug.Log("Detect grab made it to end");
 
     }
 
     private void InvokeAttachToDetected()
     {
+        //Debug.Log("here");
+        //Debug.Log("detecting = " + detecting);
         Invoke("AttachToDetected", 2);
     }
 
     private void AttachToDetected()
     {
+        Debug.Log(player.GetGrabTarget() == targetGrabTarget);
         if (!detecting) return;
         if(player.GetGrabTarget() == targetGrabTarget)
         {
             targetManager.OnAttachTo -= this.InvokeAttachToDetected;
-            dialogueRunner.StartDialogue(successNode);
+            string s = successNode;
             ResetVars();
+            dialogueRunner.StartDialogue(s);
         }
     }
 
@@ -190,9 +233,14 @@ public class TutorialManager : MonoBehaviour
         if (!detecting) return;
         if (player.GetLastTrickPerformed().Equals(targetTrick))
         {
-            targetManager.OnTrick -= this.TrickDetected;
-            dialogueRunner.StartDialogue(successNode);
-            ResetVars();
+            numDetected++;
+            if (numDetected >= targetNum)
+            {
+                targetManager.OnTrick -= this.TrickDetected;
+                string s = successNode;
+                ResetVars();
+                dialogueRunner.StartDialogue(s);
+            }
         }
         else
         {
@@ -221,6 +269,74 @@ public class TutorialManager : MonoBehaviour
         else return;
     }
 
+    [YarnCommand("TutorialDone")]
+    public void TutorialDone()
+    {
+        if (GameManager_Trapeze.GetInstance().GetDuoTutorial()) duoTutorialDone = true;
+        else nextTutorial++;
+        SaveData();
+        this.gameObject.SetActive(false);
+    }
+
+    [System.Serializable]
+    class TutorialSave
+    {
+        public int nextTutorial;
+        public bool duoTutorialDone;
+    }
+
+    public virtual void SaveData()
+    {
+        TutorialSave save = new TutorialSave();
+        save.nextTutorial = nextTutorial;
+        save.duoTutorialDone = duoTutorialDone;
+        BinaryFormatter format = new BinaryFormatter();
+        FileStream fs = File.Create(Application.persistentDataPath + savefile);
+        //Debug.Log(Application.persistentDataPath + savefile);
+        format.Serialize(fs, save);
+        fs.Close();
+        Debug.Log("Game Saved");
+    }
+
+    public virtual bool LoadSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            BinaryFormatter format = new BinaryFormatter();
+            FileStream fs = File.Open(Application.persistentDataPath + savefile, FileMode.Open);
+            TutorialSave save = (TutorialSave)format.Deserialize(fs);
+            fs.Close();
+            nextTutorial = save.nextTutorial;
+            duoTutorialDone = save.duoTutorialDone;
+            return true;
+        }
+        return false;
+    }
+
+
+    public void DeleteSaveData()
+    {
+        if (File.Exists(Application.persistentDataPath + savefile))
+        {
+            File.Delete(Application.persistentDataPath + savefile);
+        }
+    }
+
+
+    private void OnApplicationPause(bool pause)
+    {
+        SaveData();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveData();
+    }
+
+    private void OnDestroy()
+    {
+        SaveData();
+    }
 
 
 }

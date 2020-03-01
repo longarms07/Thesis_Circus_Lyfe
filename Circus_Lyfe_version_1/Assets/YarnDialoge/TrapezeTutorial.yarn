@@ -1,74 +1,202 @@
-title: TutorialShortStart
+title: InitTutorialStart
 tags: 
 ---
-Donna: Let's test short detection!
-<<DetectShort TutorialManager 1 player TutorialShortEnd>>
+Donna: Alright, let's see what you can do [$PlayerName]. 
+Wouldya like me to give you a refresher on how to use the trapeze?
+->Yes
+    Donna: Cool, let's get this show on the road.
+    [[InitTutorialShortStart]]
+->No
+    Donna: Gotchya, want to get straight to the action. 
+    I'll leave ya to your own devices then.
+    <<UnlockTrick TrickManager>>
+    <<UnlockTrick TrickManager>>
+    <<TutorialDone TutorialManager>>
+    <<stop>>
 ===
 
-title: TutorialShortEnd
+title: InitTutorialShortStart
 tags: 
 ---
-Donna: Yay you did a short!
-[[TutorialLongStart]]
+Donna: So the first thing I'm gonna have you show me is a short.
+You remember how those work right? You pull your torso closer to the trapeze bar, and let your legs swing you up.
+All ya gotta do is swipe in the direction you're currently facing. Right now, that'd mean swipe \u2192. Why don't ya give it a shot?
+<<DetectShort TutorialManager 1 player InitTutorialLongStart>>
 ===
 
-title: TutorialLongStart
+title: InitTutorialLongStart
 tags: 
 ---
-Donna: Next Let's try a long.
-<<DetectLong TutorialManager 1 player TutorialLongEnd>>
+Donna: Cool, ya got that down.  Next up is the long. 
+For the long, you're gonna want to stretch your arms back out and try to straighten your body to match the rope.
+To pull it off, just swing in the direction opposite of the way you're facing. That'd be \u2190. Show me how you do it.
+<<DetectLong TutorialManager 1 player InitTutorialLongEnd>>
 ===
 
-title: TutorialLongEnd
+title: InitTutorialLongEnd
 tags: 
 ---
-Donna: Yay you did a long!
-[[TutorialJumpStart]]
+Donna: Great job. Shorts are great for helping you swing upwards, and longs can help with the return swing. 
+As the old saying goes, "short on the way up and long on the way down." Using these two techniques at the right times can help swing you to new heights.
+Why don't you play around with them a bit more? We'll move on to air when you've got 5 more shorts and longs done.
+<<DetectLong TutorialManager 5 player InitTutorialJumpStart>>
 ===
 
-title: TutorialJumpStart
+title: InitTutorialJumpStart
 tags: 
 ---
-Donna: Next Let's try a jump.
-<<DetectJump TutorialManager 1 player TutorialJumpEnd>>
+Donna: Time to move on to the airborne phase of this practice. I'm gonna have you jump off the trapeze next.
+What's that look for? We've got a net down here, so if you fall you'll just have to climb back up and start swinging again.
+Though ideally you'll be able to grab the next trapeze, but we're getting a bit ahead of ourselves there. 
+For the optimum jump, you're gonna want to build up speed and jump around 3/4ths of the way through the upswing. All ya gotta do to jump is tap anywhere.
+<<DetectJump TutorialManager 1 player InitTutorialGrabStart>>
 ===
 
-title: TutorialJumpEnd
+title: InitTutorialGrabStart
 tags: 
 ---
-Donna: Yay you did a jump!
-[[TutorialGrabStart]]
+Donna: Alright, you're in the air!
+You might've noticed that time seemed to slow down once you jumped. That's cause your adrenaline is making everything seem slower, but you can take advantage of that.
+Your next mission is to grab on to the other trapeze. Of course, gotta make sure it's in range first. You'll see this target when it is:
+<<ShowImage TextManager GrabTarget>>
+When you see this target here, just tap on it and you'll automatically move towards it. Once you get close you'll grab right on.
+<<HideImage TextManager>>
+Go ahead and give it a try!
+<<DetectGrab TutorialManager player right InitTutorialGrabEnd>>
 ===
 
-title: TutorialGrabStart
+title: InitTutorialGrabEnd
 tags: 
 ---
-Donna: Next Let's try grabbing the other trapeze.
-<<DetectGrab TutorialManager player right TutorialGrabEnd>>
+Donna: Awesome, made it to the other side!
+As ya probably noticed, you automatically flipped your body around when you grabbed on. Now you're facing towards your orignal trapeze.
+And since you've turned around, the direction for shorts and longs has changed as well. Now it's \u2190 for shorts and \u2192 for longs.
+If you get confused, just remember: swipe the way you're facing for shorts and the other way for longs. 
+Now go ahead and jump back to your orignal trapeze, and we'll see if you can do some tricks.
+<<DetectGrab TutorialManager player left InitTutorialBackflipStart>>
 ===
 
-title: TutorialGrabEnd
+title: InitTutorialBackflipStart
 tags: 
 ---
-Donna: Yay you grabbed the target!
-[[TutorialTrickStart]]
+Donna: Alright, the first trick I'm gonna have you show me is the backflip. Ya know, tuck in your arms and legs and flip behind you.
+To do one of these, you're gonna want to build up speed and jump again. 
+Then, while you're in the air swipe \u2196 and you'll do the trick. Give it a go.
+<<UnlockTrick TrickManager>>
+<<DetectTrick TutorialManager 1 player backflip InitTutorialBackflipEnd InitTutorialBackflipWrong>>
 ===
 
-title: TutorialTrickStart
+title: InitTutorialBackflipEnd
 tags: 
 ---
-Donna: Next Let's try doing a backflip.
-<<DetectTrick TutorialManager 1 player backflip TutorialTrickEnd TutorialTrickWrong>>
+Donna: Yay, you did a backflip!
+One of the important things to remember with tricks is that you always swipe in the same directions, they aren't like shorts and longs. 
+Go ahead and give me 3 more backflips, and then I'll show you one more trick. 
+<<DetectTrick TutorialManager 3 player backflip InitTutorialFrontflipStart InitTutorialBackflipWrong>>
 ===
 
-title: TutorialTrickEnd
+title: InitTutorialBackflipWrong
 tags: 
 ---
-Donna: Yay you did a backflip!
+Donna: That's not it. Remember, swipe \u2196 in the air.
 ===
 
-title: TutorialTrickWrong
+title: InitTutorialFrontflipStart
 tags: 
 ---
-Donna: No, do a backflip!
+Donna: Next Let's try doing a frontflip. They're pretty much just like backflips, but in the other direction.
+Fittingly, to do one you swipe in the opposite direction -  \u2197. Go ahead and give it a shot.
+<<UnlockTrick TrickManager>>
+<<DetectTrick TutorialManager 1 player frontflip InitTutorialFrontflipEnd InitTutorialFrontflipWrong>>
+===
+
+title: InitTutorialFrontflipEnd
+tags: 
+---
+Donna: Great job, now give me 3 more of them.
+<<DetectTrick TutorialManager 3 player frontflip InitTutorialEnd InitTutorialBackflipWrong>>
+===
+
+title: InitTutorialFrontflipWrong
+tags: 
+---
+Donna: That's not it. Remember, swipe \u2197 in the air.
+===
+
+title: InitTutorialEnd
+tags: 
+---
+Donna: Alright, that's it for today. You were pretty good out there, [$PlayerName]. I'm gonna head out for the day, but you keep practicing if you'd like.
+I'll make sure to keep an eye on your progress too. Once you attend a few more practice sessions, I'll show you a some more tricks the next time we're both here.
+<<TutorialDone TutorialManager>>
+<<stop>>
+===
+
+title: PirouetteTutorialStart
+tags: 
+---
+Donna: Alright, so the next trick I'm gonna teach you is the Piroutte. 
+Go ahead and jump when you're ready.
+<<UnlockTrick TrickManager>>
+<<DetectJump TutorialManager 1 player PirouetteTutorialTeach>>
+===
+
+title: PirouetteTutorialTeach
+tags: 
+---
+Donna: Perfect. For an airborn pirouette, you're going to want to pull an arm and leg in towards your torso and spin around sideways.
+To pull it off, you're gonna need to do two swipes in a row.
+Don't wait too long on the second swipe though, or else ya won't pull it off.
+First swipe \u2191 and then swipe \u2190 quickly after Go ahead and give it a try.
+<<DetectTrick TutorialManager 1 player pirouette PirouetteTutorialEnd PirouetteTutorialWrong>>
+===
+
+title: PirouetteTutorialEnd
+tags: 
+---
+Donna: Amazing job! 
+This trick should add some variety to your routine, so it isn't just flips anymore.
+Keep up the good work, and soon I'll be able to teach you an even more advanced technique.
+<<TutorialDone TutorialManager>>
+<<stop>>
+===
+
+title: PirouetteTutorialWrong
+tags: 
+---
+Donna: That's not the right trick. Remember, you need to swipe \u2191 and then swipe \u2190.
+===
+
+title: ShootStarTutorialStart
+tags: 
+---
+Donna: This next trick is a bit more advanced than the ones you've done before.
+Go ahead and jump when you're ready.
+<<UnlockTrick TrickManager>>
+<<DetectJump TutorialManager 1 player ShootStarTutorialTeach>>
+===
+
+title: ShootStarTutorialTeach
+tags: 
+---
+Donna: Alright, this time you're not spinning, but you will need to move all of your limbs for the Shooting Star.
+To do this trick, you'll raise both of your arms and legs upwards.
+For your arms it'll be easy, but your legs will be practically doing the splits. You're... probably flexible enough for it though. Yeah.
+To pull it off, you'll have to quickly do 3 swipes in a row: \u2193 \u2196 \u2197. Try it whenever you're ready.
+<<DetectTrick TutorialManager 1 player shoot_star ShootStarTutorialEnd ShootStarTutorialWrong>>
+===
+
+title: ShootStarTutorialEnd
+tags: 
+---
+Donna: Dang, you nailed it! I'm impressed!
+Course, I knew you could pull it off. This will be a great addition to your routine.
+<<TutorialDone TutorialManager>>
+<<stop>>
+===
+
+title:ShootStarTutorialWrong
+tags: 
+---
+Donna: I know this one is tough, but you can do it. Remember, swipe \u2193 \u2196 \u2197. 
 ===

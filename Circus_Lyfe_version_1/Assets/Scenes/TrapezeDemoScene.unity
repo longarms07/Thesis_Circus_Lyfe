@@ -1542,6 +1542,7 @@ MonoBehaviour:
   swipeShortDis: 5
   trickGUI: {fileID: 1988478915}
   trickManager: {fileID: 800483051}
+  tutorialManager: {fileID: 1110159308}
   donnaManager: {fileID: 1644516903}
   timesPlayed: 0
 --- !u!4 &654089319
@@ -2389,17 +2390,17 @@ MonoBehaviour:
     code: 02000000
     playerAnimFile: frontflip
   - name: Pirouette
-    unlocked: 1
+    unlocked: 0
     score: 100
     code: 0100000007000000
     playerAnimFile: pirouette
   - name: Shooting Star
-    unlocked: 1
+    unlocked: 0
     score: 150
     code: 040000000300000002000000
     playerAnimFile: shoot_star
   execTime: 0.2
-  nextTrickToUnlockIndex: 1
+  nextTrickToUnlockIndex: 2
   playerManager: {fileID: 1756145789}
   donnaManager: {fileID: 1644516903}
 --- !u!4 &800483052
@@ -3001,7 +3002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1110159309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3020,9 +3021,16 @@ MonoBehaviour:
   scriptToLoad: {fileID: 2480198943629176163, guid: eb29d70941e86154b90b231346c109c3,
     type: 3}
   tutorialNodes:
-  - TutorialShortStart
+  - name: InitTutorialStart
+    minPracticeSessions: 0
+  - name: PirouetteTutorialStart
+    minPracticeSessions: 3
+  - name: ShootStarTutorialStart
+    minPracticeSessions: 6
   nextTutorial: 0
+  duoTutorialNode: 
   rightTrapezeTarget: {fileID: 688901480}
+  leftTrapezeTarget: {fileID: 1524321075}
   playerLegTarget: {fileID: 1341391956}
   donnaLegTarget: {fileID: 1261716357}
 --- !u!4 &1110159310
@@ -5102,7 +5110,7 @@ GameObject:
   - component: {fileID: 1862395177}
   - component: {fileID: 1862395176}
   m_Layer: 5
-  m_Name: TMP SubMeshUI [FreeSerif SDF Material + LiberationSans SDF Atlas]
+  m_Name: TMP SubMeshUI [SerifSDF Material + LiberationSans SDF Atlas]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6031,11 +6039,73 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -12
       objectReference: {fileID: 0}
+    - target: {fileID: 6321269804564311587, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fb84a98899193664688fd1c99fc9bdfe,
+        type: 2}
+    - target: {fileID: 6321269804564311587, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: defaultVariables.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: defaultVariables.Array.data[1].name
+      value: left
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: defaultVariables.Array.data[1].value
+      value: \u2190
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: defaultVariables.Array.data[1].type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263737, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: textSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: textCanvas
       value: 
       objectReference: {fileID: 1018166092}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[1].image
+      value: 
+      objectReference: {fileID: 21300000, guid: a595e10016cabbb40867ee0d4a0b3a46,
+        type: 3}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[1].name
+      value: GrabTarget
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[1].scale.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[1].scale.y
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263740, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: m_Name

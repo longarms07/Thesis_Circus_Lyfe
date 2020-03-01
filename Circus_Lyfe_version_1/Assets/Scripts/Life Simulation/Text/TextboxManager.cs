@@ -5,6 +5,7 @@ using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class TextboxManager : MonoBehaviour
 {
