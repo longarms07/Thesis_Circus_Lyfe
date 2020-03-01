@@ -53,7 +53,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         Debug.Log((nextTutorial < tutorialNodes.Count) + " , " + (tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed()));
-        if (GameManager_Trapeze.GetInstance().GetDuoTutorial() && !duoTutorialDone)
+        if (GameManager_Trapeze.GetInstance().GetDuoTutorial() && donna.isActiveAndEnabled && !duoTutorialDone)
             dialogueRunner.StartDialogue(duoTutorialNode);
         else if (nextTutorial < tutorialNodes.Count && tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed())
         {

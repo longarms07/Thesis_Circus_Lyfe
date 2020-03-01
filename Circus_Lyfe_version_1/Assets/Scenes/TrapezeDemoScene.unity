@@ -2380,12 +2380,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tricks:
   - name: Backflip
-    unlocked: 1
+    unlocked: 0
     score: 50
     code: 03000000
     playerAnimFile: backflip
   - name: Frontflip
-    unlocked: 1
+    unlocked: 0
     score: 50
     code: 02000000
     playerAnimFile: frontflip

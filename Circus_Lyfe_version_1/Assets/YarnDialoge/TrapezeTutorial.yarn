@@ -135,7 +135,7 @@ I'll make sure to keep an eye on your progress too. Once you attend a few more p
 title: PirouetteTutorialStart
 tags: 
 ---
-Donna: Alright, so the next trick I'm gonna teach you is the Piroutte. 
+Donna: Alright, so the next trick I'm gonna teach you is the Pirouette. 
 Go ahead and jump when you're ready.
 <<UnlockTrick TrickManager>>
 <<DetectJump TutorialManager 1 player PirouetteTutorialTeach>>
