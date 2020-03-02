@@ -81,7 +81,7 @@ tags:
 ---
 Donna: Alright, the first trick I'm gonna have you show me is the backflip. Ya know, tuck in your arms and legs and flip behind you.
 To do one of these, you're gonna want to build up speed and jump again. 
-Then, while you're in the air swipe \u2196 and you'll do the trick. Give it a go.
+Then, while you're in the air swipe v and you'll do the trick. Give it a go.
 <<UnlockTrick TrickManager>>
 <<DetectTrick TutorialManager 1 player backflip InitTutorialBackflipEnd InitTutorialBackflipWrong>>
 ===
@@ -200,3 +200,80 @@ tags:
 ---
 Donna: I know this one is tough, but you can do it. Remember, swipe \u2193 \u2196 \u2197. 
 ===
+
+title:DuoTutorialStart
+tags: 
+---
+Donna: Alright [$PlayerName], it's time for us to start preparing our duet act. 
+You'll start on the right trapeze, pretty used to it by now I assume. I'll start over here on the right. 
+We'll start as per usual, try to get as much height as possible from doing shorts and longs. I'll be doing the same.
+After that, the first thing I'll teach you is catching me after I jump. When I'm getting ready to jump, I'll call out to you.
+Try to get yourself into position so you can catch me on the way down.
+Ready? Let's get started.
+<<DetectJump TutorialManager 1 donna DuoTutorialInAir>>
+===
+
+title:DuoTutorialInAir
+tags: 
+---
+Donna: So when I'm heading up in the air, I'll show off a few tricks to the audience. 
+While I'm doing that, make sure you swing yourself to a position where you can catch me. Don't swing too far away, but don't swing past me either.
+It's... fine if you miss the first few times, but make sure it doesn't happen often okay? I'm putting my faith in you to pull this off.
+<<DetectGrab TutorialManager donna player DuoTutorialCatchDonna>>
+===
+
+title:DuoTutorialCatchDonna
+tags: 
+---
+Donna: Alright, you caught me! That wasn't so hard now, was it?
+Now that you've caught me we will swing together for a bit, and when I'm ready I'll jump back over to my trapeze.
+Of course, you won't be able to jump off this trapeze while I'm hanging onto you. That's a recipe for disaster right there.
+Once I'm back on my own trapeze it'll be my turn to catch you.
+<<DetectGrab TutorialManager donna right DuoTutorialPreparePlayer>>
+===
+
+title:DuoTutorialPreparePlayer
+tags: 
+---
+Alright, when you're ready go ahead and jump. Don't worry, I'll do my best to catch you as long as you don't do anything crazy. 
+When you're in the air, just tap on the target that appears on me to let me know you're ready to be caught.
+<<DetectGrab TutorialManager player donna DuoTutorialCatchPlayer>>
+===
+
+title:DuoTutorialCatchPlayer
+tags: 
+---
+Donna: There, I gotchya! Now it is up to you to decide when to jump back to your trapeze. 
+Once you're there we can get to the real focus of this lesson.
+<<DetectGrab TutorialManager player left DuoTutorialDuoTrick>>
+===
+
+title:DuoTutorialDuoTrick
+tags: 
+---
+Donna: So the next thing I'm gonna teach you is the duo trick. To perform one, we both need to be in the air at the same time. 
+The timing can be a bit rough to coordinate, but it'll basically boil down to jumping at the same time that I jump. 
+When I call out to you that's your signal to get into position.
+Once we're both in the air, all you've got to do is perform the trick and I'll do it at the same time. 
+Let's start simple, your next task is to initiate a duo backflip.
+<<DetectTrick TutorialManager 1 player backflip DuoTutorialDuoBackflip DuoTutorialDuoBackflipFail>>
+===
+
+title:DuoTutorialDuoBackflip
+tags: 
+---
+Donna: Awesome, you nailed it! All that's left for us to do now is get back to the trapeze.
+Duo tricks are roughly 4 times as impressive to the audience as their solo counterparts, so pull them off whenever you can.
+We can do duo versions of pretty much every trick I've taught you, so don't be shy about attempting the tougher ones. 
+Now all that's left to do is to keep practicing together and get more comfortable with our new set. 
+<<TutorialDone TutorialManager>>
+<<stop>>
+===
+
+title:DuoTutorialDuoBackflipFail
+tags: 
+---
+Donna: Nice job executing a duo trick, but that's not quite the right one. Remember, we're attempting the duo backflip. Swipe \u2196 when we're both in the air.
+===
+
+

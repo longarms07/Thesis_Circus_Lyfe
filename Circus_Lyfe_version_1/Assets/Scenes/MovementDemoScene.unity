@@ -6751,7 +6751,7 @@ MonoBehaviour:
   - DonnaBackstory
   majorConvoTrust:
   - 0
-  - 25
+  - 15
   doMajorConvos: 1
   schedule2convert:
   - day: 0

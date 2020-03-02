@@ -66,6 +66,7 @@ public class TrickManager : MonoBehaviour
         Debug.Log("Recieved swipe going " + s);
     }
 
+    public System.Action OnDuoTrick = () => { };
     public void ExecuteTrick()
     {
         Debug.Log("Executing trick with currentSwipe: " + PrintList(currentSwipe));
@@ -76,6 +77,7 @@ public class TrickManager : MonoBehaviour
             {
                 if (donnaManager.state == EnumPTrapezeState.InAir)
                 {
+                    OnDuoTrick();
                     ExecuteTrickDonna(currentSwipe);
                     gm.trickGUI.DidTrick("Duo " + t.name, t.score * 4);
                 }

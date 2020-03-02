@@ -2400,7 +2400,7 @@ MonoBehaviour:
     code: 040000000300000002000000
     playerAnimFile: shoot_star
   execTime: 0.2
-  nextTrickToUnlockIndex: 2
+  nextTrickToUnlockIndex: 0
   playerManager: {fileID: 1756145789}
   donnaManager: {fileID: 1644516903}
 --- !u!4 &800483052
@@ -3028,11 +3028,12 @@ MonoBehaviour:
   - name: ShootStarTutorialStart
     minPracticeSessions: 6
   nextTutorial: 0
-  duoTutorialNode: 
+  duoTutorialNode: DuoTutorialStart
   rightTrapezeTarget: {fileID: 688901480}
   leftTrapezeTarget: {fileID: 1524321075}
   playerLegTarget: {fileID: 1341391956}
   donnaLegTarget: {fileID: 1261716357}
+  duoTutorialDone: 0
 --- !u!4 &1110159310
 Transform:
   m_ObjectHideFlags: 0
@@ -4546,7 +4547,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644516902}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.49, y: 0.34, z: -1}
+  m_LocalPosition: {x: 0.49, y: 0.34, z: 90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1261716354}
@@ -4911,7 +4912,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756145788}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.593754, y: 0.3148228, z: -1}
+  m_LocalPosition: {x: -9.593754, y: 0.3148228, z: 90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2081834692}

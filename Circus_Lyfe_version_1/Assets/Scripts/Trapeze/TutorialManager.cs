@@ -28,7 +28,7 @@ public class TutorialManager : MonoBehaviour
     private string failNode = "";
     private bool detecting = false;
     private string targetTrick;
-    private bool duoTutorialDone;
+    public bool duoTutorialDone;
     private static string savefile = "tutorial.save";
 
     [System.Serializable]
@@ -52,13 +52,14 @@ public class TutorialManager : MonoBehaviour
             dialogueRunner.Add(scriptToLoad);
         }
 
-        Debug.Log((nextTutorial < tutorialNodes.Count) + " , " + (tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed()));
+        //Debug.Log((nextTutorial < tutorialNodes.Count) + " , " + (tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed()));
         if (GameManager_Trapeze.GetInstance().GetDuoTutorial() && donna.isActiveAndEnabled && !duoTutorialDone)
             dialogueRunner.StartDialogue(duoTutorialNode);
-        else if (nextTutorial < tutorialNodes.Count && tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed())
+        else if (nextTutorial < tutorialNodes.Count && tutorialNodes[nextTutorial].minPracticeSessions <= GameManager_Trapeze.GetInstance().GetTimesPlayed() && !donna.isActiveAndEnabled)
         {
             dialogueRunner.StartDialogue(tutorialNodes[nextTutorial].name);
         }
+        else this.gameObject.SetActive(false);
     }
     
     // Update is called once per frame
@@ -200,9 +201,9 @@ public class TutorialManager : MonoBehaviour
 
     private void AttachToDetected()
     {
-        Debug.Log(player.GetGrabTarget() == targetGrabTarget);
+        Debug.Log((targetManager.GetGrabTarget() == targetGrabTarget)+" , "+targetGrabTarget.name+", "+ targetManager.GetGrabTarget().name);
         if (!detecting) return;
-        if(player.GetGrabTarget() == targetGrabTarget)
+        if(targetManager.GetGrabTarget() == targetGrabTarget)
         {
             targetManager.OnAttachTo -= this.InvokeAttachToDetected;
             string s = successNode;
@@ -231,12 +232,53 @@ public class TutorialManager : MonoBehaviour
     private void TrickDetected()
     {
         if (!detecting) return;
-        if (player.GetLastTrickPerformed().Equals(targetTrick))
+        if (targetManager.GetLastTrickPerformed().Equals(targetTrick))
         {
             numDetected++;
             if (numDetected >= targetNum)
             {
                 targetManager.OnTrick -= this.TrickDetected;
+                string s = successNode;
+                ResetVars();
+                dialogueRunner.StartDialogue(s);
+            }
+        }
+        else
+        {
+            dialogueRunner.StartDialogue(failNode);
+        }
+    }
+
+    [YarnCommand("DetectDuoTrick")]
+    public void DetectDuoTrick(string number, string trickName, string nextNode, string wrongNode)
+    {
+        if (detecting) return;
+        detecting = true;
+        SetTarget("player");
+        if (targetManager == null) return;
+        numDetected = 0;
+        targetNum = int.Parse(number);
+        successNode = nextNode;
+        failNode = wrongNode;
+        targetTrick = trickName;
+        TrickManager.GetInstance().OnDuoTrick += this.InvokeDuoTrickDetected;
+
+    }
+
+    private void InvokeDuoTrickDetected()
+    {
+        Invoke("DuoTrickDetected", 1.5f);
+    }
+
+    private void DuoTrickDetected()
+    {
+        if (!detecting) return;
+        if (targetManager.GetLastTrickPerformed().Equals(targetTrick))
+        {
+            numDetected++;
+            if (numDetected >= targetNum)
+            {
+                TrickManager.GetInstance().OnDuoTrick -= this.InvokeDuoTrickDetected;
                 string s = successNode;
                 ResetVars();
                 dialogueRunner.StartDialogue(s);
