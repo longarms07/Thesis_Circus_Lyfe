@@ -22,7 +22,7 @@ public class TrickManager : MonoBehaviour
     public DonnaManager_Trapeze donnaManager;
     private GameManager_Trapeze gm;
     private static TrickManager instance;
-    private string savefile = "tricks.save";
+    private static string savefile = "tricks.save";
 
     private void Awake()
     {
@@ -178,7 +178,7 @@ public class TrickManager : MonoBehaviour
     }
 
 
-    public void DeleteSaveData()
+    public static void DeleteSaveData()
     {
         if (File.Exists(Application.persistentDataPath + savefile))
         {

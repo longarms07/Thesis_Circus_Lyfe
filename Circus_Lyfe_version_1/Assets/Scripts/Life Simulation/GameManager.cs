@@ -352,8 +352,15 @@ public class GameManager :  ISwipeListener, ITapListener
         {
            File.Delete(Application.persistentDataPath + savefile);
         }
+        if (File.Exists(Application.persistentDataPath + "gamemanager_trapeze.save"))
+        {
+            File.Delete(Application.persistentDataPath + "gamemanager_trapeze.save");
+        }
+        TutorialManager.DeleteSaveData();
+        TrickManager.DeleteSaveData();
+        
     }
-
+    
 
     private void OnApplicationPause(bool pause)
     {

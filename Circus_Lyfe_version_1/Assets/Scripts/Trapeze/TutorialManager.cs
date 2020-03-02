@@ -28,7 +28,7 @@ public class TutorialManager : MonoBehaviour
     private string failNode = "";
     private bool detecting = false;
     private string targetTrick;
-    public bool duoTutorialDone;
+    public bool duoTutorialDone = false;
     private static string savefile = "tutorial.save";
 
     [System.Serializable]
@@ -314,7 +314,7 @@ public class TutorialManager : MonoBehaviour
     [YarnCommand("TutorialDone")]
     public void TutorialDone()
     {
-        if (GameManager_Trapeze.GetInstance().GetDuoTutorial()) duoTutorialDone = true;
+        if (GameManager_Trapeze.GetInstance().GetDuoTutorial() && donna.isActiveAndEnabled && !duoTutorialDone) duoTutorialDone = true;
         else nextTutorial++;
         SaveData();
         this.gameObject.SetActive(false);
@@ -356,7 +356,7 @@ public class TutorialManager : MonoBehaviour
     }
 
 
-    public void DeleteSaveData()
+    public static void DeleteSaveData()
     {
         if (File.Exists(Application.persistentDataPath + savefile))
         {
