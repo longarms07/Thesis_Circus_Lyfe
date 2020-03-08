@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using TMPro;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -15,6 +16,18 @@ public class GameManager_Trapeze : GameManager, ITapListener
     public TrickGUI trickGUI;
     public TrickManager trickManager;
     public GameObject tutorialManager;
+    public TextMeshProUGUI timerText;
+    public float timeLeft;
+    public bool gradedPerformance;
+    public int targetScore;
+    public YarnProgram scriptToLoad;
+    public string goodEndSolo;
+    public string badEndSolo;
+    public string goodEndDuo;
+    public string badEndDuo;
+    public DialogueRunner dialogueRunner;
+    public GameObject pauseBtn;
+    public GameObject exitBtn;
 
     private static GameManager_Trapeze instance;
 
@@ -53,6 +66,11 @@ public class GameManager_Trapeze : GameManager, ITapListener
     void Start()
     {
         donnaManager.gameObject.SetActive(duoTrapeze);
+        if (gradedPerformance)
+        {
+            timerText.gameObject.SetActive(true);
+            exitBtn.SetActive(false);
+        }
         duoTrapeze = false;
         TouchInputManager t = TouchInputManager.getInstance();
         if (t == null) Destroy(this);
@@ -70,13 +88,30 @@ public class GameManager_Trapeze : GameManager, ITapListener
             Debug.Log("Player Avatar is missing PlayerManager_Trapeze script");
             Destroy(this);
         }
+        if (scriptToLoad != null)
+        {
+            dialogueRunner.Add(scriptToLoad);
+        }
         if (canTutorial) tutorialManager.SetActive(true);
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if (gradedPerformance)
+        {
+            timeLeft -= Time.fixedDeltaTime;
+            if (timeLeft < 0) timeLeft = 0;
+            string minutes = "";
+            minutes+= Math.Floor(timeLeft / 60);
+            minutes += ":";
+            int seconds = (int) (Math.Floor(timeLeft % 60));
+            if (seconds < 10) minutes += "0";
+            minutes += seconds;
+            timerText.text = "Time Left: " + minutes;
+            if (timeLeft == 0)
+                EndGradedPerformance();
+        }
     }
 
     [YarnCommand("Pause")]
@@ -91,7 +126,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
         else
         {
             Time.timeScale = timePrePause;
-            if(!lastTap.transform.gameObject.name.Equals("Textbox Bgrd")) ignoreTap = true;
+            if(lastTap.transform!= null && !lastTap.transform.gameObject.name.Equals("Textbox Bgrd")) ignoreTap = true;
         }
     }
 
@@ -266,6 +301,29 @@ public class GameManager_Trapeze : GameManager, ITapListener
             return true;
         }
         return false;
+    }
+
+    private void EndGradedPerformance()
+    {
+        if (gradedPerformance)
+        {
+            //Pause();
+            FadeToBlack();
+            pauseBtn.SetActive(false);
+            gradedPerformance = false;
+            Debug.Log("Performance is done!");
+            string node = badEndSolo;
+            if (donnaManager.isActiveAndEnabled)
+            {
+                if (targetScore <= trickGUI.GetScore()) node = goodEndDuo;
+                else node = badEndDuo;
+
+            }
+            else if (targetScore <= trickGUI.GetScore()) node = goodEndSolo;
+            playerAvatar.SetActive(false);
+            donnaManager.gameObject.SetActive(false);
+            dialogueRunner.StartDialogue(node);
+        }
     }
 
 }

@@ -61,6 +61,13 @@ public class TrickGUI : MonoBehaviour
         score += addThis;
         scoreTMP.text = "Score: " + score;
     }
+
+    public void DecreaseScore(int decrease)
+    {
+        score -= Mathf.Abs(decrease);
+        if (score < 0) score = 0;
+        scoreTMP.text = "Score: " + score;
+    }
     
     public void DisplayTrickCode(List<SwipeDirection> trickCode)
     {
@@ -99,4 +106,6 @@ public class TrickGUI : MonoBehaviour
     }
 
     public static TrickGUI GetInstance() { return instance; }
+
+    public int GetScore() { return score; }
 }

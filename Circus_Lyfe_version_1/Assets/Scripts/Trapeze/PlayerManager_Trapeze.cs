@@ -52,6 +52,7 @@ public class PlayerManager_Trapeze : BodyManager
     protected Quaternion rotation;
     protected float jumpX = 0;
     protected string lastTrick;
+    protected bool punishFall = true;
     
 
 
@@ -143,7 +144,11 @@ public class PlayerManager_Trapeze : BodyManager
                 }
             }
         }
-        if (jumpX - headRB.position.y >= fallDis) AttachToInitial();
+        if (jumpX - headRB.position.y >= fallDis)
+        {
+            if(punishFall) TrickGUI.GetInstance().DecreaseScore(10);
+            AttachToInitial();
+        }
         //Debug.Log(jumpX - headRB.position.x);
     }
 

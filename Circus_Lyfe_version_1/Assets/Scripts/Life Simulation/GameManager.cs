@@ -211,6 +211,8 @@ public class GameManager :  ISwipeListener, ITapListener
         }
     }
 
+
+    [YarnCommand("ChangeSceneLifeSim")]
     public void ChangeSceneLifeSim()
     {
         if(SceneManager.GetActiveScene().name == "TrapezeDemoScene")

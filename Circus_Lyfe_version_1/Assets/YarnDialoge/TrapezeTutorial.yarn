@@ -81,7 +81,7 @@ tags:
 ---
 Donna: Alright, the first trick I'm gonna have you show me is the backflip. Ya know, tuck in your arms and legs and flip behind you.
 To do one of these, you're gonna want to build up speed and jump again. 
-Then, while you're in the air swipe v and you'll do the trick. Give it a go.
+Then, while you're in the air swipe \u2196 and you'll do the trick. Give it a go.
 <<UnlockTrick TrickManager>>
 <<DetectTrick TutorialManager 1 player backflip InitTutorialBackflipEnd InitTutorialBackflipWrong>>
 ===
@@ -114,7 +114,7 @@ title: InitTutorialFrontflipEnd
 tags: 
 ---
 Donna: Great job, now give me 3 more of them.
-<<DetectTrick TutorialManager 3 player frontflip InitTutorialEnd InitTutorialBackflipWrong>>
+<<DetectTrick TutorialManager 3 player frontflip InitTutorialEnd InitTutorialFrontflipWrong>>
 ===
 
 title: InitTutorialFrontflipWrong

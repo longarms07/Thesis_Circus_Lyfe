@@ -1,0 +1,27 @@
+title: GoodEndSolo
+tags: 
+---
+This is the solo good end
+<<ChangeSceneLifeSim GameManager>>
+===
+
+title: BadEndSolo
+tags: 
+---
+This is the solo bad end.
+<<ChangeSceneLifeSim GameManager>>
+===
+
+title: GoodEndDuo
+tags: 
+---
+This is the duo good end
+<<ChangeSceneLifeSim GameManager>>
+===
+
+title: BadEndDuo
+tags: 
+---
+This is the duo bad end
+<<ChangeSceneLifeSim GameManager>>
+===

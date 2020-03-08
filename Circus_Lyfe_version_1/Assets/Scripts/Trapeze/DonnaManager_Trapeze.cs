@@ -32,6 +32,7 @@ public class DonnaManager_Trapeze : PlayerManager_Trapeze, IPTrapezeStateListene
         runAI = false;
         DoAtStart();
         gm.GetPlayerManager().SubscribeStateListener(this);
+        punishFall = false;
     }
 
     private void Update()
