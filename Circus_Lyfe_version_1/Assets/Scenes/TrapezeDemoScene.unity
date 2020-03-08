@@ -1540,6 +1540,7 @@ MonoBehaviour:
   majorActionDone: 0
   daysTillPerformance: 0
   dayCountdown: {fileID: 0}
+  targetTrustLevel: 0
   paused: 0
   swipeShortDis: 5
   trickGUI: {fileID: 1988478915}
@@ -6251,7 +6252,7 @@ PrefabInstance:
     - target: {fileID: 6321269804564311586, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12
+      value: -1200
       objectReference: {fileID: 0}
     - target: {fileID: 6321269804564311587, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
@@ -6263,6 +6264,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804564311589, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}

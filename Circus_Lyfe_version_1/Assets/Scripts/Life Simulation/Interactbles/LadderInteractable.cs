@@ -6,7 +6,6 @@ public class LadderInteractable : YesNoInteractable
 {
     public int trustPoints;
     public string inviteDonnaNode;
-    public int trustLevelReq;
     public Donna donna;
     protected bool ask2;
 
@@ -32,7 +31,7 @@ public class LadderInteractable : YesNoInteractable
             //TextboxManager.GetInstance().DespawnTextButtons();
             if (answer == "yes")
             {
-                if (trustLevelReq > gm.GetPlayerManager().trustDonna || donna.transform.position != donnaSpawnPosition.transform.position)
+                if (gm.targetTrustLevel > gm.GetPlayerManager().trustDonna || donna.transform.position != donnaSpawnPosition.transform.position)
                 {
                     //Debug.Log("Starting trapeze: "+(trustLevelReq < gm.GetPlayerManager().trustDonna) + " , " + (donna.transform.position != donnaSpawnPosition.transform.position));
                     StartTrapeze();

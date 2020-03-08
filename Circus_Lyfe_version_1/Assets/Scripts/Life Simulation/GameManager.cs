@@ -26,8 +26,8 @@ public class GameManager :  ISwipeListener, ITapListener
     public bool majorActionDone;
     public int daysTillPerformance;
     public TMPro.TextMeshProUGUI dayCountdown;
-    
- 
+    public int targetTrustLevel;
+
     public bool paused = false;
     public Dictionary<Transform, IInteractable> interactableDict;
     protected Dictionary<Transform, IButton> buttonDict;
@@ -299,6 +299,7 @@ public class GameManager :  ISwipeListener, ITapListener
         if (daysSoFar % daysTillPerformance == 0)
         {
             gradedPerformance = true;
+            if (playerAvatar.GetComponent<PlayerManager>().trustDonna >= targetTrustLevel) duoTrapeze = true;
             foreach (IDayTimeChangeListener listener in dayTimeChangeListeners)
             {
                 listener.PerformanceDay();
@@ -437,6 +438,7 @@ public class GameManager :  ISwipeListener, ITapListener
     }
 
     public bool GetDuoTutorial() { return duoTutorial; }
+
 
     public void AllowDonnaOnTrapeze(bool yesno)
     {

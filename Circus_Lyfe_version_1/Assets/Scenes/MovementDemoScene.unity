@@ -10603,6 +10603,7 @@ MonoBehaviour:
   majorActionDone: 0
   daysTillPerformance: 7
   dayCountdown: {fileID: 1204949590}
+  targetTrustLevel: 15
   paused: 0
 --- !u!4 &1767598616
 Transform:
