@@ -270,3 +270,15 @@ tags:
 Donna: There's nothing more fun than some good ol' fashion karaoke. 
 I always get super into the zone, there's nothing quite like singing the night away.
 ===
+
+title: DonnaPerformanceDay
+tags: 
+---
+Is this line showing up? Weird.
+Donna: Today's the big show! Are you ready to show off your trapeze skills to everyone in the audience?
+->Yes
+	Donna: Awesome
+->No
+	Donna: Uh oh
+<<ChangeSceneTrapeze GameManager>>
+===

@@ -146,6 +146,13 @@ public abstract class NPCInteractable : MonoBehaviour, IInteractable, ITextboxLi
         Debug.Log(gameObject.name +" Stats Saved");
     }
 
+    public void PerformanceDay()
+    {
+        DoOnPerformance();
+    }
+
+    protected abstract void DoOnPerformance();
+
     public bool LoadStats()
     {
         if (File.Exists(Application.persistentDataPath + savefile))

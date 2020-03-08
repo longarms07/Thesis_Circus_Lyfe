@@ -68,6 +68,17 @@ public class TrickGUI : MonoBehaviour
         if (score < 0) score = 0;
         scoreTMP.text = "Score: " + score;
     }
+
+    public void FinalScore(int targetScore)
+    {
+
+        string endText = "\nNot quite good enough...";
+        if (targetScore <= score) endText = "\n You Did Amazing!";
+        scoreTMP.text = "Score: " + score+endText;
+        scoreTMP.transform.localPosition = new Vector3(0, scoreTMP.transform.localPosition.y, scoreTMP.transform.localPosition.z);
+        scoreTMP.rectTransform.sizeDelta = new Vector2(scoreTMP.rectTransform.sizeDelta.x * 2, scoreTMP.rectTransform.sizeDelta.y);
+        textTMP.text = "";
+    }
     
     public void DisplayTrickCode(List<SwipeDirection> trickCode)
     {

@@ -1538,6 +1538,8 @@ MonoBehaviour:
   currentDay: 0
   currentTime: 0
   majorActionDone: 0
+  daysTillPerformance: 0
+  dayCountdown: {fileID: 0}
   paused: 0
   swipeShortDis: 5
   trickGUI: {fileID: 1988478915}
@@ -1545,7 +1547,6 @@ MonoBehaviour:
   tutorialManager: {fileID: 1110159308}
   timerText: {fileID: 706825704}
   timeLeft: 120
-  gradedPerformance: 1
   targetScore: 50
   scriptToLoad: {fileID: 2480198943629176163, guid: 72e51f44f26ca98458c1b3c2923d4f9a,
     type: 3}
@@ -5052,6 +5053,7 @@ GameObject:
   - component: {fileID: 1756145790}
   - component: {fileID: 1756145789}
   - component: {fileID: 1756145791}
+  - component: {fileID: 1756145792}
   m_Layer: 0
   m_Name: Player body
   m_TagString: Untagged
@@ -5142,6 +5144,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1756145792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756145788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b960b497cbfc254faa030d02115d784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trustDonna: 0
+  tmp: {fileID: 0}
 --- !u!1 &1798382860
 GameObject:
   m_ObjectHideFlags: 0

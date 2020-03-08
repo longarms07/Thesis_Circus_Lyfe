@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IDayTimeChangeListener 
 {
     void DayTimeChange(DayEnums newDay, TimeEnums newTime);
+    void PerformanceDay();
 }

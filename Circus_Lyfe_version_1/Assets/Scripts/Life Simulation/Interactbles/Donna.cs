@@ -9,6 +9,7 @@ public class Donna : NPCInteractable, IButtonListener
     private bool followingPlayer = false;
     public string followingPlayerNode;
     public string startDialogNode;
+    public string performanceDayNode;
     private bool attemptTalking = false;
 
     void Awake()
@@ -94,7 +95,13 @@ public class Donna : NPCInteractable, IButtonListener
             gm.GetPlayerMovable().StopFollower();
         }
     }
-    
+
+    protected override void DoOnPerformance()
+    {
+
+        dialogueRunner.StartDialogue(performanceDayNode);
+    }
+
     override
     public void OnTextEnded()
     { }

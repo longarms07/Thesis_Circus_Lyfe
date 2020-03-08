@@ -18,7 +18,6 @@ public class GameManager_Trapeze : GameManager, ITapListener
     public GameObject tutorialManager;
     public TextMeshProUGUI timerText;
     public float timeLeft;
-    public bool gradedPerformance;
     public int targetScore;
     public YarnProgram scriptToLoad;
     public string goodEndSolo;
@@ -40,6 +39,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
     private bool slowMoAllowed;
     private float timePrePause;
     public int timesPlayed = 0;
+
 
     
 
@@ -311,6 +311,8 @@ public class GameManager_Trapeze : GameManager, ITapListener
             FadeToBlack();
             pauseBtn.SetActive(false);
             gradedPerformance = false;
+            timerText.gameObject.SetActive(false);
+            trickGUI.FinalScore(targetScore);
             Debug.Log("Performance is done!");
             string node = badEndSolo;
             if (donnaManager.isActiveAndEnabled)

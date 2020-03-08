@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        tmp.SetText(trustDonnaMsg + trustDonna);
+        if (tmp != null) tmp.SetText(trustDonnaMsg + trustDonna);
 
     }
 
@@ -35,14 +35,14 @@ public class PlayerManager : MonoBehaviour
     public void increaseTrustDonna(int increaseBy)
     {
         trustDonna += Mathf.Abs(increaseBy);
-        tmp.SetText(trustDonnaMsg + trustDonna);
+        if(tmp!=null) tmp.SetText(trustDonnaMsg + trustDonna);
     }
     
     public void decreaseTrustDonna(int decreaseBy)
     {
         trustDonna -= Mathf.Abs(decreaseBy);
         if (trustDonna < 0) trustDonna = 0;
-        tmp.SetText(trustDonnaMsg + trustDonna);
+        if (tmp != null) tmp.SetText(trustDonnaMsg + trustDonna);
     }
 
     [YarnCommand("IncreaseTrust")]

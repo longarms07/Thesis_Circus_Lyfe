@@ -24,7 +24,10 @@ public class GameManager :  ISwipeListener, ITapListener
     public DayEnums currentDay;
     public TimeEnums currentTime;
     public bool majorActionDone;
-
+    public int daysTillPerformance;
+    public TMPro.TextMeshProUGUI dayCountdown;
+    
+ 
     public bool paused = false;
     public Dictionary<Transform, IInteractable> interactableDict;
     protected Dictionary<Transform, IButton> buttonDict;
@@ -39,6 +42,8 @@ public class GameManager :  ISwipeListener, ITapListener
     protected static bool duoTrapeze = false;
     protected static bool canTutorial = false;
     protected static bool duoTutorial = false;
+    protected static bool gradedPerformance = false;
+    private int daysSoFar;
 
 
     private static GameManager instance;
@@ -60,6 +65,7 @@ public class GameManager :  ISwipeListener, ITapListener
             currentDay = DayEnums.Monday;
             currentTime = TimeEnums.Morning;
             majorActionDone = false;
+            daysSoFar = 1;
         }
         dayTimeChangeListeners = new List<IDayTimeChangeListener>();
 
@@ -81,6 +87,7 @@ public class GameManager :  ISwipeListener, ITapListener
                 Destroy(this.gameObject);
             }
             TouchInputManager.getInstance().SubscribeTapListener(this, 0);
+            dayCountdown.text = "Days until performance: " + (daysTillPerformance - (daysSoFar % daysTillPerformance));
             pm = playerAvatar.GetComponent<PlayerManager>();
             dr = FindObjectOfType<DialogueRunner>();
         }
@@ -203,6 +210,8 @@ public class GameManager :  ISwipeListener, ITapListener
     public void SwipeDetected(Vector3[] swipePositions)
     { }
 
+
+    [YarnCommand("ChangeSceneTrapeze")]
     public void ChangeSceneTrapeze()
     {
         if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
@@ -285,11 +294,25 @@ public class GameManager :  ISwipeListener, ITapListener
         }
         currentTime = TimeEnums.Morning;
         majorActionDone = false;
-        foreach(IDayTimeChangeListener listener in dayTimeChangeListeners)
+        daysSoFar++;
+        dayCountdown.text = "Days until performance: " + (daysTillPerformance - (daysSoFar % daysTillPerformance));
+        if (daysSoFar % daysTillPerformance == 0)
         {
-            listener.DayTimeChange(currentDay, currentTime);
+            gradedPerformance = true;
+            foreach (IDayTimeChangeListener listener in dayTimeChangeListeners)
+            {
+                listener.PerformanceDay();
+            }
+        }
+        else
+        {
+            foreach (IDayTimeChangeListener listener in dayTimeChangeListeners)
+            {
+                listener.DayTimeChange(currentDay, currentTime);
+            }
         }
         TextboxManager.GetInstance().UpdateDateTime();
+        
         Invoke("FadeOutBlack", 0.5f);
     }
 
@@ -321,6 +344,7 @@ public class GameManager :  ISwipeListener, ITapListener
         save.time = currentTime;
         save.majorActionDone = majorActionDone;
         save.duoTutorial = duoTutorial;
+        save.days = daysSoFar;
         BinaryFormatter format = new BinaryFormatter();
         FileStream fs = File.Create(Application.persistentDataPath + savefile);
         //Debug.Log(Application.persistentDataPath + savefile);
@@ -340,6 +364,7 @@ public class GameManager :  ISwipeListener, ITapListener
             currentDay = save.day;
             currentTime = save.time;
             majorActionDone = save.majorActionDone;
+            daysSoFar = save.days;
             duoTutorial = save.duoTutorial;
             Debug.Log("Game loaded");
             return true;
