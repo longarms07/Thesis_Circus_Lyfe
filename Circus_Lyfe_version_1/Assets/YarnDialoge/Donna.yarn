@@ -3,6 +3,7 @@ tags: Major, Cutscene
 ---
 <<TeleportPlayerHouse Donna>>
 <<TeleportPlayerHouse PlayerAvatar>>
+<<set $DebutDone to false>>
 Donna: Hey!
 <<Move Donna up 3>>
 Donna: You're the new trapeze recruit, right?

@@ -2,13 +2,58 @@ title: GoodEndSolo
 tags: 
 ---
 This is the solo good end
+
+
+
 <<ChangeSceneLifeSim GameManager>>
 ===
 
 title: BadEndSolo
 tags: 
 ---
-This is the solo bad end.
+<<DecreaseTrust PlayerBody 1>>
+Donna: There you are, [$PlayerName]. Here, get under the umbrella. 
+<<if $DebutDone is false>>
+    Why are you sitting out here in the rain?
+    ->My show didn't go well.
+        Donna: Hey, it was your first time performing in front of an audience. 
+        Don't be too hard on yourself, even I messed up quite a few times during my debut.
+    ->I like it out here.
+        Donna: Huh, really? I guess the rain does have some charms. Got all the dark, dreary clouds and... um...
+        But hey, as long as it puts you in a better mood that's what matters. I know you had a pretty hard time with that last show.
+    ->...
+        <<DecreaseTrust PlayerBody 1>>
+        Donna: ...geez, you're really taking this hard, aren't you? 
+        Look, it was your first show in front of an audience.
+    No matter how much experience you may have practicing, there's always more pressure when people are watching you.
+    But what matters is that you keep trying. It might take a few shows, but soon you'll be in control and the audience will be captivated by your every move.
+    So, keep practicing and performing and soon you'll be all everyone's talking about. The second greatest trapeze artist this circus has ever known!
+    ->I think you mean "the greatest".
+        Donna: Ha! Gunning for my title already? I like your attitude, [$PlayerName]. 
+    ->Sounds good to me.
+        Donna: Awesome, I'm looking forward to your next show.
+<<else>>>>
+    Funny how it seems to like raining after a big show, huh? It's like the sky is jealous that all of the cool stuff is happening inside.
+    Speaking of, how are you feeling about that last show?
+    ->It was great!
+        <<DecreaseTrust PlayerBody 4>>
+        Donna: I'm not sure I'd call it great exactly... 
+        Um, what I mean is that you've got more room to improve. The audience wasn't exactly captivated with the show you put on today.
+        But that just means you've gotta keep practicing. If you keep putting the effort in, I know that you'll be able to put on a truly great performance! 
+    ->It didn't go well.
+        Donna: Yeah, it goes like that sometimes. All of us here at the circus have our off days, even I do if you can believe that.
+        But that just means that you can impress the audience more during the next performance! Someday you could be the second greatest trapeze artist this circus has ever known!
+        ->I think you mean "the greatest".
+            Donna: Ha! Gunning for my title already? I like your attitude, [$PlayerName]. 
+        ->Sounds good to me.
+            Donna: Awesome, I'm looking forward to your next show.
+    ->It was disasterous.
+        Donna: Ah, it wasn't that bad, no reason to beat yourself up over it. 
+        No matter how much experience you may have practicing, there's always more pressure when people are watching you.
+        But what matters is that you keep trying. It might take a few shows, but soon you'll be in control and the audience will be captivated by your every move.
+        So comeone, cheer up a bit. Gotta improve your attitude if you want to get ready for the next performance!    
+<<endif>>
+<<set $DebutDone to true>>
 <<ChangeSceneLifeSim GameManager>>
 ===
 
@@ -22,6 +67,32 @@ This is the duo good end
 title: BadEndDuo
 tags: 
 ---
-This is the duo bad end
+<<DecreaseTrust PlayerBody 10>>
+<<if visited("BadEndDuo") is false>>
+    <<set $DebutDone to true>>
+    Donna: ...
+    ...
+    I can't believe this...
+    ->Are you OK?
+        Donna: ...No, not really.
+    ->...
+        <<DecreaseTrust PlayerBody 5>>
+        Donna: ...
+        Ugh, don't just stare at me [$PlayerName].
+    We did bad out there today. Our duo performance was supposed to amaze the audience, but I don't think that clumsy showing amazed anybody.
+    Did we just not practice enough? Are we just not a good team? What went wrong, [$PlayerName]?
+    I... I had faith in our skills. 
+    I trusted you!
+    So what went wrong?
+<<else>>
+    Donna: Dang it, not again!
+    We can't let this keep happening!
+    [$PlayerName], we're a team, aren't we? I know I can put on a good show, and I know you can as well.
+    So why do we have such trouble doing a show together? I just don't get it, [$PlayerName]!
+<<endif>>
+...
+...
+...
+I'm sorry, I think I'm gonna need a bit of time to myself. I'll see you tomorrow, [$PlayerName]. And... please don't let me down next time.
 <<ChangeSceneLifeSim GameManager>>
 ===
