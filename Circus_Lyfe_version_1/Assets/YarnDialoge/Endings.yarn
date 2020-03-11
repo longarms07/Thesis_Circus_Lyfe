@@ -1,10 +1,28 @@
 title: GoodEndSolo
 tags: 
 ---
-This is the solo good end
-
-
-
+<<IncreaseTrust PlayerBody 5>>
+Donna: Dang, [$PlayerName], you did great out there!
+<<if $DebutDone is false>>
+    <<IncreaseTrust PlayerBody 10>>  
+    Especially for your first live performance, you left an amazing first impression on the audience!
+    <<set $DebutDone to true>>
+<<endif>>
+So what do you think about going to the club to celebrate? First round'll be on me.
+It's always quite a thrill isn't it, hearing the audience shout your name as you twirl through the air...
+I'll tell ya, I feel like I can do anything when they believe in me. They're here to do a good show, so there's no way I'm gonna let them down. Ya know how I feel, right?
+->I feel the same.
+    Yeah, it's a pretty great feeling.
+->It's amazing!
+    <<IncreaseTrust PlayerBody 2>>
+    Donna: I know, right?  
+->It was nerve-wracking
+    Donna: I suppose I can see that. Hundreds of eyes watching your every move, as the ground lingers underneath... 
+    It can be pretty frightening.
+->I felt nothing
+    <<DecreaseTrust PlayerBody 2>>
+    Donna: Well... uh... that's certainly a way to calm the nerves I guess...
+Anyways, keep putting on performances like today and you'll go places. Might even give me a run for my money with enough practice, hehe. 
 <<ChangeSceneLifeSim GameManager>>
 ===
 
@@ -60,7 +78,35 @@ Donna: There you are, [$PlayerName]. Here, get under the umbrella.
 title: GoodEndDuo
 tags: 
 ---
-This is the duo good end
+<<IncreaseTrust PlayerBody 10>>  
+Donna: Wahoo! 
+That was an AMAZING show!
+<<if visited("GoodEndDuo") is false>>
+    <<IncreaseTrust PlayerBody 10>>  
+    I knew we'd make an amazing team, [$PlayerName]! We're both good on our own, but together we're UNSTOPPABLE!
+    And you know what this means, right?
+    ->No, what does it mean?
+        Donna: It means we've got to do even better next time! We had a great debut, which means the audience is gonna be expecting even more out of our next performance.
+        We've got this though, this is only the beginning of where we can go together as a team.
+    ->Nothing.
+        Donna: No, silly! 
+        It means we've got to do even better next time! We had a great debut, which means the audience is gonna be expecting even more out of our next performance.
+        We've got this though, this is only the beginning of where we can go together as a team.
+    ->Everyone's gonna be watching our show now.
+        Donna: You know it!
+        That means we've got to do even better next time! We had a great debut, which means the audience is gonna be expecting even more out of our next performance.
+    ->We've got to do even better next time.
+        Donna: That's the spirit! 
+        Once word gets out of how great our duo set is, everyone is gonna be flocking here to see it. 
+        A lot of people have seen me on the trapeze on my own, so this will be a great breath of fresh air for the returning fans and new ones alike!
+    We've got this though, this is only the beginning of where we can go together as a team.
+<<else>>
+    I'm really glad I worked up the courage to perform with you, [$PlayerName]. We make a better team that I could've hoped.
+    I doubt any of the other performers in this circus could even hope to top that set we just put on.
+    All of our practice is really paying off. You're leagues better than you were when you first joined us, and I feel like I've grown quite a bit as a trapeze artist alongside you.
+    I hope that I can count on you to keep putting on amazing performances with me. 
+<<endif>>
+<<set $DebutDone to true>>
 <<ChangeSceneLifeSim GameManager>>
 ===
 
