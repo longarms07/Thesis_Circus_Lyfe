@@ -295,6 +295,7 @@ public class GameManager :  ISwipeListener, ITapListener
         currentTime = TimeEnums.Morning;
         majorActionDone = false;
         daysSoFar++;
+        if (daysTillPerformance == 0) daysTillPerformance = 1;
         dayCountdown.text = "Days until performance: " + (daysTillPerformance - (daysSoFar % daysTillPerformance));
         if (daysSoFar % daysTillPerformance == 0)
         {

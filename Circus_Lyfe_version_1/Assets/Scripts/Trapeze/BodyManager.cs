@@ -19,7 +19,13 @@ public class BodyManager : MonoBehaviour
     protected Rigidbody2D upperArmsRB;
     protected Rigidbody2D upperLegsRB;
     protected Rigidbody2D lowerLegsRB;
-    
+
+    protected SpriteRenderer headSprite;
+    protected SpriteRenderer torsoSprite;
+    protected SpriteRenderer armsSprite;
+    protected SpriteRenderer upperArmsSprite;
+    protected SpriteRenderer upperLegsSprite;
+    protected SpriteRenderer lowerLegsSprite;
 
     public HingeJoint2D torso2upperLegs;
     public HingeJoint2D arms2torso;
@@ -40,8 +46,7 @@ public class BodyManager : MonoBehaviour
     private Quaternion upperArmsRot2;
     private Quaternion lowerLegsRot2;
     private Quaternion upperLegsRot2;
-
-    private bool hasCloned = false;
+    
     private GameObject lowerLegs2;
     private GameObject upperLegs2;
     private GameObject arms2;
@@ -72,6 +77,12 @@ public class BodyManager : MonoBehaviour
         upperLegsRB = upperLegs.GetComponent<Rigidbody2D>();
         lowerLegsRB = lowerLegs.GetComponent<Rigidbody2D>();
         upperArmsRB = upperArms.GetComponent<Rigidbody2D>();
+        headSprite = head.GetComponent<SpriteRenderer>(); ;
+        torsoSprite = torso.GetComponent<SpriteRenderer>();
+        armsSprite = arms.GetComponent<SpriteRenderer>();
+        upperLegsSprite = upperLegs.GetComponent<SpriteRenderer>();
+        lowerLegsSprite = lowerLegs.GetComponent<SpriteRenderer>();
+        upperArmsSprite = upperArms.GetComponent<SpriteRenderer>();
         headRot = head.transform.rotation;
         torsoRot = torso.transform.rotation;
         armsRot =  arms.transform.localRotation;
@@ -206,31 +217,15 @@ public class BodyManager : MonoBehaviour
 
     }
 
-   /* protected void CloneLimbs()
+    public void EnableSprites(bool enable)
     {
-        lowerLegs2 = Object.Instantiate(lowerLegs.gameObject, this.gameObject.transform);
-        lowerLegs2.name = "Lower legs(1)";
-        upperLegs2 = Object.Instantiate(upperLegs.gameObject, this.gameObject.transform);
-        upperLegs2.name = "Upper Legs (1)";
-        arms2 = Object.Instantiate(arms.gameObject, this.gameObject.transform);
-        arms2.name = "Arms (1)";
-        upperArms2 = Object.Instantiate(upperArms.gameObject, this.gameObject.transform);
-        upperArms2.name = "Upper Arms (1)";
-
-        hasCloned = true;
+        headSprite.enabled = enable;
+        torsoSprite.enabled = enable;
+        armsSprite.enabled = enable;
+        upperLegsSprite.enabled = enable;
+        lowerLegsSprite.enabled = enable;
+        upperArmsSprite.enabled = enable;
+        lowerLegs.SetActive(enable);
     }
-
-    protected void KillClones()
-    {
-        if (hasCloned)
-        {
-            Destroy(lowerLegs2);
-            Destroy(arms2);
-            Destroy(upperArms2);
-            Destroy(upperLegs2);
-
-        }
-    }*/
-
 
 }

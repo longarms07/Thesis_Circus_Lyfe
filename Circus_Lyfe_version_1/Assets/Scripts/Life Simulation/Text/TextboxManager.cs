@@ -161,7 +161,6 @@ public class TextboxManager : MonoBehaviour
             }
             checkBtnSize = false;
         }
-        if (!activate) HideImage();
         if (SceneManager.GetActiveScene().name == "MovementDemoScene")
             GameManager.getInstance().TogglePlayerMovement(!activate);
         else if (SceneManager.GetActiveScene().name == "TrapezeDemoScene")
@@ -174,7 +173,7 @@ public class TextboxManager : MonoBehaviour
         {
             textMeshPro.SetActive(!hide);
             textBackground.SetActive(!hide);
-            HideImage();
+            
         }
     }
 

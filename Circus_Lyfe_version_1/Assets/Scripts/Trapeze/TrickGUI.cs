@@ -71,11 +71,8 @@ public class TrickGUI : MonoBehaviour
 
     public void FinalScore(int targetScore)
     {
-
-        string endText = "\nNot quite good enough...";
-        if (targetScore <= score) endText = "\n You Did Amazing!";
-        scoreTMP.text = "Score: " + score+endText;
-        scoreTMP.transform.localPosition = new Vector3(0, scoreTMP.transform.localPosition.y, scoreTMP.transform.localPosition.z);
+        scoreTMP.text = "Score: " + score;
+        //scoreTMP.transform.localPosition = new Vector3(0, scoreTMP.transform.localPosition.y, scoreTMP.transform.localPosition.z);
         scoreTMP.rectTransform.sizeDelta = new Vector2(scoreTMP.rectTransform.sizeDelta.x * 2, scoreTMP.rectTransform.sizeDelta.y);
         textTMP.text = "";
     }

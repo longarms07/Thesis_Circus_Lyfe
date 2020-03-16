@@ -275,11 +275,18 @@ I always get super into the zone, there's nothing quite like singing the night a
 title: DonnaPerformanceDay
 tags: 
 ---
-Is this line showing up? Weird.
-Donna: Today's the big show! Are you ready to show off your trapeze skills to everyone in the audience?
-->Yes
-	Donna: Awesome
-->No
-	Donna: Uh oh
+Dummy line for some reason.
+<<TeleportPlayerHouse Donna>>
+<<Move Donna up 3>>
+<<if $DebutDone is false>>
+	Donna: Today's the big show! Are you ready for your grand debut?
+	->Yes
+		Donna: Heck yeah, I'm glad you're pumped.
+	->No
+		Donna: Eh, I'm sure you'll be fine. Too late to back out of it now, after all. 
+<<else>>
+Donna: It's time for the big show again! Man, I'm excited! This is gonna be great!
+<<endif>>
+Let's get going, don't want to leave the audience waiting.
 <<ChangeSceneTrapeze GameManager>>
 ===

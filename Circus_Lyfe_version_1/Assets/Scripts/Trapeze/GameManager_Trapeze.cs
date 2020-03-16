@@ -317,13 +317,15 @@ public class GameManager_Trapeze : GameManager, ITapListener
             string node = badEndSolo;
             if (donnaManager.isActiveAndEnabled)
             {
+
+                donnaManager.EnableSprites(false);
+                donnaManager.jumpWarning.SetActive(false);
                 if (targetScore <= trickGUI.GetScore()) node = goodEndDuo;
                 else node = badEndDuo;
 
             }
             else if (targetScore <= trickGUI.GetScore()) node = goodEndSolo;
-            playerAvatar.SetActive(false);
-            donnaManager.gameObject.SetActive(false);
+            pmt.EnableSprites(false);
             dialogueRunner.StartDialogue(node);
         }
     }

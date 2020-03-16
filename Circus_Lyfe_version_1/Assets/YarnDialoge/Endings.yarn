@@ -1,6 +1,8 @@
 title: GoodEndSolo
 tags: 
 ---
+You did amazing! The audience loved you!
+<<ShowImage TextManager SoloGoodEnd>>
 <<IncreaseTrust PlayerBody 5>>
 Donna: Dang, [$PlayerName], you did great out there!
 <<if $DebutDone is false>>
@@ -11,8 +13,6 @@ Donna: Dang, [$PlayerName], you did great out there!
 So what do you think about going to the club to celebrate? First round'll be on me.
 It's always quite a thrill isn't it, hearing the audience shout your name as you twirl through the air...
 I'll tell ya, I feel like I can do anything when they believe in me. They're here to do a good show, so there's no way I'm gonna let them down. Ya know how I feel, right?
-->I feel the same.
-    Yeah, it's a pretty great feeling.
 ->It's amazing!
     <<IncreaseTrust PlayerBody 2>>
     Donna: I know, right?  
@@ -22,13 +22,16 @@ I'll tell ya, I feel like I can do anything when they believe in me. They're her
 ->I felt nothing
     <<DecreaseTrust PlayerBody 2>>
     Donna: Well... uh... that's certainly a way to calm the nerves I guess...
-Anyways, keep putting on performances like today and you'll go places. Might even give me a run for my money with enough practice, hehe. 
+Anyways, keep putting on performances like today and you'll go places. Might even give me a run for my money with enough practice, hehe.
+<<HideImage TextManager>> 
 <<ChangeSceneLifeSim GameManager>>
 ===
 
 title: BadEndSolo
 tags: 
 ---
+Not quite good enough... The audience was unimpressed.
+<<ShowImage TextManager SoloBadEnd>>
 <<DecreaseTrust PlayerBody 1>>
 Donna: There you are, [$PlayerName]. Here, get under the umbrella. 
 <<if $DebutDone is false>>
@@ -72,12 +75,15 @@ Donna: There you are, [$PlayerName]. Here, get under the umbrella.
         So comeone, cheer up a bit. Gotta improve your attitude if you want to get ready for the next performance!    
 <<endif>>
 <<set $DebutDone to true>>
+<<HideImage TextManager>>
 <<ChangeSceneLifeSim GameManager>>
 ===
 
 title: GoodEndDuo
 tags: 
 ---
+You did amazing! The audience loved you!
+<<ShowImage TextManager DuoGoodEnd>>
 <<IncreaseTrust PlayerBody 10>>  
 Donna: Wahoo! 
 That was an AMAZING show!
@@ -85,9 +91,6 @@ That was an AMAZING show!
     <<IncreaseTrust PlayerBody 10>>  
     I knew we'd make an amazing team, [$PlayerName]! We're both good on our own, but together we're UNSTOPPABLE!
     And you know what this means, right?
-    ->No, what does it mean?
-        Donna: It means we've got to do even better next time! We had a great debut, which means the audience is gonna be expecting even more out of our next performance.
-        We've got this though, this is only the beginning of where we can go together as a team.
     ->Nothing.
         Donna: No, silly! 
         It means we've got to do even better next time! We had a great debut, which means the audience is gonna be expecting even more out of our next performance.
@@ -107,12 +110,15 @@ That was an AMAZING show!
     I hope that I can count on you to keep putting on amazing performances with me. 
 <<endif>>
 <<set $DebutDone to true>>
+<<HideImage TextManager>>
 <<ChangeSceneLifeSim GameManager>>
 ===
 
 title: BadEndDuo
 tags: 
 ---
+Not quite good enough... The audience was unimpressed.
+<<ShowImage TextManager DuoBadEnd>>
 <<DecreaseTrust PlayerBody 10>>
 <<if visited("BadEndDuo") is false>>
     <<set $DebutDone to true>>
@@ -140,5 +146,6 @@ tags:
 ...
 ...
 I'm sorry, I think I'm gonna need a bit of time to myself. I'll see you tomorrow, [$PlayerName]. And... please don't let me down next time.
+<<HideImage TextManager>>
 <<ChangeSceneLifeSim GameManager>>
 ===

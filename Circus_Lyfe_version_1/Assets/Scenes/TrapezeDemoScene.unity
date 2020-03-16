@@ -1548,7 +1548,7 @@ MonoBehaviour:
   tutorialManager: {fileID: 1110159308}
   timerText: {fileID: 706825704}
   timeLeft: 120
-  targetScore: 50
+  targetScore: 500
   scriptToLoad: {fileID: 2480198943629176163, guid: 72e51f44f26ca98458c1b3c2923d4f9a,
     type: 3}
   goodEndSolo: GoodEndSolo
@@ -6298,7 +6298,7 @@ PrefabInstance:
     - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: imageStructs.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
@@ -6325,6 +6325,90 @@ PrefabInstance:
         type: 3}
       propertyPath: imageStructs.Array.data[1].scale.y
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[2].image
+      value: 
+      objectReference: {fileID: 21300000, guid: ea5bbb86f02a19549b59fd3da3c146a4,
+        type: 3}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[2].name
+      value: SoloBadEnd
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[2].scale.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[2].scale.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[3].image
+      value: 
+      objectReference: {fileID: 21300000, guid: c75c4b814d7a8f1419a255657bf29361,
+        type: 3}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[3].name
+      value: SoloGoodEnd
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[3].scale.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[3].scale.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[4].image
+      value: 
+      objectReference: {fileID: 21300000, guid: d595d381ce9cbaa47997cd463b2e9f3a,
+        type: 3}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[4].name
+      value: DuoBadEnd
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[4].scale.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[4].scale.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[5].image
+      value: 
+      objectReference: {fileID: 21300000, guid: e89faf3a7a583f5418ed15fdf3456880,
+        type: 3}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[5].name
+      value: DuoGoodEnd
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[5].scale.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269804861263738, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: imageStructs.Array.data[5].scale.y
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263740, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
@@ -6436,10 +6520,20 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6321269804914327929, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6321269804914327931, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321269805043373292, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6321269805043373295, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}

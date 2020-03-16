@@ -10601,7 +10601,7 @@ MonoBehaviour:
   currentDay: 0
   currentTime: 0
   majorActionDone: 0
-  daysTillPerformance: 7
+  daysTillPerformance: 14
   dayCountdown: {fileID: 1204949590}
   targetTrustLevel: 15
   paused: 0
@@ -12725,7 +12725,6 @@ MonoBehaviour:
   scriptToLoad: {fileID: 0}
   trustPoints: 5
   inviteDonnaNode: TrapezeLadder2
-  trustLevelReq: 15
   donna: {fileID: 1137204069}
 --- !u!1001 &374996022414108909
 PrefabInstance:
