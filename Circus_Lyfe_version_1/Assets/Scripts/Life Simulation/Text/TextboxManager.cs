@@ -127,7 +127,7 @@ public class TextboxManager : MonoBehaviour
         }
         checkBtnSize = true;
         dUI.optionButtons = textButtons;
-        if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
+        if (SceneManager.GetActiveScene().name == "LifeSimulationScene") 
             UpdateDateTime();
     }
     
@@ -139,7 +139,7 @@ public class TextboxManager : MonoBehaviour
 
     public void UpdateDateTime()
     {
-        if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
+        if (SceneManager.GetActiveScene().name == "LifeSimulationScene") 
             timeTextMesh.text = gm.GetCurrentDay() + "\n" + gm.GetCurrentTime();
     }
 

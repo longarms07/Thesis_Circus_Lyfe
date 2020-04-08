@@ -214,7 +214,7 @@ public class GameManager :  ISwipeListener, ITapListener
     [YarnCommand("ChangeSceneTrapeze")]
     public void ChangeSceneTrapeze()
     {
-        if (SceneManager.GetActiveScene().name == "MovementDemoScene") 
+        if (SceneManager.GetActiveScene().name == "LifeSimulationScene") 
         {
             SceneManager.LoadScene("TrapezeDemoScene");
         }
@@ -226,7 +226,7 @@ public class GameManager :  ISwipeListener, ITapListener
     {
         if(SceneManager.GetActiveScene().name == "TrapezeDemoScene")
         {
-            SceneManager.LoadScene("MovementDemoScene");
+            SceneManager.LoadScene("LifeSimulationScene");
         }
     }
 
@@ -335,6 +335,8 @@ public class GameManager :  ISwipeListener, ITapListener
         DeleteSaveData();
         currentTime = TimeEnums.Morning;
         currentDay = DayEnums.Monday;
+        daysTillPerformance = 14;
+        daysSoFar = 0;
         majorActionDone = false;
         Invoke("FadeOutBlack", 1f);
     }
@@ -463,7 +465,7 @@ public class GameManager :  ISwipeListener, ITapListener
 
     private void ReloadScene4Real()
     {
-        SceneManager.LoadScene("MovementDemoScene");
+        SceneManager.LoadScene("LifeSimulationScene");
     } 
 
 }

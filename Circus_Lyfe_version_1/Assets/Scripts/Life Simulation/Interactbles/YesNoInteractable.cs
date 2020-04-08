@@ -6,10 +6,10 @@ using Yarn.Unity;
 public abstract class YesNoInteractable : MonoBehaviour, IInteractable
 {
 
-     protected string message;
-     protected SpriteRenderer spriteRenderer;
-     public Sprite defaultSprite;
-     public Sprite inRangeSprite;
+    protected string message;
+    protected SpriteRenderer spriteRenderer;
+    public Sprite defaultSprite;
+    public Sprite inRangeSprite;
     public GameObject donnaSpawnPosition;
     public string yarnNode;
     public string tiredNode;
