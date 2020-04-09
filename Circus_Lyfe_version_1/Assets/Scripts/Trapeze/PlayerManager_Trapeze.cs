@@ -118,13 +118,13 @@ public class PlayerManager_Trapeze : BodyManager
     {
         if (target != null)
         {
-            if (target.transform.position.y > headRB.position.y || 
+            if (target.transform.position.y > head.transform.position.y || 
                 (goingRight && target.transform.position.x+ grabRangeTargetingOffest < torsoRB.position.x)
                 || (!goingRight && target.transform.position.x- grabRangeTargetingOffest > torsoRB.position.x))
             {
                 Debug.Log(gameObject.name + " gave up on targeting " + targetGrabTarget.gameObject.name);
-                if (target.transform.position.y > headRB.position.y)
-                    Debug.Log("Because target.transform.position.y "+ target.transform.position.y+" > headRB.position.y "+ headRB.position.y);
+                if (target.transform.position.y > head.transform.position.y)
+                    Debug.Log("Because target.transform.position.y "+ target.transform.position.y+ " > head.transform.position.y " + head.transform.position.y);
                 else if (goingRight && target.transform.position.x + grabRangeTargetingOffest < torsoRB.position.x)
                     Debug.Log("Because goingRight && target.transform.position.x + grabRangeTargetingOffest < torsoRB.position.x");
                 else
