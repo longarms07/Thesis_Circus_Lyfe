@@ -23,7 +23,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
     public float followDist;
 
     private bool canMove;
-    private TouchInputManager touchInputManager;
+    private IInputManager touchInputManager;
     private Rigidbody2D da_Rigidbody;
     private bool drag = false;
     private bool tap = false;
@@ -44,7 +44,7 @@ public class TouchMovable : MonoBehaviour, IDragListener, ITapListener
         followedBy = null;
         isFollowed = false;
         nearbyInteractables = new Collider2D[0];
-        touchInputManager = TouchInputManager.getInstance();
+        touchInputManager = IInputManager.getInstance();
         if (touchInputManager == null)
         {
             Debug.LogError("Touch Movable Error: There is no TouchInputManager!");

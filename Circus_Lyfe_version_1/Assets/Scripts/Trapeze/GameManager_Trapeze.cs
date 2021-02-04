@@ -72,7 +72,7 @@ public class GameManager_Trapeze : GameManager, ITapListener
             exitBtn.SetActive(false);
         }
         duoTrapeze = false;
-        TouchInputManager t = TouchInputManager.getInstance();
+        IInputManager t = IInputManager.getInstance();
         if (t == null) Destroy(this);
         trickGUI = TrickGUI.GetInstance();
         t.SubscribeTapListener(this, 0);

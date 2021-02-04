@@ -3122,6 +3122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 542508722}
   - component: {fileID: 542508721}
+  - component: {fileID: 542508723}
   m_Layer: 0
   m_Name: TouchInputManager
   m_TagString: Untagged
@@ -3136,17 +3137,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542508720}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a322ab99c9a33ce4b8ba673a433a6749, type: 3}
+  m_Script: {fileID: 11500000, guid: 75c4aceb387847344a00f41212913488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   touchCursorPrefab: {fileID: 5696428273330582450, guid: 2c78642701b62bb4cb5e7a8d448d72cf,
     type: 3}
-  fingersSupported: 1
   maxTapTime: 0.3
   maxSwipeTime: 0.3
   debugMode: 0
+  displayText: {fileID: 0}
+  fingersSupported: 1
   touchCursors: []
 --- !u!4 &542508722
 Transform:
@@ -3162,6 +3164,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &542508723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542508720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 937c444c4e0e5ce43ae1d2ac04d0fca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchCursorPrefab: {fileID: 5696428273330582450, guid: 2c78642701b62bb4cb5e7a8d448d72cf,
+    type: 3}
+  maxTapTime: 0.3
+  maxSwipeTime: 0.3
+  debugMode: 0
+  displayText: {fileID: 0}
 --- !u!1 &600125539
 GameObject:
   m_ObjectHideFlags: 0
