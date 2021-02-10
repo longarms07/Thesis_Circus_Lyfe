@@ -131,7 +131,10 @@ namespace Yarn.Unity {
         public override void SetValue (string variableName, Yarn.Value value)
         {
             // Copy this value into our list
-            variables[variableName] = new Yarn.Value(value);
+            if (variables.ContainsKey(variableName))
+                variables[variableName] = new Yarn.Value(value);
+            else
+                variables.Add(variableName, new Yarn.Value(value));
         }
 
         /// Get a variable's value

@@ -6298,7 +6298,7 @@ PrefabInstance:
     - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
       propertyPath: defaultVariables.Array.data[1].name
-      value: left
+      value: teft
       objectReference: {fileID: 0}
     - target: {fileID: 6321269804861263736, guid: 11c6e662177776a4eb9f944b0e4db62c,
         type: 3}
@@ -6589,6 +6589,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369928580419891931, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: variables.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369928580419891931, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: variables.Array.data[0].varName
+      value: Tap
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369928580419891931, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: variables.Array.data[0].androidValue
+      value: tap
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369928580419891931, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: variables.Array.data[1].androidValue
+      value: swipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369928580419891931, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: variables.Array.data[1].webGLValue
+      value: click and swipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369928580419891931, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: variables.Array.data[1].varName
+      value: Swipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369928580419891931, guid: 11c6e662177776a4eb9f944b0e4db62c,
+        type: 3}
+      propertyPath: variables.Array.data[0].webGLValue
+      value: click
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c6e662177776a4eb9f944b0e4db62c, type: 3}
