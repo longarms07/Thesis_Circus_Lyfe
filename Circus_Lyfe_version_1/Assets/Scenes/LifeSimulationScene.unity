@@ -3112,76 +3112,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &542508720
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 542508722}
-  - component: {fileID: 542508721}
-  - component: {fileID: 542508723}
-  m_Layer: 0
-  m_Name: TouchInputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &542508721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542508720}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75c4aceb387847344a00f41212913488, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  touchCursorPrefab: {fileID: 5696428273330582450, guid: 2c78642701b62bb4cb5e7a8d448d72cf,
-    type: 3}
-  maxTapTime: 0.3
-  maxSwipeTime: 0.3
-  debugMode: 0
-  displayText: {fileID: 0}
-  fingersSupported: 1
-  touchCursors: []
---- !u!4 &542508722
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542508720}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &542508723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542508720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 937c444c4e0e5ce43ae1d2ac04d0fca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  touchCursorPrefab: {fileID: 5696428273330582450, guid: 2c78642701b62bb4cb5e7a8d448d72cf,
-    type: 3}
-  maxTapTime: 0.3
-  maxSwipeTime: 0.3
-  debugMode: 0
-  displayText: {fileID: 0}
 --- !u!1 &600125539
 GameObject:
   m_ObjectHideFlags: 0
@@ -13197,6 +13127,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c8a26e8b4112b849b4da1c0ed0d1e77, type: 3}
+--- !u!1001 &5027072180848878502
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502292, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5027072181388502294, guid: bcc0613e9e601cb4594bf592f0d4d32d,
+        type: 3}
+      propertyPath: m_Name
+      value: TouchInputManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bcc0613e9e601cb4594bf592f0d4d32d, type: 3}
 --- !u!1001 &6321269804152647206
 PrefabInstance:
   m_ObjectHideFlags: 0

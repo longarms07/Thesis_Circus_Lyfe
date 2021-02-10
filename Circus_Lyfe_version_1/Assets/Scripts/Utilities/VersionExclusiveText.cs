@@ -14,6 +14,7 @@ public class VersionExclusiveText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tmp = GetComponent<TextMeshProUGUI>();
         if (Application.platform == RuntimePlatform.WebGLPlayer) tmp.text = WebglText;
         else if (Application.platform == RuntimePlatform.Android) tmp.text = AndroidText;
     }
